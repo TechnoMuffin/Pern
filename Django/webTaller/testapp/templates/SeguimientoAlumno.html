@@ -1,0 +1,153 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<!-- Checkbox de Asistencia -->
+    <div>
+    <div class="checkbox checkbox-primary checkbox-circle" style="margin-top: 22px; margin-left: 37px; font-size: 20px">
+        <input type="checkbox" id="checkPresence">
+            <label style="position:absolute">Asistencia</label>
+    </div>
+
+    </div>
+
+    
+    <!-- Dropdown de curso -->
+    <div class="btn-group" style="margin-left: 1160px;">
+        <button class="btn btn-primary dropdown-toggle waves-effect waves-light" type="button" id="cbxSubject" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: 175px;">Curso <span class="caret"></span>
+    </button>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1" role="menu">
+            <li><a href="#">1 año A</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="#">2 año B</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="#">3 año C</a></li>
+           
+        </ul>
+    </div>
+    <!-- Dropdown de Alumno -->
+    <div class="btn-group dropdown" style="margin-left: 1160px;margin-top: 5px;">
+        <button class="btn btn-primary dropdown-toggle waves-effect waves-light" type="button" id="cbxPupil" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: 175px;">Alumno <span class="caret"></span>
+    </button>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1" role="menu">
+            <li><a href="#">Coki Argento</a></li>
+            <li><a href="#">Moni Argento</a></li>
+            <li><a href="#">Pepe Argento</a></li>
+        </ul>
+    </div>
+<!-- Tabla de Control -->
+    <div class="card-box" style="width: 700px;margin-top: 35px; position:absolute;margin-left: 25px;">
+        <div class="container">
+          <h2>Area de Control</h2>        
+          <table class="table table-striped" id="tbleCon">
+            <thead>
+              <tr>
+                <th>Directiva</th>
+                <th>Cumplio?</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>John</td>
+                <td>
+                    <div class="checkbox checkbox-success checkbox-circle">
+                        <input type="checkbox">
+                    <label ></label>
+                    </div>
+              </td> 
+              </tr>
+              <tr>
+                <td>Mary</td>
+                <td >
+                    <div class="checkbox checkbox-success checkbox-circle">
+                        <input type="checkbox">
+                    <label ></label>
+                    </div>
+                  </td> 
+              </tr>
+              <tr>
+                <td>July</td>
+                <td>
+                    <div class="checkbox checkbox-success checkbox-circle">
+                        <input type="checkbox">
+                    <label ></label>
+                    </div>
+                  </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+            </div>
+
+    <!-- Textarea de Observaciones -->    
+    <div class="form-group" style="margin-left: 755px;position:absolute; margin-top: 9px;">
+            <label for="comment">Observaciones</label>
+                <textarea class="form-control" rows="5" id="obsAlum" style="width: 590px; height: 335px;"></textarea>
+        
+    <!-- Dropdown Trabajo -->
+    <div>
+    <div class="btn-group dropdown" style="margin-left:395px;margin-top:60px;display:block;position:absolute;">
+        <button class="btn btn-primary dropdown-toggle waves-effect waves-light" type="button" id="cbxProject" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: 175px;">Trabajo <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1" role="menu">
+            <li><a href="#">Martillo</a></li>
+            <li><a href="#">Nose</a></li>
+            <li><a href="#">PArgento</a></li>
+        </ul>
+    </div>
+    </div>
+    
+<!-- Tabla de Seguimiento de Alumno -->    
+<div class="card-box" style="width: 1300px;margin-top: 105px; position:absolute;margin-left: -728px;">
+    <div class="container">
+      <h2>Seguimiento de Trabajo</h2>            
+      <table class="table table-striped" id="tbleSeg">
+        <thead>
+          <tr>
+            <th>Etapa</th>
+            <th>Nota Recomendada</th>
+            <th>Clases</th>
+            <th>Observaciones</th>  
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>John</td>
+            <td><span class="fa fa-star fa-2x" ></span><span class="fa fa-star fa-2x" ></span><span class="fa fa-star fa-2x" ></span></td>
+            <td>john@example.com</td>
+            <td></td>  
+          </tr>
+          <tr>
+            <td>Mary</td>
+            <td><span class="fa fa-star fa-2x" ></span><span class="fa fa-star fa-2x" ></span><span class="fa fa-star fa-2x" ></span></td>
+            <td>mary@example.com</td>
+            <td></td> 
+          </tr>
+          <tr>
+            <td>July</td>
+            <td><span class="fa fa-star fa-2x" ></span><span class="fa fa-star fa-2x" ></span><span class="fa fa-star fa-2x" ></span></td>
+            <td>july@example.com</td>
+            <td></td> 
+          </tr>
+
+        </tbody>
+      </table>
+    </div>
+    </div>
+</div>
+<div>
+    
+    <!-- Boton Siguiente Alumno -->
+    <nav style="margin-left: 1125px; margin-top: 850px;">
+      <ul class="pager">
+        <li><a href="#">Siguiente Alumno</a></li>
+      </ul>
+    </nav>
+    
+    <!-- Boton Trabajo Terminado -->
+    <nav style="position: absolute; margin-left: 30px; margin-top: -65px;">
+      <ul class="pager">
+        <li><a href="#">Trabajo Terminado</a></li>
+      </ul>
+    </nav>
+   </div>
+{% endblock %}
