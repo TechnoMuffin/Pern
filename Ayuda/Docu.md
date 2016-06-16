@@ -1,5 +1,11 @@
 # Documentacion
 
+##Aplicaciones
+
+###*Registro de Profesores(teacherRegister)
+
+Esta aplicación se encarga de registrar a los profesores. Cualquier usuario puede crear nuevos profesores, pero es el jefe de área quien se encarga de habilitar los permisos de profesor. Cualquier usuario puede registrarse aunque no tendrá permisos de hacer nada.
+
 ## Base de Datos(Models)
 
 ### Class Course
