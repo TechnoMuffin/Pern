@@ -40,7 +40,6 @@ INSTALLED_APPS = [
     'testapp',
     'page',
     'teacherRegister'
-
 ]
 
 MIDDLEWARE_CLASSES = [
