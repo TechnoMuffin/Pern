@@ -1,4 +1,4 @@
-#Ayuda a los Desarrolladores
+#Ayuda
 
 ##Manejo de Ramas
 ###Cambiar de Ramas
