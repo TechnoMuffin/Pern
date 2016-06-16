@@ -5,3 +5,5 @@ from django.apps import AppConfig
 
 class teacherRegisterConfig(AppConfig):
     name = 'teacherRegister'
+    verbose_name = "Registro de Profesores"
+
