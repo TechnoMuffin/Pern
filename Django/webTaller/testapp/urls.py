@@ -5,5 +5,6 @@ urlpatterns = patterns('',
                        url(r'^register$','testapp.views.registerUser', name='reg-user'),
                        url(r'^login$','testapp.views.loginUser'),
                        url(r'^olvidacontra$','testapp.views.olvidaContra'),
+                       url(r'^documentos$','testapp.views.documentos'),
                        url(r'^admin$','testapp.views.loginAdmin'),
                       )

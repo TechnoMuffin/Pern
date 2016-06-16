@@ -22,3 +22,6 @@ def olvidaContra(request):
 def loginAdmin(request):
         context = RequestContext(request)
         return render_to_response('LogAdmin.html',context)
+def documentos(request):
+        context = RequestContext(request)
+        return render_to_response('Documentos.html',context)
