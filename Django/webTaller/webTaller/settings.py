@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'testapp',
     'page',
+    'teacherRegister'
+
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -121,4 +123,4 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
 STATIC_URL = '/static/'
-LOGIN_URL='/chiefRegister/login/'
+LOGIN_URL='/teacherRegister/login/'
