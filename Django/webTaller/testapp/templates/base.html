@@ -1,0 +1,279 @@
+
+<!DOCTYPE html>
+{% load staticfiles %}
+
+<html>
+    <head>
+
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        
+        <link rel="shortcut icon" href="{% static 'images/favicon_1.ico'%}">
+
+        <title>Pern</title>
+
+
+        <link href="{% static 'css/bootstrap.min.css'%}" rel="stylesheet">
+        <link href="{% static 'plugins/jquery-circliful/css/jquery.circliful.css'%}" rel="stylesheet" type="text/css" />
+        <link rel="stylesheet" href="{% static 'css/font-awesome.min.css'%}">
+		<link rel="stylesheet" href="{% static 'css/form-elements.css'%}">
+        <link href="{% static 'css/bootstrap.min.css'%}" rel="stylesheet" type="text/css" />
+        <link href="{% static 'css/core.css'%}" rel="stylesheet" type="text/css" />
+        <link href="{% static 'css/components.css'%}" rel="stylesheet" type="text/css" />
+        <link href="{% static 'css/icons.css'%}" rel="stylesheet" type="text/css" />
+        <link href="{% static 'css/pages.css''%}" rel="stylesheet" type="text/css" />
+        <link href="{% static 'css/menu.css'%}" rel="stylesheet" type="text/css" />
+        <link href="{% static 'css/responsive.css'%}" rel="stylesheet" type="text/css" />
+
+
+        <link href="http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+        <link href="http://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+
+        {% block css %}
+        {% endblock %}
+    </head>
+
+    <body>
+
+        <!-- Navigation Bar-->
+        <header id="topnav">
+            <div class="topbar-main">
+                <div class="container">
+
+                    <!-- Logo container-->
+                    <div class="logo">
+                        <a href="base.html" class="logo"><i class="md md-equalizer"></i> <span>Pern</span> </a>
+                    </div>
+                    <!-- End Logo container-->
+
+                    <div class="menu-extras">
+
+                        <ul class="nav navbar-nav navbar-right pull-right">
+                            <li>
+                                <form role="search" class="navbar-left app-search pull-left hidden-xs">
+                                    <input type="text" placeholder="Buscar..." class="form-control">
+                                    <a href="#"><i class="fa fa-search"></i></a>
+                                </form>
+                            </li>
+
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle waves-effect waves-light profile" data-toggle="dropdown" aria-expanded="true"><img src="{% static 'images/users/avatar-1.jpg'%}" alt="user-img" class="img-circle"> </a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="javascript:void(0)"><i class="ti-user m-r-5"></i> Perfil</a></li>
+                                    <li><a href="javascript:void(0)"><i class="ti-settings m-r-5"></i> Ajustes</a></li>
+                                    <li><a href="login"><i class="ti-power-off m-r-5"></i> Cerrar cesión</a></li>
+                                     <li><a href="admin"><i class="ti-user m-r-5"></i> Admin</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+
+                        <div class="menu-item">
+                            <!-- Mobile menu toggle-->
+                            <a class="navbar-toggle">
+                                <div class="lines">
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                </div>
+                            </a>
+                            <!-- End mobile menu toggle-->
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <!-- End topbar -->
+
+
+            <!-- Navbar Start -->
+            <div class="navbar-custom">
+                <div class="container">
+                    <div id="navigation">
+                        <!-- Navigation Menu-->
+                        <ul class="navigation-menu">
+                            <li class="has-submenu active">
+                                <a href="index-2.html"><i class="md md-home"></i>Inicio</a>
+                            </li>
+                            <li class="has-submenu">
+                                <a href="#"><i class="md md-view-carousel"></i>Especialidades</a>
+                            </li>
+
+                            <li class="has-submenu">
+                                <a href="#"><i class="md md-invert-colors-on"></i>Components</a>
+                                <ul class="submenu">
+                                    <li><a href="components-grid.html">Grid</a></li>
+                                    <li><a href="components-widgets.html">Widgets</a></li>
+                                    <li><a href="components-nestable-list.html">Nesteble</a></li>
+                                    <li><a href="components-range-sliders.html">Range Sliders </a></li>
+                                    <li><a href="components-sweet-alert.html">Sweet Alerts </a></li>
+                                </ul>
+                            </li>
+
+                            <li class="has-submenu">
+                                <a href="#"><i class="md md-class"></i>Other</a>
+                                <ul class="submenu">
+                                    <li class="has-submenu">
+                                        <a href="#">Icons</a>
+                                        <ul class="submenu">
+                                            <li><a href="icons-glyphicons.html">Glyphicons</a></li>
+                                            <li><a href="icons-materialdesign.html">Material Design</a></li>
+                                            <li><a href="icons-themifyicon.html">Themify Icons</a></li>
+                                            <li><a href="icons-ionicons.html">Ion Icons</a></li>
+                                            <li><a href="icons-fontawesome.html">Font awesome</a></li>
+                                        </ul>
+                                    </li>
+
+                                    <li class="has-submenu">
+                                        <a href="#">Forms</a>
+                                        <ul class="submenu">
+                                            <li><a href="form-elements.html">General Elements</a></li>
+                                            <li><a href="form-advanced.html">Advanced Form</a></li>
+                                            <li><a href="form-validation.html">Form Validation</a></li>
+                                            <li><a href="form-wizard.html">Form Wizard</a></li>
+                                            <li><a href="form-wysiwig.html">WYSIWYG Editor</a></li>
+                                            <li><a href="form-summernote.html">Summernote</a></li>
+                                            <li><a href="form-uploads.html">Multiple File Upload</a></li>
+                                            <li><a href="form-xeditable.html">X-editable</a></li>
+                                        </ul>
+                                    </li>
+
+                                    <li class="has-submenu">
+                                        <a href="#">Tables</a>
+                                        <ul class="submenu">
+                                            <li><a href="tables-basic.html">Basic Tables</a></li>
+                                            <li><a href="tables-datatable.html">Data Table</a></li>
+                                            <li><a href="tables-editable.html">Editable Table</a></li>
+                                            <li><a href="tables-responsive.html">Responsive Table</a></li>
+                                        </ul>
+                                    </li>
+
+                                    <li class="has-submenu">
+                                        <a href="#">Charts</a>
+                                        <ul class="submenu">
+                                            <li><a href="chart-flot.html">Flot Chart</a></li>
+                                            <li><a href="chart-morris.html">Morris Chart</a></li>
+                                            <li><a href="chart-chartist.html">Chartist chart</a></li>
+                                            <li><a href="chart-nvd3.html">Nvd3 charts</a></li>
+                                            <li><a href="chart-peity.html">Peity Charts</a></li>
+                                            <li><a href="chart-sparkline.html">Sparkline Charts</a></li>
+                                            <li><a href="chart-other.html">Other Chart</a></li>
+                                        </ul>
+                                    </li>
+
+                                    <li class="has-submenu">
+                                        <a href="#">Maps</a>
+                                        <ul class="submenu">
+                                            <li><a href="map-google.html"> Google Map</a></li>
+                                            <li><a href="map-vector.html"> Vector Map</a></li>
+                                        </ul>
+                                    </li>
+
+                                    <li class="has-submenu">
+                                        <a href="#">Mail</a>
+                                        <ul class="submenu">
+                                            <li><a href="mail-inbox.html">Inbox</a></li>
+                                            <li><a href="mail-compose.html">Compose Mail</a></li>
+                                            <li><a href="mail-read.html">View Mail</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li class="has-submenu">
+                                <a href="#"><i class="md md-pages"></i>Pages</a>
+                                <ul class="submenu megamenu">
+                                    <li>
+                                        <ul>
+                                            <li><a href="pages-blank.html">Blank Page</a></li>
+                                            <li><a href="pages-login.html">Login</a></li>
+                                            <li><a href="pages-register.html">Register</a></li>
+                                            <li><a href="pages-recoverpw.html">Recover Password</a></li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <ul>
+                                            <li><a href="pages-lock-screen.html">Lock Screen</a></li>
+                                            <li><a href="pages-404.html">404 Error</a></li>
+                                            <li><a href="pages-500.html">500 Error</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+
+
+                            <li class="has-submenu">
+                                <a href="#"><i class="md md-folder-special"></i>Extras</a>
+                                <ul class="submenu megamenu">
+                                    <li>
+                                        <ul>
+                                            <li><a href="extras-timeline.html">Timeline</a></li>
+                                            <li><a href="extras-invoice.html">Invoice</a></li>
+                                            <li><a href="extras-calendar.html"> Calendar</a></li>
+                                            <li><a href="extras-email-template.html">Email template</a></li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <ul>
+                                            <li><a href="extras-maintenance.html">Maintenance</a></li>
+                                            <li><a href="extras-coming-soon.html">Coming-soon</a></li>
+                                            <li><a href="extras-gallery.html"> Gallery</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+
+                        </ul>
+                        <!-- End navigation menu -->
+                    </div>
+                </div>
+            </div>
+            {% block content %}
+            {% endblock %}
+        </header>
+
+        <!-- End Navigation Bar-->
+
+        <script src="{% static 'js/modernizr.min.js'%}"></script>
+        <script src="{% static 'js/jquery-1.11.1.min.js'%}"></script>
+        <script src="{% static 'js/jquery.min.js'%}"></script>
+        <script src="{% static 'js/bootstrap.min.js'%}"></script>
+        <script src="{% static 'js/detect.js'%}"></script>
+        <script src="{% static 'js/fastclick.js'%}"></script>
+        <script src="{% static 'js/jquery.blockUI.js'%}"></script>
+        <script src="{% static 'js/waves.js'%}"></script>
+        <script src="{% static 'js/wow.min.js'%}"></script>
+        <script src="{% static 'js/jquery.nicescroll.js'%}"></script>
+        <script src="{% static 'js/jquery.scrollTo.min.js'%}"></script>
+        <script src="{% static 'js/jquery.backstretch.min.js'%}"></script>
+        <script src="{% static 'js/scripts.js'%}"></script>
+
+        <!-- Counter Up  -->
+        <script src="{% static 'plugins/waypoints/lib/jquery.waypoints.js'%}"></script>
+        <script src="{% static 'plugins/counterup/jquery.counterup.min.js'%}"></script>
+
+        <!-- circliful Chart -->
+        <script src="{% static 'plugins/jquery-circliful/js/jquery.circliful.min.js'%}"></script>
+        <script src="{% static 'plugins/jquery-sparkline/jquery.sparkline.min.js'%}"></script>
+
+        <!-- Page js  -->
+        <script src="{% static 'pages/jquery.dashboard.js'%}"></script>
+
+        <!-- Custom main Js -->
+        <script src="{% static 'js/jquery.core.js'%}"></script>
+        <script src="{% static 'js/jquery.app.js'%}"></script>
+
+
+    </body>
+
+    {% block scripts %}
+
+    {% endblock %}
+
+</html>
+
+
+
+
