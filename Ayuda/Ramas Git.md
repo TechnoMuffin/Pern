@@ -48,17 +48,21 @@ En esta ocasión el archivo problemático era *ArchivoConflictivo.py*, si vamos 
 
 ```python
 def getDatos(perro):
+	nombre = perro.getNombre()
 &#60; &#60;&#60;&#60;&#60;&#60;&#60; HEAD:ArchivoConflictivo.py
         raza = 'Pitbull'
 ===
         raza = perro.getRaza()
 &#62;&#62;&#62;&#62;&#62;&#62;&#62; Rama1:ArchivoConflictivo.py
+	edad = perro.getEdad()
 ```
 En la rama HEAD la raza del perro siempre sera tomada como *Pitbull*, en *Rama1* se obtiene la raza utilizando otra función.
 
 Lo que debemos hacer es seleccionar la linea que queremos utilizar y borrar la otra linea (Junto con las lineas generadas por GitHub)
 ```python
 def getDatos(perro):
+	nombre = perro.getNombre()
 	raza = perro.getRaza()
+	edad = perro.getEdad()
 ```
 Una vez hecho esto, debemos hacer un *Commit* y un *Push* y nuestra HEAD quedará unida y funcional!
