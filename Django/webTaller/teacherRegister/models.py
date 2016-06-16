@@ -8,4 +8,5 @@ class Profesores(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL)
     
     def __str__(self):
-        return self.user.username
+        pato = 'Soy Adrielastico'
+        return self.pato

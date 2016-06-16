@@ -37,15 +37,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-<<<<<<< HEAD
     'testapp',
     'page',
+<<<<<<< HEAD
     'teacherRegister'
-
 =======
-    'page',
     'teacherRegister',
->>>>>>> 7bf9fd162e2a400019b25a1d4ae964244862fc96
+>>>>>>> a2ef28644fcf150f776fb1831e1c45444f3a73b6
 ]
 
 MIDDLEWARE_CLASSES = [

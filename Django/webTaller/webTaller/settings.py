@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'testapp',
     'page',
-    'teacherRegister'
+    'teacherRegister',
 ]
 
 MIDDLEWARE_CLASSES = [
