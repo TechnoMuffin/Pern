@@ -1,9 +1,11 @@
-from django.conf.urls import url, patterns
-urlpatterns = patterns('',
-                       url(r'^base$','testapp.views.base'),
-                       url(r'^seguimientoAlumno$','testapp.views.seguimientoAl', name='seg-al'),
-                       url(r'^register$','testapp.views.registerUser', name='reg-user'),
-                       url(r'^login$','testapp.views.loginUser'),
-                       url(r'^olvidacontra$','testapp.views.olvidaContra'),
-                       url(r'^admin$','testapp.views.loginAdmin'),
-                      )
+from django.conf.urls import url
+from . import views
+
+urlpatterns = [
+    url(r'^base$', views.base),
+    url(r'^seguimientoAlumno$', views.seguimientoAl, name='seg-al'),
+    url(r'^register$', views.registerUser, name='reg-user'),
+    url(r'^login$', views.loginUser),
+    url(r'^olvidacontra$', views.olvidaContra),
+    url(r'^admin$', views.loginAdmin),
+]

@@ -1,7 +1,7 @@
-from django.conf.urls import patterns, include, url
+from django.conf.urls import url
+from . import views
 
-urlpatterns = patterns("",
-                       url(r'^', 'teacherRegister.views.nuevo_JefeArea', name="nuevo_JefeArea"),
-                       url(r'^ingreso/$', 'teacherRegister.views.ingresar', name="ingreso"),
-                       url(r'gracias/(?P<username>[\w]+)/$', 'teacherRegister.views.gracias_view', name='gracias')
-)
+urlpatterns = [
+    url(r'^', views.nuevo_JefeArea, name="nuevo_JefeArea"),
+    url(r'gracias/(?P<username>[\w]+)/$', views.gracias_view, name='gracias')
+]
