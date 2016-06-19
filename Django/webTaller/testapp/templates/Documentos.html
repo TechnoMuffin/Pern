@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+
+ <div class="card-box" style="width: 903px;margin-left: 230px;margin-top:10px">
+        <div class="panel">
+            <h1>Documentos de la Materia</h1>
+    <div class="panel-body">
+    <div class="col-sm-6" >
+         <div class="btn-group dropdown" style="position:absolute;margin-left:650px;margin-top:-70px">
+        <button class="btn btn-primary dropdown-toggle waves-effect waves-light" type="button" id="cbxPupil" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: 175px;">Ordenar <span class="caret"></span>
+    </button>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1" role="menu">
+            <li><a href="#">Fecha</a></li>
+            <li><a href="#">Profesor</a></li>
+            <li><a href="#">Nombre</a></li>
+        </ul>
+    </div>
+        <div class="row" style="margin-top: 10px;">
+                <div class="col-sm-12" style="width: 850px;">
+                <table aria-describedby="datatable-editable_info" role="grid" class="table table-striped dataTable no-footer" id="datatable-editable">
+                    <thead>
+                        <tr role="row">
+                            <th aria-label="Rendering engine: activate to sort column descending" aria-sort="ascending" style="width: 225px;" colspan="1" rowspan="1" aria-controls="datatable-editable" tabindex="0" class="sorting_asc">Documento</th>
+                            <th aria-label="Browser: activate to sort column ascending" style="width: 286px;" colspan="1" rowspan="1" aria-controls="datatable-editable" tabindex="0" class="sorting">Fecha</th>
+                            <th aria-label="Platform(s): activate to sort column ascending" style="width: 257px;" colspan="1" rowspan="1" aria-controls="datatable-editable" tabindex="0" class="sorting">Profesor</th>
+                            <th aria-label="Actions" style="width: 116px;" colspan="1" rowspan="1" class="sorting_disabled">Publico?    </th></tr>
+                    </thead>
+            <tbody>
+              <tr>
+                <td>Plano 1</td>
+                <th>12/02/98</th>
+                <th>Freytes</th>
+                <td>
+                    <div class="checkbox checkbox-success checkbox-circle">
+                        <input type="checkbox">
+                    <label ></label>
+                    </div>
+              </td> 
+              </tr>
+              <tr>
+                <td>Plano 2</td>
+                <th>12/02/98</th>
+                <th>Freytes</th>
+                <td>
+                    <div class="checkbox checkbox-success checkbox-circle">
+                        <input type="checkbox">
+                    <label ></label>
+                    </div>
+              </td> 
+              </tr>
+              <tr>
+                <td>Plano 3</td>
+                <th>12/02/98</th>
+                <th>Freytes</th>
+                <td>
+                    <div class="checkbox checkbox-success checkbox-circle">
+                        <input type="checkbox">
+                    <label ></label>
+                    </div>
+              </td> 
+              </tr>
+                         </tbody>
+                </table>
+                </div>
+
+
+
+{% endblock %}

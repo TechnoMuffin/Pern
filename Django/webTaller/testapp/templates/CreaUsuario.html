@@ -8,7 +8,7 @@
         <meta name="description" content="A fully featured admin theme which can be used to build CRM, CMS, etc.">
         <meta name="author" content="Coderthemes">
 
-        <link rel="shortcut icon" href="{% static 'images/favicon1.ico'%}">
+        <link rel="shortcut icon" href="{% static 'images/favicon_1.ico'%}">
 
         <title>Pern</title>
 
@@ -19,10 +19,8 @@
         <link href="{% static 'css/pages.css''%}" rel="stylesheet" type="text/css" />
         <link href="{% static 'css/menu.css'%}" rel="stylesheet" type="text/css" />
         <link href="{% static 'css/responsive.css'%}" rel="stylesheet" type="text/css" />
-        <link href="{% static 'css/docs.css'%}" rel="stylesheet"/>
-        <link href="{% static 'css/pygments-manni.css'%}" rel="stylesheet"/>
 
-        <script src="{% static 'js/modernizr.min.js'%}"></script>
+         <script src="{% static 'js/modernizr.min.js'%}"></script>
         <script>
             (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
                 (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -49,49 +47,54 @@
         <div class="wrapper-page" style="margin-top: 163px;">
 
             <div class="text-center">
-                <a href="login" class="logo logo-lg"><i class="md md-settings"></i> <span>Pern</span> </a>
+                <a href="login" class="logo logo-lg"><i class="md md-equalizer"></i> <span>Pern</span> </a>
             </div>
 
-            <form class="form-horizontal m-t-20" action="base" data-toggle="validator" role="form">
+            <form class="form-horizontal m-t-20" action="base">
+                <div class="form-group">
+                    <div class="col-xs-12">
+                        <input class="form-control" type="email" required="" placeholder="Email">
+                        <i class="md md-email form-control-feedback l-h-34"></i>
+                    </div>
+                </div>
 
                 <div class="form-group">
                     <div class="col-xs-12">
-                        <input type="text" class="form-control" id="inputName"  placeholder="Usuario" required>
+                        <input class="form-control" type="text" required="" placeholder="Username">
                         <i class="md md-account-circle form-control-feedback l-h-34"></i>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <div class="col-xs-12">
-                        <input type="email" class="form-control" id="inputEmail" placeholder="Email" data-error="El email es inválido" required>
-                        <i class="md md-email form-control-feedback l-h-34"></i>
+                        <input class="form-control" type="password" required="" placeholder="Password">
+                        <i class="md md-vpn-key form-control-feedback l-h-34"></i>
                     </div>
-                    <div class="help-block with-errors"></div>
                 </div>
 
                 <div class="form-group">
+                    <div class="col-xs-12">
+                        <div class="checkbox checkbox-primary">
+                            <input id="checkbox-signup" type="checkbox" checked="un-checked">
+                            <label for="checkbox-signup">
+                                Aceptar <a href="#">términos y condiciones</a>
+                            </label>
+                        </div>
 
-                    <div class="form-inline row" style="margin-top: 13px;">
-                        <div class="form-group col-sm-6" style="width: 95%; margin-left: 10px; margin-top: -12px;">
-                            <input type="password" data-toggle="validator" data-minlength="6" class="form-control" id="inputPassword" placeholder="Password" required>
-                            <i class="md md-vpn-key form-control-feedback l-h-34"></i>
-                            <div class="help-block">Mínimo de 6 caracteres</div>
-                        </div>
-                        <div class="form-group col-sm-6" style="width: 95%; margin-left: 10px; margin-top: -5px;">
-                            <input type="password" class="form-control" id="inputPasswordConfirm" data-match="#inputPassword" data-match-error="Whoops, these don't match" placeholder="Confirm" required>
-                            <i class="md md-vpn-key form-control-feedback l-h-34"></i>
-                            <div class="help-block with-errors"></div>
-                        </div>
                     </div>
                 </div>
 
                 <div class="form-group text-right m-t-20">
-                    <div class="col-xs-12" style="margin-top: -15px;">
-                        <button class="btn btn-primary btn-custom w-md waves-effect waves-light" type="submit" style="width:100%">Registrarse
-                        </button>
+                    <div class="col-xs-12">
+                        <button class="btn btn-primary btn-custom waves-effect waves-light w-md" type="submit">Registrar</button>
                     </div>
                 </div>
 
+                <div class="form-group m-t-30">
+                    <div class="col-sm-12 text-center">
+                        <a href="login" class="text-muted">Ya tienes una cuenta?</a>
+                    </div>
+                </div>
             </form>
 
         </div>
@@ -112,10 +115,6 @@
         <script src="{% static 'js/wow.min.js'%}"></script>
         <script src="{% static 'js/jquery.nicescroll.js'%}"></script>
         <script src="{% static 'js/jquery.scrollTo.min.js'%}"></script>
-        <script src="{% static 'js/validator.min.js'%}"></script>
-        <script src="http://platform.twitter.com/widgets.js"></script>
-        <script src="{% static 'js/application.js'%}"></script>
-        <
 
 
 
