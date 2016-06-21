@@ -5,8 +5,7 @@ from django.conf import settings
 
 
 class Profesores(models.Model):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL,max_length=128)
     
     def __str__(self):
-        pato = 'Soy Adrielastico'
-        return self.pato
+        return str(self.user)
