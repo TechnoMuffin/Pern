@@ -29,12 +29,9 @@
     <button class="btn btn-primary dropdown-toggle waves-effect waves-light" type="button" id="cbxSubject" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: 175px;">Curso <span class="caret"></span>
     </button>
     <ul class="dropdown-menu" aria-labelledby="dropdownMenu1" role="menu">
-        <li><a href="#">1 año A</a></li>
-        <li role="separator" class="divider"></li>
-        <li><a href="#">2 año B</a></li>
-        <li role="separator" class="divider"></li>
-        <li><a href="#">3 año C</a></li>
-
+    {% for x in courses %}
+        <li><a href="#">{{x.courseType}}</a></li>
+    {% endfor %}
     </ul>
 </div>
 <!-- Dropdown de Alumno -->
