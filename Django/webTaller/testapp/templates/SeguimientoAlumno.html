@@ -4,7 +4,7 @@
 <!-- Checkbox de Asistencia -->
     <div>
     <div class="checkbox checkbox-primary checkbox-circle" style="margin-top: 22px; margin-left: 37px; font-size: 20px">
-        <input type="checkbox" id="checkPresence">
+        <input type="checkbox" id="checkPresence" checked >
             <label style="position:absolute">Asistencia</label>
     </div>
 
@@ -12,28 +12,29 @@
 
     
     <!-- Dropdown de curso -->
+
     <div class="btn-group" style="margin-left: 1160px;">
         <button class="btn btn-primary dropdown-toggle waves-effect waves-light" type="button" id="cbxSubject" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: 175px;">Materia <span class="caret"></span>
     </button>
         <ul class="dropdown-menu" aria-labelledby="dropdownMenu1" role="menu">
             <li><a href="#">1 año A</a></li>
             <li role="separator" class="divider"></li>
-            <li><a href="#">2 año B</a></li>
-            <li role="separator" class="divider"></li>
-            <li><a href="#">3 año C</a></li>
            
         </ul>
     </div>
     <!-- Dropdown de Alumno -->
+
+
     <div class="btn-group dropdown" style="margin-left: 1160px;margin-top: 5px;">
         <button class="btn btn-primary dropdown-toggle waves-effect waves-light" type="button" id="cbxPupil" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: 175px;">Alumno <span class="caret"></span>
     </button>
         <ul class="dropdown-menu" aria-labelledby="dropdownMenu1" role="menu">
-            <li><a href="#">Coki Argento</a></li>
-            <li><a href="#">Moni Argento</a></li>
-            <li><a href="#">Pepe Argento</a></li>
+            {% for i in pupiles %} 
+            <li><a>{{i.namePupil}}</a></li>
+            {% endfor %}
         </ul>
     </div>
+
 <!-- Tabla de Control -->
     <div class="card-box" style="width: 700px;margin-top: 35px; position:absolute;margin-left: 25px;">
         <div class="container">

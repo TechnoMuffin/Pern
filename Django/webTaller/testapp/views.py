@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.template import RequestContext
 from django.shortcuts import render_to_response, render, redirect
+from page.models import Pupil
 
 # Create your views here.
 
@@ -9,7 +10,8 @@ def base(request):
         return render_to_response('base.html',context)
 def seguimientoAl(request):
     context = RequestContext(request)
-    return render_to_response('SeguimientoAlumno.html',context)
+    pupiles = Pupil.objects.all()
+    return render_to_response('SeguimientoAlumno.html',{'pupiles':pupiles},context)
 def registerUser(request):
         context = RequestContext(request)
         return render_to_response('CreaUsuario.html',context)

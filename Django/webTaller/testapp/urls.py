@@ -6,4 +6,5 @@ urlpatterns = patterns('',
                        url(r'^login$','testapp.views.loginUser'),
                        url(r'^olvidacontra$','testapp.views.olvidaContra'),
                        url(r'^admin$','testapp.views.loginAdmin'),
+                       url(r'^selectAlum$','testapp.views.selectAlum'),    
                       )
