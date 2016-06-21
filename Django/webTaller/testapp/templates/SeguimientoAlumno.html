@@ -2,123 +2,136 @@
 {% block content %}
 
 <!-- Checkbox de Asistencia -->
-    <div>
+<div>
     <div class="checkbox checkbox-primary checkbox-circle" style="margin-top: 22px; margin-left: 37px; font-size: 20px">
         <input type="checkbox" id="checkPresence">
-            <label style="position:absolute">Asistencia</label>
+        <label style="position:absolute">Asistencia</label>
     </div>
 
-    </div>
+</div>
 
-    
-    <!-- Dropdown de curso -->
-    <div class="btn-group" style="margin-left: 970px;position:absolute">
-        <button class="btn btn-primary dropdown-toggle waves-effect waves-light" type="button" id="cbxSubject" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: 175px;">Materia <span class="caret"></span>
+
+<!-- Dropdown de curso -->
+<div class="btn-group" style="margin-left: 970px;position:absolute">
+    <button class="btn btn-primary dropdown-toggle waves-effect waves-light" type="button" id="cbxSubject" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: 175px;">Materia <span class="caret"></span>
     </button>
-        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1" role="menu">
-            <li><a href="#">1 año A</a></li>
-            <li role="separator" class="divider"></li>
-            <li><a href="#">2 año B</a></li>
-            <li role="separator" class="divider"></li>
-            <li><a href="#">3 año C</a></li>
-           
-        </ul>
-    </div>
-    <!-- Dropdown de Alumno -->
-    <div class="btn-group dropdown" style="margin-left: 1160px;">
-        <button class="btn btn-primary dropdown-toggle waves-effect waves-light" type="button" id="cbxPupil" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: 175px;">Alumno <span class="caret"></span>
+    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1" role="menu">
+        <li><a href="#">Ajuste</a></li>
+        <li role="separator" class="divider"></li>
+        <li><a href="#">Carpinteria</a></li>
+        <li role="separator" class="divider"></li>
+        <li><a href="#">Informatica</a></li>
+
+    </ul>
+</div>
+<!-- Dropdown de materia -->
+<div class="btn-group" style="margin-left: 780px;position:absolute">
+    <button class="btn btn-primary dropdown-toggle waves-effect waves-light" type="button" id="cbxSubject" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: 175px;">Curso <span class="caret"></span>
     </button>
-        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1" role="menu">
-            <li><a href="#">Coki Argento</a></li>
-            <li><a href="#">Moni Argento</a></li>
-            <li><a href="#">Pepe Argento</a></li>
-        </ul>
-    </div>
+    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1" role="menu">
+        <li><a href="#">1 año A</a></li>
+        <li role="separator" class="divider"></li>
+        <li><a href="#">2 año B</a></li>
+        <li role="separator" class="divider"></li>
+        <li><a href="#">3 año C</a></li>
+
+    </ul>
+</div>
+<!-- Dropdown de Alumno -->
+<div class="btn-group dropdown" style="margin-left: 1160px;">
+    <button class="btn btn-primary dropdown-toggle waves-effect waves-light" type="button" id="cbxPupil" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: 175px;">Alumno <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1" role="menu">
+        <li><a href="#">Coki Argento</a></li>
+        <li><a href="#">Moni Argento</a></li>
+        <li><a href="#">Pepe Argento</a></li>
+    </ul>
+</div>
 
 <!-- Tabla de Control -->
-    <div class="card-box" style="width: 700px;margin-top: 35px; position:absolute;margin-left: 25px;">
-        <div class="container">
-          <h2>Area de Control</h2>        
-          <table class="table table-striped" id="tbleCon">
+<div class="card-box" style="width: 700px;margin-top: 35px; position:absolute;margin-left: 25px;">
+    <div class="container">
+        <h2>Area de Control</h2>        
+        <table class="table table-striped" id="tbleCon">
             <thead>
-              <tr>
-                <th>Directiva</th>
-                <th>Cumplio?</th>
-              </tr>
+                <tr>
+                    <th>Directiva</th>
+                    <th>Cumplio?</th>
+                </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>John</td>
-                <td>
-                    <div class="checkbox checkbox-success checkbox-circle">
-                        <input type="checkbox">
-                    <label ></label>
-                    </div>
-              </td> 
-              </tr>
-              <tr>
-                <td>Mary</td>
-                <td >
-                    <div class="checkbox checkbox-success checkbox-circle">
-                        <input type="checkbox">
-                    <label ></label>
-                    </div>
-                  </td> 
-              </tr>
-              <tr>
-                <td>July</td>
-                <td>
-                    <div class="checkbox checkbox-success checkbox-circle">
-                        <input type="checkbox">
-                    <label ></label>
-                    </div>
-                  </td>
-              </tr>
+                <tr>
+                    <td>John</td>
+                    <td>
+                        <div class="checkbox checkbox-success checkbox-circle">
+                            <input type="checkbox">
+                            <label ></label>
+                        </div>
+                    </td> 
+                </tr>
+                <tr>
+                    <td>Mary</td>
+                    <td >
+                        <div class="checkbox checkbox-success checkbox-circle">
+                            <input type="checkbox">
+                            <label ></label>
+                        </div>
+                    </td> 
+                </tr>
+                <tr>
+                    <td>July</td>
+                    <td>
+                        <div class="checkbox checkbox-success checkbox-circle">
+                            <input type="checkbox">
+                            <label ></label>
+                        </div>
+                    </td>
+                </tr>
             </tbody>
-          </table>
-        </div>
-            </div>
-
-    <!-- Textarea de Observaciones -->    
-    <div class="form-group" style="margin-left: 761px; margin-top: 8px;">
-            <label for="obsAlum">Observaciones</label>
-                <textarea class="form-control" rows="5" id="obsAlum" style="width: 590px; height: 335px;backgroun-color:red;"></textarea>
+        </table>
+    </div>
 </div>
-        
-    
-    
+
+<!-- Textarea de Observaciones -->    
+<div class="form-group" style="margin-left: 761px; margin-top: 8px;">
+    <label for="obsAlum">Observaciones</label>
+    <textarea class="form-control" rows="5" id="obsAlum" style="width: 590px; height: 335px;backgroun-color:red;"></textarea>
+</div>
+
+
+
 <!-- Tabla de Seguimiento de Alumno  -->   
-        <div class="card-box" style="margin-top: 90px;margin-top: 90px; width: 1340px; margin-left: 10px;">
-        <div class="panel">
-            <h1>Seguimiento Alumno</h1>
+<div class="card-box" style="margin-top: 90px;margin-top: 90px; width: 1340px; margin-left: 10px;">
+    <div class="panel">
+        <h1>Seguimiento Alumno</h1>
         <div class="panel-body">
-  
-          
-                <div class="col-sm-6" style="margin-left: 1090px; width: 178px;margin-top: -80px;">
-                    <!-- Tabla de Seguimiento de Alumno 
-                    <div class="dataTables_filter" id="datatable-editable_filter">
-                        <label>Search:<input aria-controls="datatable-editable" placeholder="" class="form-control input-sm" type="search"></label>
-                    </div>
-                </div>
-            </div>
+
+
+            <div class="col-sm-6" style="margin-left: 1090px; width: 178px;margin-top: -80px;">
+                <!-- Tabla de Seguimiento de Alumno 
+<div class="dataTables_filter" id="datatable-editable_filter">
+<label>Search:<input aria-controls="datatable-editable" placeholder="" class="form-control input-sm" type="search"></label>
+</div>
+</div>
+</div>
 -->
-        <!-- Dropdown Trabajo -->    
-        <div class="btn-group dropdown" style=" width: 178px">
-                <button class="btn btn-primary dropdown-toggle waves-effect waves-light" type="button" id="cbxProject" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: 175px;">Trabajo <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1" role="menu">
-                    <li><a href="#">Martillo</a></li>
-                    <li><a href="#">Nose</a></li>
-                    <li><a href="#">PArgento</a></li>
-                </ul>
+                <!-- Dropdown Trabajo -->    
+                <div class="btn-group dropdown" style=" width: 178px">
+                    <button class="btn btn-primary dropdown-toggle waves-effect waves-light" type="button" id="cbxProject" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: 175px;">Trabajo <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1" role="menu">
+                        <li><a href="#">Martillo</a></li>
+                        <li><a href="#">Nose</a></li>
+                        <li><a href="#">PArgento</a></li>
+                    </ul>
+                </div>
+
             </div>
-    
-            </div>
-            </div>
-            
-            
-            <div class="row" style="margin-top: 10px;">
-                <div class="col-sm-12">
+        </div>
+
+
+        <div class="row" style="margin-top: 10px;">
+            <div class="col-sm-12">
                 <table aria-describedby="datatable-editable_info" role="grid" class="table table-striped dataTable no-footer" id="datatable-editable">
                     <thead>
                         <tr role="row">
@@ -128,7 +141,7 @@
                             <th aria-label="Actions" style="width: 116px;" colspan="1" rowspan="1" class="sorting_disabled">Observaciones</th></tr>
                     </thead>
                     <tbody>
-                         <tr role="row" class="gradeA odd">
+                        <tr role="row" class="gradeA odd">
                             <td class="sorting_1">Gecko</td>
                             <td>Firefox 1.0</td>
                             <td>Win 98+ / OSX.2+</td>
@@ -139,60 +152,60 @@
                                 <a href="#" class="on-default remove-row"><i class="fa fa-trash-o"></i></a>
                             </td>
                         </tr><tr role="row" class="gradeA even">
-                            <td class="sorting_1">Gecko</td>
-                            <td>Firefox 1.5</td>
-                            <td>Win 98+ / OSX.2+</td>
-                            <td class="actions">
-                               
-                            </td>
+                        <td class="sorting_1">Gecko</td>
+                        <td>Firefox 1.5</td>
+                        <td>Win 98+ / OSX.2+</td>
+                        <td class="actions">
+
+                        </td>
                         </tr><tr role="row" class="gradeA odd">
-                            <td class="sorting_1">Gecko</td>
-                            <td>Firefox 2.0</td>
-                            <td>Win 98+ / OSX.2+</td>
-                            <td class="actions">
-                                
-                            </td>
+                        <td class="sorting_1">Gecko</td>
+                        <td>Firefox 2.0</td>
+                        <td>Win 98+ / OSX.2+</td>
+                        <td class="actions">
+
+                        </td>
                         </tr><tr role="row" class="gradeA even">
-                            <td class="sorting_1">Gecko</td>
-                            <td>Firefox 3.0</td>
-                            <td>Win 2k+ / OSX.3+</td>
-                            <td class="actions">
-                            </td>
+                        <td class="sorting_1">Gecko</td>
+                        <td>Firefox 3.0</td>
+                        <td>Win 2k+ / OSX.3+</td>
+                        <td class="actions">
+                        </td>
                         </tr></tbody>
                 </table>
-                </div>
-                  <div class="row" style="margin-left:1206px;">
-        <div class="col-sm-6">
-            <div class="m-b-30">
-                <button id="addToTable" class="btn btn-primary waves-effect waves-light">Add <i class="fa fa-plus"></i></button>
             </div>
-        </div>
+            <div class="row" style="margin-left:1206px;">
+                <div class="col-sm-6">
+                    <div class="m-b-30">
+                        <button id="addToTable" class="btn btn-primary waves-effect waves-light">Add <i class="fa fa-plus"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>      
     </div>
-</div>      
 </div>
-</div>
-    
-    <!-- Boton Siguiente Alumno -->
-    <nav style="margin-left: 1125px;">
-      <ul class="pager">
+
+<!-- Boton Siguiente Alumno -->
+<nav style="margin-left: 1125px;">
+    <ul class="pager">
         <li><a href="#">Siguiente Alumno</a></li>
-      </ul>
-    </nav>
-    
-    <!-- Boton Trabajo Terminado -->
-    <nav style="position: absolute; margin-left: 30px; margin-top: -75px;">
-      <ul class="pager">
+    </ul>
+</nav>
+
+<!-- Boton Trabajo Terminado -->
+<nav style="position: absolute; margin-left: 30px; margin-top: -75px;">
+    <ul class="pager">
         <li><a href="#">Trabajo Terminado</a></li>
-      </ul>
-    </nav>
-   </div>
+    </ul>
+</nav>
+</div>
 
 
-                                </div>
-                            </div>
-                            <!-- end: page -->
+</div>
+</div>
+<!-- end: page -->
 
-                       
+
 
 
 
