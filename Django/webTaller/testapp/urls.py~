@@ -7,5 +7,5 @@ urlpatterns = [
     url(r'^register$', views.registerUser, name='reg-user'),
     url(r'^login$', views.loginUser),
     url(r'^olvidacontra$', views.olvidaContra),
-    url(r'^administrator$', views.loginAdmin),
+    url(r'^admin$', views.loginAdmin),
 ]
