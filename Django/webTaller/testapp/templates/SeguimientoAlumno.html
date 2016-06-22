@@ -7,44 +7,34 @@
         <input type="checkbox" id="checkPresence">
         <label style="position:absolute">Asistencia</label>
     </div>
-
 </div>
-
-
 <!-- Dropdown de curso -->
-<div class="btn-group" style="margin-left: 970px;position:absolute">
-    <button class="btn btn-primary dropdown-toggle waves-effect waves-light" type="button" id="cbxSubject" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: 175px;">Materia <span class="caret"></span>
-    </button>
-    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1" role="menu">
-        <li><a href="#">Ajuste</a></li>
-        <li role="separator" class="divider"></li>
-        <li><a href="#">Carpinteria</a></li>
-        <li role="separator" class="divider"></li>
-        <li><a href="#">Informatica</a></li>
-
-    </ul>
+<div class="btn-group" style="margin-left: 600px;">
+    <select class="btn btn-primary waves-effect waves-light" id="cbxCourse" style="width: 175px; height: 50px">
+        <option class="default-text">Curso</option>
+        {% for c in courses %}
+        <option value={{c.idCourse}}>{{c.courseType}}</option>
+        {% endfor %}
+    </select>
 </div>
 <!-- Dropdown de materia -->
-<div class="btn-group" style="margin-left: 780px;position:absolute">
-    <button class="btn btn-primary dropdown-toggle waves-effect waves-light" type="button" id="cbxSubject" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: 175px;">Curso <span class="caret"></span>
-    </button>
-    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1" role="menu">
-    {% for x in courses %}
-        <li><a href="#">{{x.courseType}}</a></li>
-    {% endfor %}
-    </ul>
+<div class="btn-group" style="margin-left: 800px;">
+    <select class="btn btn-primary waves-effect waves-light" id="cbxSubject" style="width: 175px; height: 50px">
+        <option class="default-text">Materia</option>
+        {% for s in subjects %}
+        <option value={{s.idSubject}}>{{s.nameSubject}}</option>
+        {% endfor %}
+    </select>
 </div>
-<!-- Dropdown de Alumno -->
-<div class="btn-group dropdown" style="margin-left: 1160px;">
-    <button class="btn btn-primary dropdown-toggle waves-effect waves-light" type="button" id="cbxPupil" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: 175px;">Alumno <span class="caret"></span>
-    </button>
-    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1" role="menu">
-        <li><a href="#">Coki Argento</a></li>
-        <li><a href="#">Moni Argento</a></li>
-        <li><a href="#">Pepe Argento</a></li>
-    </ul>
+<!-- Dropdown de alumno -->
+<div class="btn-group" style="margin-left: 1000px;">
+    <select class="btn btn-primary waves-effect waves-light" id="cbxPupil" style="width: 175px; height: 50px">
+        <option class="default-text">Alumno</option>
+        {% for p in pupils %}
+        <option value={{p.idPupil}}>{{p.namePupil}} {{p.surnamePupil}}</option>
+        {% endfor %}
+    </select>
 </div>
-
 <!-- Tabla de Control -->
 <div class="card-box" style="width: 700px;margin-top: 35px; position:absolute;margin-left: 25px;">
     <div class="container">
