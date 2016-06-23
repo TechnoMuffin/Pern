@@ -1,0 +1,38 @@
+{
+    "courses": [{
+        "model": "page.course",
+        "pk": 1,
+        "fields": {
+            "yearCourse": 2010,
+            "courseType": "1",
+            "courseDivision": "A"
+        }
+    }],
+    "subjects": [{
+        "model": "page.subject",
+        "pk": 2,
+        "fields": {
+            "nameSubject": "Ajuste",
+            "idFF": ["Antiparras", "Escuadra", "Lima Bastarda"],
+            "idCourse": [1, 3]
+        }
+    }],
+    "pupils": [
+        {
+            "model": "page.pupil",
+            "pk": 1,
+            "fields": {
+                "namePupil": "Adriel",
+                "surnamePupil": "Chagay",
+                "idCourse": 1
+            }
+        }, {
+            "model": "page.pupil",
+            "pk": 2,
+            "fields": {
+                "namePupil": "Santiago",
+                "surnamePupil": "Garcia",
+                "idCourse": 1
+            }
+        }]
+}

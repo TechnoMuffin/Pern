@@ -10,29 +10,23 @@
 </div>
 <!-- Dropdown de curso -->
 <div class="btn-group" style="margin-left: 600px;">
-    <select class="btn btn-primary waves-effect waves-light" id="cbxCourse" style="width: 175px; height: 50px">
-        <option class="default-text">Curso</option>
+    <select class="btn btn-primary waves-effect waves-light" id="cbxCourse" style="width: 175px; height: 50px" onchange="courseChanged(this.value)">
+        <option class="default-text" value="">Curso</option>
         {% for c in courses %}
-        <option value={{c.idCourse}}>{{c.courseType}}</option>
+        <option value={{c.idCourse}}>{{c.courseType}}º año "{{c.courseDivision}}"</option>
         {% endfor %}
     </select>
 </div>
 <!-- Dropdown de materia -->
 <div class="btn-group" style="margin-left: 800px;">
-    <select class="btn btn-primary waves-effect waves-light" id="cbxSubject" style="width: 175px; height: 50px">
-        <option class="default-text">Materia</option>
-        {% for s in subjects %}
-        <option value={{s.idSubject}}>{{s.nameSubject}}</option>
-        {% endfor %}
+    <select class="btn btn-primary waves-effect waves-light" id="cbxSubject" style="width: 175px; height: 50px" onchange="subjectChanged(this.value)">
+        <option class="default-text" value="">Materia</option>
     </select>
 </div>
 <!-- Dropdown de alumno -->
 <div class="btn-group" style="margin-left: 1000px;">
-    <select class="btn btn-primary waves-effect waves-light" id="cbxPupil" style="width: 175px; height: 50px">
-        <option class="default-text">Alumno</option>
-        {% for p in pupils %}
-        <option value={{p.idPupil}}>{{p.namePupil}} {{p.surnamePupil}}</option>
-        {% endfor %}
+    <select class="btn btn-primary waves-effect waves-light" id="cbxPupil" style="width: 175px; height: 50px" onchange="pupilChanged(this.value)">
+        <option class="default-text" value="">Alumno</option>
     </select>
 </div>
 <!-- Tabla de Control -->
@@ -95,13 +89,6 @@
 
 
             <div class="col-sm-6" style="margin-left: 1090px; width: 178px;margin-top: -80px;">
-                <!-- Tabla de Seguimiento de Alumno 
-<div class="dataTables_filter" id="datatable-editable_filter">
-<label>Search:<input aria-controls="datatable-editable" placeholder="" class="form-control input-sm" type="search"></label>
-</div>
-</div>
-</div>
--->
                 <!-- Dropdown Trabajo -->    
                 <div class="btn-group dropdown" style=" width: 178px">
                     <button class="btn btn-primary dropdown-toggle waves-effect waves-light" type="button" id="cbxProject" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: 175px;">Trabajo <span class="caret"></span>
@@ -186,14 +173,47 @@
     </ul>
 </nav>
 <!-- end: page -->
+<script>
+    function courseChanged(val){
+        if(val==""){
+            var lengthCbx = $('#cbxSubject > option').length;
+            $('#cbxSubject').empty();
+            $('#cbxPupil').empty();
+            $('#cbxSubject').append(new Option("Materia", ""));
+            $('#cbxPupil').append(new Option("Alumno", ""));
+            return;
 
-
-
-
-
-
-
-
-
-
+        }
+        $.ajax({
+            url: "{% url 'app_testapp:seg-al' %}", 
+            type: 'GET',
+            data: {idCourse: $('#cbxCourse').val(), queryId: "subject"},
+            dataType: 'json',
+            success: function(info){
+                var lengthCbx = $('#cbxSubject > option').length;
+                $('#cbxSubject').empty();
+                $('#cbxSubject').append(new Option("Materia", ""));
+                for(var i=0;i<info.length;i++){
+                    var text = info[i].fields.nameSubject;
+                    var value = info[i].fields.idSubject;
+                    $('#cbxSubject').append(new Option(text, value));
+                }
+            }});
+        $.ajax({
+            url: "{% url 'app_testapp:seg-al' %}", 
+            type: 'GET',
+            data: {idCourse: $('#cbxCourse').val(), queryId: "pupil"},
+            dataType: 'json',
+            success: function(info){
+                $('#cbxPupil').empty();
+                $('#cbxPupil').append(new Option("Alumno", ""));
+                for(var i=0;i<info.length;i++){
+                    var text = info[i].fields.namePupil;
+                    var value = info[i].fields.idPupil;
+                    $('#cbxPupil').append(new Option(text, value));
+                }
+            }});
+        return;
+    }
+</script>
 {% endblock %}
