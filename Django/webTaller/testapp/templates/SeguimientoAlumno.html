@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+
 {% block content %}
 
 <!-- Checkbox de Asistencia -->
@@ -10,30 +11,36 @@
 
     </div>
 
+     <!-- Dropdown de Alumno -->
+
+
+
+<select class=" form-control js-example-basic-single " style="width: 190px; margin-left: 1080px;">
+                    
+        <option value="">Elige una opción</option>
     
-    <!-- Dropdown de curso -->
-
-    <div class="btn-group" style="margin-left: 1160px;">
-        <button class="btn btn-primary dropdown-toggle waves-effect waves-light" type="button" id="cbxSubject" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: 175px;">Materia <span class="caret"></span>
-    </button>
-        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1" role="menu">
-            <li><a href="#">1 año A</a></li>
-            <li role="separator" class="divider"></li>
-           
-        </ul>
-    </div>
-    <!-- Dropdown de Alumno -->
+                    {% for i in pupiles %} 
+                            <option>{{i.namePupil}} {{i.surnamePupil}}</option>
+    
+                    {% endfor %}
+                        
+</select>            
+   <!-- Dropdown de curso -->
 
 
-    <div class="btn-group dropdown" style="margin-left: 1160px;margin-top: 5px;">
-        <button class="btn btn-primary dropdown-toggle waves-effect waves-light" type="button" id="cbxPupil" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: 175px;">Alumno <span class="caret"></span>
-    </button>
-        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1" role="menu">
-            {% for i in pupiles %} 
-            <li><a>{{i.namePupil}}</a></li>
-            {% endfor %}
-        </ul>
-    </div>
+   <select class=" form-control js-example-basic-single " style="width: 190px; margin-left: 873px; margin-top: -55px;">
+    <option value="">Elige una opción</option>
+                   
+</select>   
+
+
+<!-- Dropdown de Alumno -->
+
+
+   <select class=" form-control js-example-basic-single "style="width: 190px; margin-left: 663px; margin-top: -95px;">
+    
+                   <option value="">Elige una opción</option>
+</select>    
 
 <!-- Tabla de Control -->
     <div class="card-box" style="width: 700px;margin-top: 35px; position:absolute;margin-left: 25px;">
@@ -82,12 +89,12 @@
     <!-- Textarea de Observaciones -->    
     <div class="form-group" style="margin-left: 755px;position:absolute; margin-top: 9px;">
             <label for="obsAlum">Observaciones</label>
-                <textarea class="form-control" rows="5" id="obsAlum" style="width: 590px; height: 335px;backgroun-color:red;"></textarea>
+                <textarea class="form-control" rows="5" id="obsAlum" style="width: 530px; height: 335px;backgroun-color:red;"></textarea>
         
         
     <!-- Dropdown Trabajo -->
     <div>
-    <div class="btn-group dropdown" style="margin-left:395px;margin-top:60px;display:block;position:absolute;">
+    <div class="btn-group dropdown" style="margin-left:325px;margin-top:60px;display:block;position:absolute;">
         <button class="btn btn-primary dropdown-toggle waves-effect waves-light" type="button" id="cbxProject" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: 175px;">Trabajo <span class="caret"></span>
         </button>
         <ul class="dropdown-menu" aria-labelledby="dropdownMenu1" role="menu">
@@ -105,7 +112,7 @@
 <div class="panel-body">
   
         
-                <div class="col-sm-6" style="margin-left: 1105px; width: 178px;margin-top: -80px;">
+                <div class="col-sm-6" style="margin-left: 1005px; width: 178px;margin-top: -80px;">
                     <div class="dataTables_filter" id="datatable-editable_filter">
                         <label>Search:<input aria-controls="datatable-editable" placeholder="" class="form-control input-sm" type="search"></label>
                     </div>
@@ -157,7 +164,7 @@
                         </tr></tbody>
                 </table>
                 </div>
-                  <div class="row" style="margin-left:1227px;">
+                  <div class="row" style="margin-left:1127px;">
         <div class="col-sm-6">
             <div class="m-b-30">
                 <button id="addToTable" class="btn btn-primary waves-effect waves-light">Add <i class="fa fa-plus"></i></button>
@@ -181,14 +188,11 @@
         <li><a href="#">Trabajo Terminado</a></li>
       </ul>
     </nav>
-   </div>
-
-
-                                </div>
-                            </div>
+   
                             <!-- end: page -->
 
                        
+
 
 
 
