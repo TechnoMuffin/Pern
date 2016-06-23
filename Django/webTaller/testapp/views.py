@@ -12,7 +12,7 @@ def seguimientoAl(request):
     return render_to_response('SeguimientoAlumno.html',context)
 def registerUser(request):
         context = RequestContext(request)
-        return render_to_response('CreaUsuario.html',context)
+        return render_to_response('registro.html',context)
 def loginUser(request):
         context = RequestContext(request)
         return render_to_response('Login.html',context)

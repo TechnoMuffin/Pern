@@ -24,7 +24,7 @@ def nuevo_JefeArea(request):
             username = cleaned_data.get('username')
             password = cleaned_data.get('password')
             email = cleaned_data.get('email')
-            # E instanciamos un objeto User, con el username, password y una desactivación de cuenta para que el admin lo habilite
+            # E instanciamos un objeto User, con el username, password y una desactivacion de cuenta para que el admin lo habilite
             user_model = User.objects.create_user(username=username, password=password,is_active = False)
             # Anadimos el email
             user_model.email = email
@@ -35,7 +35,7 @@ def nuevo_JefeArea(request):
             user_profile = Profesores()
             # Al campo user le asignamos el objeto user_model
             user_profile.user = user_model
-            # ¿Se acuerdan cuando creamos el usuario deshabilitado? Lo deshabilitamos de vuelta! (si no lo haciamos tiraba error)
+            # Se acuerdan cuando creamos el usuario deshabilitado? Lo deshabilitamos de vuelta! (si no lo haciamos tiraba error)
             user_profile.is_active = False
             # Por ultimo, guardamos tambien el objeto UserProfile
             user_profile.save()
