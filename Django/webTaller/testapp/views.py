@@ -6,8 +6,8 @@ from page.models import Pupil, Course
 # Create your views here.
 
 def base(request):
-        context = RequestContext(request)
-        return render_to_response('base.html',context)
+    context = RequestContext(request)
+    return render_to_response('base.html',context)
 def seguimientoAl(request):
     context = RequestContext(request)
     pupiles = Pupil.objects.all()
