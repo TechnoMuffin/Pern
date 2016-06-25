@@ -1,7 +1,5 @@
 {% extends 'base.html' %}
-
 {% block content %}
-
 <!-- Checkbox de Asistencia -->
 <div>
     <div class="checkbox checkbox-primary checkbox-circle" style="margin-top: 22px; margin-left: 37px; font-size: 20px">
@@ -9,41 +7,45 @@
         <label style="position:absolute">Asistencia</label>
     </div>
 </div>
-<div class="col-sm-8" style="width: 265px; left: 390px; top: 36px;">
-    <div class="input-group" >
-        <input class="form-control datepicker" placeholder="mm/dd/yyyy" id="datepicker" type="text">
-        <span class="input-group-addon bg-primary b-0 text-white"><i class="ion-calendar"></i></span>
+<div style="width: 860px; float:right;">
+    <!-- Seleccion de día -->
+    <div class="col-sm-8" style="width: 190px; margin-right: 20px;">
+        <div class="input-group" >
+            <input class="form-control datepicker" placeholder="mm/dd/yyyy" id="datepicker" type="text">
+            <span class="input-group-addon bg-primary b-0 text-white"><i class="ion-calendar"></i></span>
+        </div>
     </div>
+    <!-- Dropdown de Curso -->
+    <select class=" form-control js-example-basic-single " id="cbxCourse" onchange="courseChanged(this.value)" style="width: 190px; margin-right: 20px;">
+        <option class="default-text" value="">Curso</option>
+        {% for i in courses %} 
+        <option value={{i.idCourse}}>{{i.courseType}}º año "{{i.courseDivision}}"</option>
+        {% endfor %}       
+    </select>   
+    <!-- Dropdown de Materia -->
+    <select class=" form-control js-example-basic-single " id="cbxSubject" style="width: 190px;margin-right: 20px;">
+        <option value="" class="default-text">Materia</option>
+    </select>
+    <!-- Dropdown de Alumno -->
+    <select class=" form-control js-example-basic-single " id="cbxPupil" style="width: 190px;margin-right: 20px;">
+        <option value="" class="default-text">Alumno</option>
+    </select>        
 </div>
-<!-- Dropdown de Curso -->
-<select class=" form-control js-example-basic-single " id="cbxCourse" onchange="courseChanged(this.value)" style="width: 190px; margin-left: 873px; margin-top: -55px;">
-    <option class="default-text" value="">Curso</option>
-    {% for i in courses %} 
-    <option value={{c.idCourse}}>{{c.courseType}}º año "{{c.courseDivision}}"</option>
-    {% endfor %}       
-</select>   
-<!-- Dropdown de Materia -->
-<select class=" form-control js-example-basic-single " id="cbxSubject" style="width: 190px; margin-left: 663px; margin-top: -95px;">
-    <option value="">Materia</option>
-</select>
-<!-- Dropdown de Alumno -->
-<select class=" form-control js-example-basic-single " id="cbxPupil" style="width: 190px; margin-left: 1080px;">
-    <option class="default-text" value="">Alumno</option>
-</select>            
+
 <!-- Tabla de Control -->
-<div class="card-box" style="width: 700px;margin-top: 35px; position:absolute;margin-left: 25px;">
+<div class="card-box" style="width: 700px;margin-top: 76px; position:absolute;margin-left: 25px;">
     <div class="container">
         <h2>Area de Control</h2>        
         <table class="table table-striped" id="tbleCon">
             <thead>
                 <tr>
-                    <th>Directiva</th>
-                    <th>Cumplio?</th>
+                    <th>Item</th>
+                    <th>Control</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td>John</td>
+                    <td>Antiparras</td>
                     <td>
                         <div class="checkbox checkbox-success checkbox-circle">
                             <input type="checkbox">
@@ -52,7 +54,7 @@
                     </td> 
                 </tr>
                 <tr>
-                    <td>Mary</td>
+                    <td>Guardapolvo</td>
                     <td >
                         <div class="checkbox checkbox-success checkbox-circle">
                             <input type="checkbox">
@@ -61,7 +63,7 @@
                     </td> 
                 </tr>
                 <tr>
-                    <td>July</td>
+                    <td>Limas</td>
                     <td>
                         <div class="checkbox checkbox-success checkbox-circle">
                             <input type="checkbox">
@@ -75,35 +77,15 @@
 </div>
 
 <!-- Textarea de Observaciones -->    
-<div class="form-group" style="margin-left: 755px;position:absolute; margin-top: 9px;">
-    <label for="obsAlum">Observaciones</label>
-    <textarea class="form-control" rows="5" id="obsAlum" style="width: 530px; height: 335px;backgroun-color:red;"></textarea>
-
-
-    <!-- Dropdown Trabajo -->
-    <div>
-        <div class="btn-group dropdown" style="margin-left:325px;margin-top:60px;display:block;position:absolute;">
-            <button class="btn btn-primary dropdown-toggle waves-effect waves-light" type="button" id="cbxProject" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: 175px;">Trabajo <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1" role="menu">
-                <li><a href="#">Martillo</a></li>
-                <li><a href="#">Nose</a></li>
-                <li><a href="#">PArgento</a></li>
-            </ul>
-        </div>
-    </div>
-</div>
-
-<!-- Textarea de Observaciones -->    
-<div class="form-group" style="margin-left: 761px; margin-top: 8px;">
-    <label for="obsAlum">Observaciones</label>
+<div class="form-group" style="margin-left: 761px;">
+    <label for="obsAlum" style="margin-top: 15px;">Observaciones</label>
     <textarea class="form-control" rows="5" id="obsAlum" style="width: 590px; height: 335px;backgroun-color:red;"></textarea>
 </div>
 
 
 
 <!-- Tabla de Seguimiento de Alumno  -->
-<div class="card-box" style="margin-top: 500px;">
+<div class="card-box">
     <div class="panel">
         <h1>Seguimiento Alumno</h1>
         <div class="panel-body">
@@ -111,7 +93,7 @@
 
             <div class="col-sm-6" style="margin-left: 1005px; width: 178px;margin-top: -80px;">
                 <div class="dataTables_filter" id="datatable-editable_filter">
-                    <label>Search:<input aria-controls="datatable-editable" placeholder="" class="form-control input-sm" type="search"></label>
+                    <label>Buscar:<input aria-controls="datatable-editable" placeholder="" class="form-control input-sm" type="search"></label>
                 </div>
             </div>
 
@@ -125,15 +107,15 @@
                 <thead>
                     <tr role="row">
                         <th aria-label="Rendering engine: activate to sort column descending" aria-sort="ascending" style="width: 225px;" colspan="1" rowspan="1" aria-controls="datatable-editable" tabindex="0" class="sorting_asc">Etapas</th>
-                        <th aria-label="Browser: activate to sort column ascending" style="width: 286px;" colspan="1" rowspan="1" aria-controls="datatable-editable" tabindex="0" class="sorting">Nota Recomendada</th>
-                        <th aria-label="Platform(s): activate to sort column ascending" style="width: 257px;" colspan="1" rowspan="1" aria-controls="datatable-editable" tabindex="0" class="sorting">Clases</th>
+                        <th aria-label="Browser: activate to sort column ascending" style="width: 286px;" colspan="1" rowspan="1" aria-controls="datatable-editable" tabindex="0" class="sorting">Nota</th>
+                        <th aria-label="Platform(s): activate to sort column ascending" style="width: 257px;" colspan="1" rowspan="1" aria-controls="datatable-editable" tabindex="0" class="sorting">Clases Utilizadas</th>
                         <th aria-label="Actions" style="width: 116px;" colspan="1" rowspan="1" class="sorting_disabled">Observaciones</th></tr>
                 </thead>
                 <tbody>
                     <tr role="row" class="gradeA odd">
-                        <td class="sorting_1">Gecko</td>
-                        <td>Firefox 1.0</td>
-                        <td>Win 98+ / OSX.2+</td>
+                        <td class="sorting_1">Cara 1</td>
+                        <td>4/5</td>
+                        <td>8 clases</td>
                         <td class="actions">
                             <a href="#" class="hidden on-editing save-row"><i class="fa fa-save"></i></a>
                             <a href="#" class="hidden on-editing cancel-row"><i class="fa fa-times"></i></a>
@@ -141,24 +123,34 @@
                             <a href="#" class="on-default remove-row"><i class="fa fa-trash-o"></i></a>
                         </td>
                     </tr><tr role="row" class="gradeA even">
-                    <td class="sorting_1">Gecko</td>
-                    <td>Firefox 1.5</td>
-                    <td>Win 98+ / OSX.2+</td>
+                    <td class="sorting_1">Cara 2</td>
+                    <td>2/5</td>
+                    <td>4 clases</td>
                     <td class="actions">
-
+                        <a href="#" class="hidden on-editing save-row"><i class="fa fa-save"></i></a>
+                        <a href="#" class="hidden on-editing cancel-row"><i class="fa fa-times"></i></a>
+                        <a href="#" class="on-default edit-row"><i class="fa fa-pencil"></i></a>
+                        <a href="#" class="on-default remove-row"><i class="fa fa-trash-o"></i></a>
                     </td>
                     </tr><tr role="row" class="gradeA odd">
-                    <td class="sorting_1">Gecko</td>
-                    <td>Firefox 2.0</td>
-                    <td>Win 98+ / OSX.2+</td>
+                    <td class="sorting_1">Pulido</td>
+                    <td>5/5</td>
+                    <td>4 clases</td>
                     <td class="actions">
-
+                        <a href="#" class="hidden on-editing save-row"><i class="fa fa-save"></i></a>
+                        <a href="#" class="hidden on-editing cancel-row"><i class="fa fa-times"></i></a>
+                        <a href="#" class="on-default edit-row"><i class="fa fa-pencil"></i></a>
+                        <a href="#" class="on-default remove-row"><i class="fa fa-trash-o"></i></a>
                     </td>
                     </tr><tr role="row" class="gradeA even">
-                    <td class="sorting_1">Gecko</td>
-                    <td>Firefox 3.0</td>
-                    <td>Win 2k+ / OSX.3+</td>
+                    <td class="sorting_1">Rasqueteado</td>
+                    <td>4/5</td>
+                    <td>3 clases</td>
                     <td class="actions">
+                        <a href="#" class="hidden on-editing save-row"><i class="fa fa-save"></i></a>
+                        <a href="#" class="hidden on-editing cancel-row"><i class="fa fa-times"></i></a>
+                        <a href="#" class="on-default edit-row"><i class="fa fa-pencil"></i></a>
+                        <a href="#" class="on-default remove-row"><i class="fa fa-trash-o"></i></a>
                     </td>
                     </tr></tbody>
             </table>
@@ -166,22 +158,15 @@
         <div class="row" style="margin-left:1206px;">
             <div class="col-sm-6">
                 <div class="m-b-30">
-                    <button id="addToTable" class="btn btn-primary waves-effect waves-light">Add <i class="fa fa-plus"></i></button>
-                </div>
-            </div>
-            <div class="row" style="margin-left:1127px;">
-                <div class="col-sm-6">
-                    <div class="m-b-30">
-                        <button id="addToTable" class="btn btn-primary waves-effect waves-light">Add <i class="fa fa-plus"></i></button>
-                    </div>
-                </div>      
+                    <button id="addToTable" style=" margin-top:25px" class="btn btn-primary waves-effect waves-light">Agregar <i class="fa fa-plus"></i></button>
+                </div>   
             </div>
         </div>
 
     </div>
 
     <!-- Boton Siguiente Alumno -->
-    <nav style="margin-left: 1125px; margin-top: 850px;">
+    <nav style="margin-left: 1125px; margin-top: 10px;">
         <ul class="pager">
             <li><a href="#">Siguiente Alumno</a></li>
         </ul>
@@ -227,7 +212,7 @@
                     $('#cbxPupil').empty();
                     $('#cbxPupil').append(new Option("Alumno", ""));
                     for(var i=0;i<info.length;i++){
-                        var text = info[i].fields.namePupil;
+                        var text = info[i].fields.namePupil + " " + info[i].fields.surnamePupil;
                         var value = info[i].fields.idPupil;
                         $('#cbxPupil').append(new Option(text, value));
                     }
