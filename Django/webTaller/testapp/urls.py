@@ -8,5 +8,5 @@ urlpatterns = [
     url(r'^login$', views.loginUser),
     url(r'^olvidacontra$', views.olvidaContra),
     url(r'^administrator$', views.loginAdmin),
-    url(r'^documentos$','testapp.views.documentos'),
+    url(r'^documentos$',views.documentos),
 ]
