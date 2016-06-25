@@ -1,34 +1,35 @@
 {% extends 'base.html' %}
+
 {% block content %}
 
 <!-- Checkbox de Asistencia -->
 <div>
     <div class="checkbox checkbox-primary checkbox-circle" style="margin-top: 22px; margin-left: 37px; font-size: 20px">
-        <input type="checkbox" id="checkPresence">
+        <input type="checkbox" id="checkPresence" checked >
         <label style="position:absolute">Asistencia</label>
     </div>
 </div>
-<!-- Dropdown de curso -->
-<div class="btn-group" style="margin-left: 600px;">
-    <select class="btn btn-primary waves-effect waves-light" id="cbxCourse" style="width: 175px; height: 50px" onchange="courseChanged(this.value)">
-        <option class="default-text" value="">Curso</option>
-        {% for c in courses %}
-        <option value={{c.idCourse}}>{{c.courseType}}º año "{{c.courseDivision}}"</option>
-        {% endfor %}
-    </select>
+<div class="col-sm-8" style="width: 265px; left: 390px; top: 36px;">
+    <div class="input-group" >
+        <input class="form-control datepicker" placeholder="mm/dd/yyyy" id="datepicker" type="text">
+        <span class="input-group-addon bg-primary b-0 text-white"><i class="ion-calendar"></i></span>
+    </div>
 </div>
-<!-- Dropdown de materia -->
-<div class="btn-group" style="margin-left: 800px;">
-    <select class="btn btn-primary waves-effect waves-light" id="cbxSubject" style="width: 175px; height: 50px" onchange="subjectChanged(this.value)">
-        <option class="default-text" value="">Materia</option>
-    </select>
-</div>
-<!-- Dropdown de alumno -->
-<div class="btn-group" style="margin-left: 1000px;">
-    <select class="btn btn-primary waves-effect waves-light" id="cbxPupil" style="width: 175px; height: 50px" onchange="pupilChanged(this.value)">
-        <option class="default-text" value="">Alumno</option>
-    </select>
-</div>
+<!-- Dropdown de Curso -->
+<select class=" form-control js-example-basic-single " id="cbxCourse" onchange="courseChanged(this.value)" style="width: 190px; margin-left: 873px; margin-top: -55px;">
+    <option class="default-text" value="">Curso</option>
+    {% for i in courses %} 
+    <option value={{c.idCourse}}>{{c.courseType}}º año "{{c.courseDivision}}"</option>
+    {% endfor %}       
+</select>   
+<!-- Dropdown de Materia -->
+<select class=" form-control js-example-basic-single " id="cbxSubject" style="width: 190px; margin-left: 663px; margin-top: -95px;">
+    <option value="">Materia</option>
+</select>
+<!-- Dropdown de Alumno -->
+<select class=" form-control js-example-basic-single " id="cbxPupil" style="width: 190px; margin-left: 1080px;">
+    <option class="default-text" value="">Alumno</option>
+</select>            
 <!-- Tabla de Control -->
 <div class="card-box" style="width: 700px;margin-top: 35px; position:absolute;margin-left: 25px;">
     <div class="container">
@@ -74,6 +75,26 @@
 </div>
 
 <!-- Textarea de Observaciones -->    
+<div class="form-group" style="margin-left: 755px;position:absolute; margin-top: 9px;">
+    <label for="obsAlum">Observaciones</label>
+    <textarea class="form-control" rows="5" id="obsAlum" style="width: 530px; height: 335px;backgroun-color:red;"></textarea>
+
+
+    <!-- Dropdown Trabajo -->
+    <div>
+        <div class="btn-group dropdown" style="margin-left:325px;margin-top:60px;display:block;position:absolute;">
+            <button class="btn btn-primary dropdown-toggle waves-effect waves-light" type="button" id="cbxProject" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: 175px;">Trabajo <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1" role="menu">
+                <li><a href="#">Martillo</a></li>
+                <li><a href="#">Nose</a></li>
+                <li><a href="#">PArgento</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Textarea de Observaciones -->    
 <div class="form-group" style="margin-left: 761px; margin-top: 8px;">
     <label for="obsAlum">Observaciones</label>
     <textarea class="form-control" rows="5" id="obsAlum" style="width: 590px; height: 335px;backgroun-color:red;"></textarea>
@@ -81,139 +102,137 @@
 
 
 
-<!-- Tabla de Seguimiento de Alumno  -->   
-<div class="card-box" style="margin-top: 90px;margin-top: 90px; width: 1340px; margin-left: 10px;">
+<!-- Tabla de Seguimiento de Alumno  -->
+<div class="card-box" style="margin-top: 500px;">
     <div class="panel">
         <h1>Seguimiento Alumno</h1>
         <div class="panel-body">
 
 
-            <div class="col-sm-6" style="margin-left: 1090px; width: 178px;margin-top: -80px;">
-                <!-- Dropdown Trabajo -->    
-                <div class="btn-group dropdown" style=" width: 178px">
-                    <button class="btn btn-primary dropdown-toggle waves-effect waves-light" type="button" id="cbxProject" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: 175px;">Trabajo <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1" role="menu">
-                        <li><a href="#">Martillo</a></li>
-                        <li><a href="#">Nose</a></li>
-                        <li><a href="#">PArgento</a></li>
-                    </ul>
+            <div class="col-sm-6" style="margin-left: 1005px; width: 178px;margin-top: -80px;">
+                <div class="dataTables_filter" id="datatable-editable_filter">
+                    <label>Search:<input aria-controls="datatable-editable" placeholder="" class="form-control input-sm" type="search"></label>
                 </div>
-
             </div>
+
         </div>
+    </div>
 
 
-        <div class="row" style="margin-top: 10px;">
-            <div class="col-sm-12">
-                <table aria-describedby="datatable-editable_info" role="grid" class="table table-striped dataTable no-footer" id="datatable-editable">
-                    <thead>
-                        <tr role="row">
-                            <th aria-label="Rendering engine: activate to sort column descending" aria-sort="ascending" style="width: 225px;" colspan="1" rowspan="1" aria-controls="datatable-editable" tabindex="0" class="sorting_asc">Etapas</th>
-                            <th aria-label="Browser: activate to sort column ascending" style="width: 286px;" colspan="1" rowspan="1" aria-controls="datatable-editable" tabindex="0" class="sorting">Nota Recomendada</th>
-                            <th aria-label="Platform(s): activate to sort column ascending" style="width: 257px;" colspan="1" rowspan="1" aria-controls="datatable-editable" tabindex="0" class="sorting">Clases</th>
-                            <th aria-label="Actions" style="width: 116px;" colspan="1" rowspan="1" class="sorting_disabled">Observaciones</th></tr>
-                    </thead>
-                    <tbody>
-                        <tr role="row" class="gradeA odd">
-                            <td class="sorting_1">Gecko</td>
-                            <td>Firefox 1.0</td>
-                            <td>Win 98+ / OSX.2+</td>
-                            <td class="actions">
-                                <a href="#" class="hidden on-editing save-row"><i class="fa fa-save"></i></a>
-                                <a href="#" class="hidden on-editing cancel-row"><i class="fa fa-times"></i></a>
-                                <a href="#" class="on-default edit-row"><i class="fa fa-pencil"></i></a>
-                                <a href="#" class="on-default remove-row"><i class="fa fa-trash-o"></i></a>
-                            </td>
-                        </tr><tr role="row" class="gradeA even">
+    <div class="row" style="margin-top: 10px;">
+        <div class="col-sm-12">
+            <table aria-describedby="datatable-editable_info" role="grid" class="table table-striped dataTable no-footer" id="datatable-editable">
+                <thead>
+                    <tr role="row">
+                        <th aria-label="Rendering engine: activate to sort column descending" aria-sort="ascending" style="width: 225px;" colspan="1" rowspan="1" aria-controls="datatable-editable" tabindex="0" class="sorting_asc">Etapas</th>
+                        <th aria-label="Browser: activate to sort column ascending" style="width: 286px;" colspan="1" rowspan="1" aria-controls="datatable-editable" tabindex="0" class="sorting">Nota Recomendada</th>
+                        <th aria-label="Platform(s): activate to sort column ascending" style="width: 257px;" colspan="1" rowspan="1" aria-controls="datatable-editable" tabindex="0" class="sorting">Clases</th>
+                        <th aria-label="Actions" style="width: 116px;" colspan="1" rowspan="1" class="sorting_disabled">Observaciones</th></tr>
+                </thead>
+                <tbody>
+                    <tr role="row" class="gradeA odd">
                         <td class="sorting_1">Gecko</td>
-                        <td>Firefox 1.5</td>
+                        <td>Firefox 1.0</td>
                         <td>Win 98+ / OSX.2+</td>
                         <td class="actions">
+                            <a href="#" class="hidden on-editing save-row"><i class="fa fa-save"></i></a>
+                            <a href="#" class="hidden on-editing cancel-row"><i class="fa fa-times"></i></a>
+                            <a href="#" class="on-default edit-row"><i class="fa fa-pencil"></i></a>
+                            <a href="#" class="on-default remove-row"><i class="fa fa-trash-o"></i></a>
+                        </td>
+                    </tr><tr role="row" class="gradeA even">
+                    <td class="sorting_1">Gecko</td>
+                    <td>Firefox 1.5</td>
+                    <td>Win 98+ / OSX.2+</td>
+                    <td class="actions">
 
-                        </td>
-                        </tr><tr role="row" class="gradeA odd">
-                        <td class="sorting_1">Gecko</td>
-                        <td>Firefox 2.0</td>
-                        <td>Win 98+ / OSX.2+</td>
-                        <td class="actions">
+                    </td>
+                    </tr><tr role="row" class="gradeA odd">
+                    <td class="sorting_1">Gecko</td>
+                    <td>Firefox 2.0</td>
+                    <td>Win 98+ / OSX.2+</td>
+                    <td class="actions">
 
-                        </td>
-                        </tr><tr role="row" class="gradeA even">
-                        <td class="sorting_1">Gecko</td>
-                        <td>Firefox 3.0</td>
-                        <td>Win 2k+ / OSX.3+</td>
-                        <td class="actions">
-                        </td>
-                        </tr></tbody>
-                </table>
+                    </td>
+                    </tr><tr role="row" class="gradeA even">
+                    <td class="sorting_1">Gecko</td>
+                    <td>Firefox 3.0</td>
+                    <td>Win 2k+ / OSX.3+</td>
+                    <td class="actions">
+                    </td>
+                    </tr></tbody>
+            </table>
+        </div>
+        <div class="row" style="margin-left:1206px;">
+            <div class="col-sm-6">
+                <div class="m-b-30">
+                    <button id="addToTable" class="btn btn-primary waves-effect waves-light">Add <i class="fa fa-plus"></i></button>
+                </div>
             </div>
-            <div class="row" style="margin-left:1206px;">
+            <div class="row" style="margin-left:1127px;">
                 <div class="col-sm-6">
                     <div class="m-b-30">
                         <button id="addToTable" class="btn btn-primary waves-effect waves-light">Add <i class="fa fa-plus"></i></button>
                     </div>
-                </div>
+                </div>      
             </div>
-        </div>      
+        </div>
+
     </div>
-</div>
 
-<!-- Boton Siguiente Alumno -->
-<nav style="margin-left: 1125px;">
-    <ul class="pager">
-        <li><a href="#">Siguiente Alumno</a></li>
-    </ul>
-</nav>
+    <!-- Boton Siguiente Alumno -->
+    <nav style="margin-left: 1125px; margin-top: 850px;">
+        <ul class="pager">
+            <li><a href="#">Siguiente Alumno</a></li>
+        </ul>
+    </nav>
 
-<!-- Boton Trabajo Terminado -->
-<nav style="position: absolute; margin-left: 30px; margin-top: -75px;">
-    <ul class="pager">
-        <li><a href="#">Trabajo Terminado</a></li>
-    </ul>
-</nav>
-<!-- end: page -->
-<script>
-    function courseChanged(val){
-        if(val==""){
-            var lengthCbx = $('#cbxSubject > option').length;
-            $('#cbxSubject').empty();
-            $('#cbxPupil').empty();
-            $('#cbxSubject').append(new Option("Materia", ""));
-            $('#cbxPupil').append(new Option("Alumno", ""));
-            return;
-
-        }
-        $.ajax({
-            url: "{% url 'app_testapp:seg-al' %}", 
-            type: 'GET',
-            data: {idCourse: $('#cbxCourse').val(), queryId: "subject"},
-            dataType: 'json',
-            success: function(info){
+    <!-- Boton Trabajo Terminado -->
+    <nav style="position: absolute; margin-left: 30px; margin-top: -65px;">
+        <ul class="pager">
+            <li><a href="#">Trabajo Terminado</a></li>
+        </ul>
+    </nav>
+    <script>
+        function courseChanged(val){
+            if(val==""){
                 var lengthCbx = $('#cbxSubject > option').length;
                 $('#cbxSubject').empty();
-                $('#cbxSubject').append(new Option("Materia", ""));
-                for(var i=0;i<info.length;i++){
-                    var text = info[i].fields.nameSubject;
-                    var value = info[i].fields.idSubject;
-                    $('#cbxSubject').append(new Option(text, value));
-                }
-            }});
-        $.ajax({
-            url: "{% url 'app_testapp:seg-al' %}", 
-            type: 'GET',
-            data: {idCourse: $('#cbxCourse').val(), queryId: "pupil"},
-            dataType: 'json',
-            success: function(info){
                 $('#cbxPupil').empty();
+                $('#cbxSubject').append(new Option("Materia", ""));
                 $('#cbxPupil').append(new Option("Alumno", ""));
-                for(var i=0;i<info.length;i++){
-                    var text = info[i].fields.namePupil;
-                    var value = info[i].fields.idPupil;
-                    $('#cbxPupil').append(new Option(text, value));
-                }
-            }});
-        return;
-    }
-</script>
-{% endblock %}
+                return;
+            }
+            $.ajax({
+                url: "{% url 'app_testapp:seg-al' %}", 
+                type: 'GET',
+                data: {idCourse: $('#cbxCourse').val(), queryId: "subject"},
+                dataType: 'json',
+                success: function(info){
+                    var lengthCbx = $('#cbxSubject > option').length;
+                    $('#cbxSubject').empty();
+                    $('#cbxSubject').append(new Option("Materia", ""));
+                    for(var i=0;i<info.length;i++){
+                        var text = info[i].fields.nameSubject;
+                        var value = info[i].fields.idSubject;
+                        $('#cbxSubject').append(new Option(text, value));
+                    }
+                }});
+            $.ajax({
+                url: "{% url 'app_testapp:seg-al' %}", 
+                type: 'GET',
+                data: {idCourse: $('#cbxCourse').val(), queryId: "pupil"},
+                dataType: 'json',
+                success: function(info){
+                    $('#cbxPupil').empty();
+                    $('#cbxPupil').append(new Option("Alumno", ""));
+                    for(var i=0;i<info.length;i++){
+                        var text = info[i].fields.namePupil;
+                        var value = info[i].fields.idPupil;
+                        $('#cbxPupil').append(new Option(text, value));
+                    }
+                }});
+            return;
+        }
+    </script>
+    {% endblock %}
