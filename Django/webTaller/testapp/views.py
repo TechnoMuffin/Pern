@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.template import RequestContext
 from django.shortcuts import render_to_response, render, redirect
-from page.models import Course, Pupil, Subject
+from page.models import Course, Pupil, Subject, PupilFollowing
 from django.core import serializers
 from django.http import HttpResponse
 import json
@@ -13,18 +13,26 @@ def base(request):
 def seguimientoAl(request):
         if request.is_ajax():
             queryid = request.GET.get('queryId')
+            info = "No entro en ninguna queryId"
             if(queryid == "course"):
                 idC = request.GET.get('idCourse')
                 courses = Course.objects.filter(idCourse=int(idC)) 
                 info = serializers.serialize('json', courses)
-            elif(queryid == "subject"):
+            elif(queryid == "subjects"):
                 idC = request.GET.get('idCourse')
-                subject = Subject.objects.filter(idCourse=int(idC))
-                info = serializers.serialize('json', subject)
-            elif(queryid == "pupil"):
+                subjects = Subject.objects.filter(idCourse=int(idC))
+                info = serializers.serialize('json', subjects)
+            elif(queryid == "pupils"):
                 idC = request.GET.get('idCourse')
-                pupil = Pupil.objects.filter(idCourse=int(idC))
+                pupils = Pupil.objects.filter(idCourse=int(idC))
+                info = serializers.serialize('json', pupils)
+            elif(queryid == "pupilFollowing"):
+                idP = request.GET.get('idPupil')
+                idS = request.GET.get('idSubject')
+                date = request.GET.get('date')
+                pupil = PupilFollowing.objects.filter(idPupil=int(idP), idSubject=int(idS), datePF=str(date))
                 info = serializers.serialize('json', pupil)
+            print "\033[1m Respuesta a la peticion de " + queryid + ": \033[0m \n" + info
             return HttpResponse(info)
         else:
             context = RequestContext(request)

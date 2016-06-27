@@ -3,7 +3,7 @@
 <!-- Checkbox de Asistencia -->
 <div>
     <div class="checkbox checkbox-primary checkbox-circle" style="margin-top: 22px; margin-left: 37px; font-size: 20px">
-        <input type="checkbox" id="checkPresence" checked >
+        <input type="checkbox" id="checkPresence">
         <label style="position:absolute">Asistencia</label>
     </div>
 </div>
@@ -11,8 +11,8 @@
     <!-- Seleccion de día -->
     <div class="col-sm-8" style="width: 190px; margin-right: 20px;">
         <div class="input-group" >
-            <input class="form-control datepicker" placeholder="mm/dd/yyyy" id="datepicker" type="text">
-            <span class="input-group-addon bg-primary b-0 text-white"><i class="ion-calendar"></i></span>
+            <input class="form-control datepicker" placeholder="yyyy-mm-dd" id="datepicker" type="text">
+            <!--            <span class="input-group-addon bg-primary b-0 text-white"><i class="ion-calendar"></i></span>-->
         </div>
     </div>
     <!-- Dropdown de Curso -->
@@ -27,7 +27,7 @@
         <option value="" class="default-text">Materia</option>
     </select>
     <!-- Dropdown de Alumno -->
-    <select class=" form-control js-example-basic-single " id="cbxPupil" style="width: 190px;margin-right: 20px;">
+    <select class=" form-control js-example-basic-single " id="cbxPupil" onchange="pupilChanged(this.value)" style="width: 190px;margin-right: 20px;">
         <option value="" class="default-text">Alumno</option>
     </select>        
 </div>
@@ -191,7 +191,7 @@
             $.ajax({
                 url: "{% url 'app_testapp:seg-al' %}", 
                 type: 'GET',
-                data: {idCourse: $('#cbxCourse').val(), queryId: "subject"},
+                data: {idCourse: $('#cbxCourse').val(), queryId: "subjects"},
                 dataType: 'json',
                 success: function(info){
                     var lengthCbx = $('#cbxSubject > option').length;
@@ -199,24 +199,46 @@
                     $('#cbxSubject').append(new Option("Materia", ""));
                     for(var i=0;i<info.length;i++){
                         var text = info[i].fields.nameSubject;
-                        var value = info[i].fields.idSubject;
+                        var value = info[i].pk;
                         $('#cbxSubject').append(new Option(text, value));
                     }
                 }});
             $.ajax({
                 url: "{% url 'app_testapp:seg-al' %}", 
                 type: 'GET',
-                data: {idCourse: $('#cbxCourse').val(), queryId: "pupil"},
+                data: {idCourse: $('#cbxCourse').val(), queryId: "pupils"},
                 dataType: 'json',
                 success: function(info){
                     $('#cbxPupil').empty();
                     $('#cbxPupil').append(new Option("Alumno", ""));
                     for(var i=0;i<info.length;i++){
                         var text = info[i].fields.namePupil + " " + info[i].fields.surnamePupil;
-                        var value = info[i].fields.idPupil;
+                        var value = info[i].pk;
                         $('#cbxPupil').append(new Option(text, value));
                     }
                 }});
+            return;
+        }
+        function pupilChanged(val){
+            $.ajax({
+                url: "{% url 'app_testapp:seg-al' %}",
+                type: 'GET',
+                data: {idPupil: $('#cbxPupil').val(), idSubject: $('#cbxSubject').val(), date: $('#datepicker').val(), queryId: "pupilFollowing"},
+                dataType: 'json',
+                success: function(info){
+                    var presence = info[0].fields.presencePF;
+                    var observations = info[0].fields.commentPF;
+                    $('#checkPresence').prop('checked', presence);
+                    $('#obsAlum').val(observations);
+                }});
+            $.ajax({
+                url: "{% url 'app_testapp_seg-al' %}",
+                type: 'GET',
+                data: {},
+                dataType: 'json',
+                success: function(info){
+                
+            }})
             return;
         }
     </script>
