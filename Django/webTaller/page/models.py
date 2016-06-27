@@ -45,8 +45,9 @@ class Course(models.Model):
 class Subject(models.Model):
     idSubject = models.AutoField(primary_key=True)
     nameSubject = models.CharField(max_length=128)
-    idFF = models.ManyToManyField(Fulfillment, blank=True)
     idCourse = models.ManyToManyField(Course, blank=True)
+    nameFF = models.ManyToManyField(Fulfillment)
+
     
     class Meta:
         verbose_name = 'Subject'
@@ -111,3 +112,16 @@ class ProjectStages(models.Model):
         tagName = str(self.namePS) + "[" + str(self.idProject) +"]"
         return tagName
     
+
+##################################CONTROL##################################
+class CheckFF(models.Model):
+    nameFF = models.ForeignKey(Fulfillment, max_length=128)
+    idPF = models.ForeignKey(PupilFollowing)
+    check = models.BooleanField(blank=True)
+    
+    class Meta:
+        verbose_name = 'Fullfilments Check'
+        verbose_name_plural = 'Fulfillments Checks'
+    def __str__(self):
+        tagName = str(self.nameFF) + "[" + str(self.idPF) + "]"
+        return tagName

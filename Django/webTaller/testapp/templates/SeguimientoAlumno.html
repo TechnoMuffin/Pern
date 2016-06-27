@@ -3,7 +3,7 @@
 <!-- Checkbox de Asistencia -->
 <div>
     <div class="checkbox checkbox-primary checkbox-circle" style="margin-top: 22px; margin-left: 37px; font-size: 20px">
-        <input type="checkbox" id="checkPresence">
+        <input type="checkbox" id="checkPresence" onchange="changeAssist(this.value)">
         <label style="position:absolute">Asistencia</label>
     </div>
 </div>
@@ -23,7 +23,7 @@
         {% endfor %}       
     </select>   
     <!-- Dropdown de Materia -->
-    <select class=" form-control js-example-basic-single " id="cbxSubject" style="width: 190px;margin-right: 20px;">
+    <select class=" form-control js-example-basic-single " id="cbxSubject" onchange="subjectChanged(this.value)" style="width: 190px;margin-right: 20px;">
         <option value="" class="default-text">Materia</option>
     </select>
     <!-- Dropdown de Alumno -->
@@ -44,33 +44,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>Antiparras</td>
-                    <td>
-                        <div class="checkbox checkbox-success checkbox-circle">
-                            <input type="checkbox">
-                            <label ></label>
-                        </div>
-                    </td> 
-                </tr>
-                <tr>
-                    <td>Guardapolvo</td>
-                    <td >
-                        <div class="checkbox checkbox-success checkbox-circle">
-                            <input type="checkbox">
-                            <label ></label>
-                        </div>
-                    </td> 
-                </tr>
-                <tr>
-                    <td>Limas</td>
-                    <td>
-                        <div class="checkbox checkbox-success checkbox-circle">
-                            <input type="checkbox">
-                            <label ></label>
-                        </div>
-                    </td>
-                </tr>
+
             </tbody>
         </table>
     </div>
@@ -180,6 +154,9 @@
     </nav>
     <script>
         function courseChanged(val){
+            $("#tbleCon tbody").remove();
+            $("#cbxSubject").val("").change();
+            $("#cbxPupil").val("").change();
             if(val==""){
                 var lengthCbx = $('#cbxSubject > option').length;
                 $('#cbxSubject').empty();
@@ -215,13 +192,30 @@
                         var text = info[i].fields.namePupil + " " + info[i].fields.surnamePupil;
                         var value = info[i].pk;
                         $('#cbxPupil').append(new Option(text, value));
+                    }}});
+            return;
+        }
+        function subjectChanged(val){
+            $.ajax({
+                url: "{% url 'app_testapp:seg-al' %}", 
+                type: 'GET',
+                data: {idSubject: $('#cbxSubject').val(), queryId: "fulfillments"},
+                dataType: 'json',
+                success: function(info){
+                    $("#tbleCon tbody").remove();
+                    for(var i=0;i<info[0].fields.nameFF.length;i++){
+                        var tbody = $('#tbleCon').children('tbody');
+                        var table = tbody.length ? tbody : $('#tbleCon');
+                        table.append('<tr><td>' + info[0].fields.nameFF[i] + '</td><td><div class="checkbox checkbox-success checkbox-circle"><input type="checkbox"><label></label></div></td></tr>');
                     }
                 }});
             return;
         }
         function pupilChanged(val){
+            $('#checkPresence').prop('checked', false);
+            $('#obsAlum').val("");
             $.ajax({
-                url: "{% url 'app_testapp:seg-al' %}",
+                url: "{% url 'app_testapp:seg-al' %}", 
                 type: 'GET',
                 data: {idPupil: $('#cbxPupil').val(), idSubject: $('#cbxSubject').val(), date: $('#datepicker').val(), queryId: "pupilFollowing"},
                 dataType: 'json',
@@ -231,14 +225,6 @@
                     $('#checkPresence').prop('checked', presence);
                     $('#obsAlum').val(observations);
                 }});
-            $.ajax({
-                url: "{% url 'app_testapp_seg-al' %}",
-                type: 'GET',
-                data: {},
-                dataType: 'json',
-                success: function(info){
-                
-            }})
             return;
         }
     </script>
