@@ -1,3 +1,4 @@
+# encoding utf-8
 from django.shortcuts import render
 from django.contrib.auth.models import User
 from django.shortcuts import redirect
@@ -23,8 +24,8 @@ def nuevo_JefeArea(request):
             username = cleaned_data.get('username')
             password = cleaned_data.get('password')
             email = cleaned_data.get('email')
-            # E instanciamos un objeto User, con el username y password
-            user_model = User.objects.create_user(username=username, password=password)
+            # E instanciamos un objeto User, con el username, password y una desactivacion de cuenta para que el admin lo habilite
+            user_model = User.objects.create_user(username=username, password=password,is_active = False)
             # Anadimos el email
             user_model.email = email
             # Y guardamos el objeto, esto guardara los datos en la db.
@@ -34,7 +35,8 @@ def nuevo_JefeArea(request):
             user_profile = Profesores()
             # Al campo user le asignamos el objeto user_model
             user_profile.user = user_model
-            # y le asignamos la photo (el campo, permite datos null)
+            # Se acuerdan cuando creamos el usuario deshabilitado? Lo deshabilitamos de vuelta! (si no lo haciamos tiraba error)
+            user_profile.is_active = False
             # Por ultimo, guardamos tambien el objeto UserProfile
             user_profile.save()
             # Ahora, redireccionamos a la pagina accounts/gracias.html

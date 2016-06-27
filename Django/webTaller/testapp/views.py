@@ -45,10 +45,7 @@ def seguimientoAl(request):
             subjects = Subject.objects.all() 
         return render_to_response('SeguimientoAlumno.html', {'courses':courses, 'subjects':subjects, 'pupils':pupils},context)
     
-def registerUser(request):
-        context = RequestContext(request)
-        return render_to_response('CreaUsuario.html',context)
-    
+
 def loginUser(request):
         context = RequestContext(request)
         return render_to_response('Login.html',context)
