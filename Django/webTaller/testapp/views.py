@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.template import RequestContext
 from django.shortcuts import render_to_response, render, redirect
-from page.models import Course, Pupil, Subject, PupilFollowing, CheckFF, Fulfillment
+from page.models import *
 from django.core import serializers
 from django.http import HttpResponse
 import json
@@ -36,6 +36,10 @@ def seguimientoAl(request):
                 idS = request.GET.get('idSubject')
                 fulfillments = Subject.objects.filter(idSubject=int(idS))
                 info = serializers.serialize('json', fulfillments)
+            elif(queryid == "projects"):
+                idS = request.GET.get('idSubject')
+                projects = Projects.objects.filter(idSubject=int(idS))
+                info = serializers.serialize('json', projects)
             print "\033[1m Respuesta a la peticion de " + queryid + ": \033[0m \n" + info
             return HttpResponse(info)
         else:

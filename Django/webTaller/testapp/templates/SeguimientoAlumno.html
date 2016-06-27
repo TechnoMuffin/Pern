@@ -63,12 +63,10 @@
     <div class="panel">
         <h1>Seguimiento Alumno</h1>
         <div class="panel-body">
-
-
             <div class="col-sm-6" style="margin-left: 1005px; width: 178px;margin-top: -80px;">
-                <div class="dataTables_filter" id="datatable-editable_filter">
-                    <label>Buscar:<input aria-controls="datatable-editable" placeholder="" class="form-control input-sm" type="search"></label>
-                </div>
+                <select class=" form-control js-example-basic-single " id="cbxProject" onchange="projectChanged(this.value)" style="width: 190px;margin-right: 20px;">
+                    <option value="" class="default-text">Projecto</option>
+                </select>
             </div>
 
         </div>
@@ -209,6 +207,24 @@
                         table.append('<tr><td>' + info[0].fields.nameFF[i] + '</td><td><div class="checkbox checkbox-success checkbox-circle"><input type="checkbox"><label></label></div></td></tr>');
                     }
                 }});
+            $.ajax({
+                url: "{% url 'app_testapp:seg-al' %}", 
+                type: 'GET',
+                data: {idSubject: $('#cbxSubject').val(), queryId: "projects"},
+                dataType: 'json',
+                success: function(info){
+                    //-------Carga de Projectos-------
+                    //Vacia el cbx de Projectos
+                    $('#cbxProject').empty();
+                    //Agrega el valor DEFAULT
+                    $('#cbxProject').append(new Option("Projecto"));
+                    
+                    for(var i=0;i<info.length;i++){
+                        var value = info[i].fields.nameProject;
+                        var text = info[i].pk;
+                        $('#cbxProject').append(new Option(text,value));
+                    }                    
+                }});
             return;
         }
         function pupilChanged(val){
@@ -224,6 +240,26 @@
                     var observations = info[0].fields.commentPF;
                     $('#checkPresence').prop('checked', presence);
                     $('#obsAlum').val(observations);
+                }});
+            return;
+        }
+
+        function projectChanged(val){
+            $.ajax({
+                url: "{% url 'app_testapp:seg-al' %}", 
+                type: 'GET',
+                data: {nameProject: $('#cbxProject').val(), idSubject: $('#cbxSubject').val(), queryId: "projects"},
+                dataType: 'json',
+                success: function(info){
+                    console.log("Entro!")
+
+                    $('#cbxProject').empty();
+                    $('#cbxProject').append(new Option("Alumno", ""));
+                    for(var i=0;i<info.length;i++){
+                        var text = info[i].fields.namePupil + " " + info[i].fields.surnamePupil;
+                        var value = info[i].pk;
+                        $('#cbxPupil').append(new Option(text, value));
+                    }
                 }});
             return;
         }
