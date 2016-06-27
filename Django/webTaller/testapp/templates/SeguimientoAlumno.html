@@ -219,9 +219,13 @@
                     //Agrega el valor DEFAULT
                     $('#cbxProject').append(new Option("Projecto"));
                     
+                    //Recorre todos los "Projectos"
                     for(var i=0;i<info.length;i++){
+                        //"Value" es el nombre del projecto
                         var value = info[i].fields.nameProject;
+                        //"Text" es el id de la materia a la que esta asignada el projecto (asi es,Chucho)
                         var text = info[i].pk;
+                        //Agrega el projecto al cbx (si Chucho, podes getear el id del projecto del value del actual elemento en el cbx)
                         $('#cbxProject').append(new Option(text,value));
                     }                    
                 }});
