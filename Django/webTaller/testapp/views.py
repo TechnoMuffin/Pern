@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.template import RequestContext
 from django.shortcuts import render_to_response, render, redirect
-from page.models import Course, Pupil, Subject, PupilFollowing, CheckFF, Fulfillment
+from page.models import Course, Pupil, Subject, PupilFollowing, CheckFF, Fulfillment, Projects, ProjectStages
 from django.core import serializers
 from django.http import HttpResponse
 import json
@@ -39,11 +39,13 @@ def seguimientoAl(request):
             print "\033[1m Respuesta a la peticion de " + queryid + ": \033[0m \n" + info
             return HttpResponse(info)
         else:
+            stages = ProjectStages.objects.all()
+            proyectos = Projects.objects.all()
             context = RequestContext(request)
             courses = Course.objects.all() 
             pupils = Pupil.objects.all() 
             subjects = Subject.objects.all() 
-        return render_to_response('SeguimientoAlumno.html', {'courses':courses, 'subjects':subjects, 'pupils':pupils},context)
+        return render_to_response('SeguimientoAlumno.html', {'courses':courses, 'subjects':subjects, 'pupils':pupils, 'proyectos':proyectos},context)
     
 def registerUser(request):
         context = RequestContext(request)
@@ -52,7 +54,7 @@ def registerUser(request):
 def loginUser(request):
         context = RequestContext(request)
         return render_to_response('Login.html',context)
-    
+
 def olvidaContra(request):
         context = RequestContext(request)
         return render_to_response('OlvidoContra.html',context)

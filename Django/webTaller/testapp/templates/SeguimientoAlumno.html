@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
+{% load staticfiles %}
 <!-- Checkbox de Asistencia -->
 <div>
     <div class="checkbox checkbox-primary checkbox-circle" style="margin-top: 22px; margin-left: 37px; font-size: 20px">
@@ -66,8 +67,13 @@
 
 
             <div class="col-sm-6" style="margin-left: 1005px; width: 178px;margin-top: -80px;">
-                <div class="dataTables_filter" id="datatable-editable_filter">
-                    <label>Buscar:<input aria-controls="datatable-editable" placeholder="" class="form-control input-sm" type="search"></label>
+                <div>
+                    <select class=" form-control js-example-basic-single " id="cbxProject" onchange="projectChanged(this.value)" style="width: 190px; margin-right: 20px;">
+                        <option class="default-text" value="">Proyecto</option>
+                        {% for i in proyectos %}
+                        <option value={{i.nameProject}}>{{i.nameProject}}</option>
+                        {% endfor %}
+                    </select>
                 </div>
             </div>
 
@@ -77,62 +83,35 @@
 
     <div class="row" style="margin-top: 10px;">
         <div class="col-sm-12">
-            <table aria-describedby="datatable-editable_info" role="grid" class="table table-striped dataTable no-footer" id="datatable-editable">
+            <table aria-describedby="datatable-editable_info" role="grid" class="table table-striped dataTable no-footer" id="tblData">
                 <thead>
                     <tr role="row">
                         <th aria-label="Rendering engine: activate to sort column descending" aria-sort="ascending" style="width: 225px;" colspan="1" rowspan="1" aria-controls="datatable-editable" tabindex="0" class="sorting_asc">Etapas</th>
                         <th aria-label="Browser: activate to sort column ascending" style="width: 286px;" colspan="1" rowspan="1" aria-controls="datatable-editable" tabindex="0" class="sorting">Nota</th>
-                        <th aria-label="Platform(s): activate to sort column ascending" style="width: 257px;" colspan="1" rowspan="1" aria-controls="datatable-editable" tabindex="0" class="sorting">Clases Utilizadas</th>
-                        <th aria-label="Actions" style="width: 116px;" colspan="1" rowspan="1" class="sorting_disabled">Observaciones</th></tr>
+                        <th aria-label="Platform(s): activate to sort column ascending" style="width: 257px;" colspan="1" rowspan="1" aria-controls="datatable-editable" tabindex="0" class="sorting">Clases_Utilizadas</th>
+                        <th aria-label="Actions" style="width: 116px;" colspan="1" rowspan="1" class="sorting_disabled"></th>
+                    </tr>
+
                 </thead>
                 <tbody>
-                    <tr role="row" class="gradeA odd">
-                        <td class="sorting_1">Cara 1</td>
-                        <td>4/5</td>
-                        <td>8 clases</td>
-                        <td class="actions">
-                            <a href="#" class="hidden on-editing save-row"><i class="fa fa-save"></i></a>
-                            <a href="#" class="hidden on-editing cancel-row"><i class="fa fa-times"></i></a>
-                            <a href="#" class="on-default edit-row"><i class="fa fa-pencil"></i></a>
-                            <a href="#" class="on-default remove-row"><i class="fa fa-trash-o"></i></a>
-                        </td>
-                    </tr><tr role="row" class="gradeA even">
-                    <td class="sorting_1">Cara 2</td>
-                    <td>2/5</td>
-                    <td>4 clases</td>
-                    <td class="actions">
-                        <a href="#" class="hidden on-editing save-row"><i class="fa fa-save"></i></a>
-                        <a href="#" class="hidden on-editing cancel-row"><i class="fa fa-times"></i></a>
-                        <a href="#" class="on-default edit-row"><i class="fa fa-pencil"></i></a>
-                        <a href="#" class="on-default remove-row"><i class="fa fa-trash-o"></i></a>
-                    </td>
-                    </tr><tr role="row" class="gradeA odd">
-                    <td class="sorting_1">Pulido</td>
-                    <td>5/5</td>
-                    <td>4 clases</td>
-                    <td class="actions">
-                        <a href="#" class="hidden on-editing save-row"><i class="fa fa-save"></i></a>
-                        <a href="#" class="hidden on-editing cancel-row"><i class="fa fa-times"></i></a>
-                        <a href="#" class="on-default edit-row"><i class="fa fa-pencil"></i></a>
-                        <a href="#" class="on-default remove-row"><i class="fa fa-trash-o"></i></a>
-                    </td>
-                    </tr><tr role="row" class="gradeA even">
-                    <td class="sorting_1">Rasqueteado</td>
-                    <td>4/5</td>
-                    <td>3 clases</td>
-                    <td class="actions">
-                        <a href="#" class="hidden on-editing save-row"><i class="fa fa-save"></i></a>
-                        <a href="#" class="hidden on-editing cancel-row"><i class="fa fa-times"></i></a>
-                        <a href="#" class="on-default edit-row"><i class="fa fa-pencil"></i></a>
-                        <a href="#" class="on-default remove-row"><i class="fa fa-trash-o"></i></a>
-                    </td>
-                    </tr></tbody>
+                    <!--<tr role="row" class="gradeA odd">
+<td class="sorting_1">Cara 1</td>
+<td>4/5</td>
+<td>8 clases</td>
+<td class="actions">
+<a href="#" class="hidden on-editing save-row"><i class="fa fa-save"></i></a>
+<a href="#" class="hidden on-editing cancel-row"><i class="fa fa-times"></i></a>
+<a href="#" class="on-default edit-row"><i class="fa fa-pencil"></i></a>
+<a href="#" class="on-default remove-row"><i class="fa fa-trash-o"></i></a>
+</td>
+</tr>-->
+                </tbody>
             </table>
         </div>
         <div class="row" style="margin-left:1206px;">
             <div class="col-sm-6">
                 <div class="m-b-30">
-                    <button id="addToTable" style=" margin-top:25px" class="btn btn-primary waves-effect waves-light">Agregar <i class="fa fa-plus"></i></button>
+                    <button id="btnAdd" onclick="Add()" style=" margin-top:25px" class="btn btn-primary waves-effect waves-light">Agregar <i class="fa fa-plus"></i></button>
                 </div>   
             </div>
         </div>
@@ -226,6 +205,69 @@
                     $('#obsAlum').val(observations);
                 }});
             return;
+        }
+
+        function Add(){
+            $("#btnAdd").prop('disabled', true);
+            $("#tblData tbody").append(
+                "<tr id='prueba'>"+
+                "<td><input type='text' id='input1'/></td>"+
+                "<td><input type='text' id='input2'/></td>"+
+                "<td><input type='text' id='input3'/></td>"+
+                "<td><i class='fa fa-save' id='btnSave' onclick='Save()'></i></td>"+
+                "</tr>");
+            return;
+        }
+
+        function Save(){
+            //            var par = $(this).parent().parent(); //tr
+            //            var Etapas = par.children("td:nth-child(1)");
+            //            var Nota = par.children("td:nth-child(2)");
+            //            var Clases_Utilizadas = par.children("td:nth-child(3)");
+            //            var tdButtons = par.children("td:nth-child(4)");
+            //
+            //            Etapas.html(Etapas.children("input[type=text]").val());
+            //            Nota.html(Nota.children("input[type=text]").val());
+            //            Clases_Utilizadas.html(Clases_Utilizadas.children("input[type=text]").val());
+            //            tdButtons.html("<i class='fa fa-trash-o' class='btnDelete' onclick='Delete()'></i><i class='fa fa-pencil' class='btnEdit' onclick='Edit()'></i>");
+            //            console.log("asd");
+            
+            var a = $('#input1').val();
+            var b = $('#input2').val();
+            var c = $('#input3').val();
+            $("#tblData tbody").append(
+                "<tr id=''>"+
+                "<td>" + a + "</td>"+
+                "<td>" + b + "</td>"+
+                "<td>" + c + "</td>"+
+                "</tr>");
+            Delete();
+
+        }
+
+        function Edit(){
+            var par = $(this).parent().parent(); //tr
+            var Etapas = par.children("td:nth-child(1)");
+            var tdPhone = par.children("td:nth-child(2)");
+            var Clases_Utilizadas = par.children("td:nth-child(3)");
+            var tdButtons = par.children("td:nth-child(4)");
+
+            Etapas.html("<input type='text' id='Etapas' value='"+Etapas.html()+"'/>");
+            Nota.html("<input type='text' id='Nota' value='"+Nota.html()+"'/>");
+            Clases_Utilizadas.html("<input type='text' id='Clases Utilizadas' value='"+Clases_Utilizadas.html()+"'/>");
+            tdButtons.html("<i class='fa fa-save' class='btnSave'></i>");
+
+            $(".btnSave").bind("click", Save);
+            $(".btnEdit").bind("click", Edit);
+            $(".btnDelete").bind("click", Delete);
+        }
+
+        function Delete(){
+            $("#prueba").remove();
+            $("#btnAdd").prop('disabled', false);
+
+            /*var par = $(this).parent().parent(); //tr
+            par.remove();*/
         }
     </script>
     {% endblock %}
