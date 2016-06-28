@@ -65,11 +65,14 @@
         <h1>Seguimiento Alumno</h1>
         <div class="panel-body">
             <div class="col-sm-6" style="float:right;width: 178px;margin-top: -80px;">
-                <select class=" form-control js-example-basic-single " id="cbxProject" onchange="">
+                <select class="form-control js-example-basic-single" id="cbxProject" onchange="" disabled="true">
                     <option value="zoidberg" class="default-text">Projecto</option>
                 </select>
-                <button id="addProject" data-target="#addProjectModal" data-toggle="modal" style="display:inline;left: 163px;top: -32px;" class="btn-sm btn-primary waves-effect waves-light">
+                <button id="addProject" data-target="#addProjectModal" data-toggle="modal" style="display:inline;left: 163px;top: -32px;"  type="button" class="sm btn-primary waves-effect waves-light" disabled="true">
                     <i class="fa fa-plus"></i>
+                </button>
+                <button id="delProject" data-target="#delProjectModal" data-toggle="modal" style="display:inline;left: 163px;top: -32px;"  type="button" class="sm btn-primary waves-effect waves-light" disabled="false">
+                    <i class="fa fa-minus"></i>
                 </button>
             </div>
 
@@ -88,6 +91,27 @@
                         </div>
                         <div class="modal-footer">
                             <button id="projectSender" type="button" class="btn btn-default" data-dismiss="modal">Crear</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            
+            <div id="delProjectModal" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Borrar Projecto</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p>Seguro que desea borrar este projecto? (Se borraran todas las etapas de todos los alumnos)</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button id="projectDeleter" type="button" class="btn btn-default" data-dismiss="modal">Borrar</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
                         </div>
                     </div>
 
@@ -179,17 +203,22 @@
         //Envio de datos para la creacion de otro projecto
         $("#projectSender").click(
             function(){
-                fafa=$('#cbxSubject').val();
-                console.log(fafa);
-                $.ajax({
-                    url: "{% url 'app_testapp:seg-al' %}", 
-                    type: 'GET',
-                    data: {nameProject: $('#projectName').val(),idSubject: $('#cbxSubject').val(), queryId: "newProject"},
-                    success: function(){
-                        //todo disabled	btn
-                        console.log("csoad");
-                    }
-                });
+                if($('#projectName').val()!=""){
+                    fafa=$('#cbxSubject').val();
+                    console.log(fafa);
+                    $.ajax({
+                        url: "{% url 'app_testapp:seg-al' %}", 
+                        type: 'GET',
+                        data: {nameProject: $('#projectName').val(),idSubject: $('#cbxSubject').val(), queryId: "newProject"},
+                        success: function(){
+                            subjectChanged();
+                            item=$('#cbxProject option').last().val()
+                            $('#cbxProject option').val(item)
+                        }
+                    });
+                }else{
+                    alert("Debe completar el campo.");
+                }
             });
         function courseChanged(val){
             $("#tbleCon tbody").remove();
@@ -247,31 +276,35 @@
                         table.append('<tr><td>' + info[0].fields.nameFF[i] + '</td><td><div class="checkbox checkbox-success checkbox-circle"><input type="checkbox"><label></label></div></td></tr>');
                     }
                 }});
-            //Cambiar a la opcion por DEFAULT
-            $("#cbxProject").val("zoidberg").change();
-            $.ajax({
-                url: "{% url 'app_testapp:seg-al' %}", 
-                type: 'GET',
-                data: {idSubject: $('#cbxSubject').val(), queryId: "projects"},
-                dataType: 'json',
-                success: function(info){
-                    //-------Carga de Projectos-------
-                    //Vacia el cbx de Projectos
-                    $('#cbxProject').empty();
-                    //Agrega el valor DEFAULT
-                    $('#cbxProject').append(new Option("Projecto","zoidberg"));
-                    $('#cbxProject').val('zoidberg');
+            if($('#cbxSubject').val()!=""){
+                $("#cbxProject").attr('disabled',false);
+                $("#addProject").attr('disabled',false);
+                //Cambiar a la opcion por DEFAULT
+                $("#cbxProject").val("zoidberg").change();
+                $.ajax({
+                    url: "{% url 'app_testapp:seg-al' %}", 
+                    type: 'GET',
+                    data: {idSubject: $('#cbxSubject').val(), queryId: "projects"},
+                    dataType: 'json',
+                    success: function(info){
+                        //-------Carga de Projectos-------
+                        //Vacia el cbx de Projectos
+                        $('#cbxProject').empty();
+                        //Agrega el valor DEFAULT
+                        $('#cbxProject').append(new Option("Projecto","zoidberg"));
+                        $('#cbxProject').val('zoidberg');
 
-                    //Recorre todos los "Projectos"
-                    for(var i=0;i<info.length;i++){
-                        //"Value" es el nombre del projecto
-                        var value = info[i].fields.nameProject;
-                        //"Text" es el id de la materia a la que esta asignada el projecto (asi es,Chucho)
-                        var text = info[i].pk;  
-                        //Agrega el projecto al cbx (si Chucho, podes getear el id del projecto del value del actual elemento en el cbx)
-                        $('#cbxProject').append(new Option(text,value));
-                    }                    
-                }});
+                        //Recorre todos los "Projectos"
+                        for(var i=0;i<info.length;i++){
+                            //"Value" es el nombre del projecto
+                            var value = info[i].fields.nameProject;
+                            //"Text" es el id de la materia a la que esta asignada el projecto (asi es,Chucho)
+                            var text = info[i].pk;  
+                            //Agrega el projecto al cbx (si Chucho, podes getear el id del projecto del value del actual elemento en el cbx)
+                            $('#cbxProject').append(new Option(text,value));
+                        }                    
+                    }});
+            }
             return;
         }
         function pupilChanged(val){

@@ -48,7 +48,7 @@ def seguimientoAl(request):
                 subject = Subject.objects.get(idSubject=int(idSubject))
                 newProjecto.idSubject = subject
                 newProjecto.save()
-                info = "xd"
+                info = "WEXD"
             print "\033[1m Respuesta a la peticion de " + queryid + ": \033[0m \n" + info
             return HttpResponse(info)
         else:
