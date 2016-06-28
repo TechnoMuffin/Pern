@@ -39,13 +39,13 @@ def seguimientoAl(request):
             print "\033[1m Respuesta a la peticion de " + queryid + ": \033[0m \n" + info
             return HttpResponse(info)
         else:
-            stages = ProjectStages.objects.all()
+            stages = ProjectStages.objects.filter(idProject="martillo")
             proyectos = Projects.objects.all()
             context = RequestContext(request)
             courses = Course.objects.all() 
             pupils = Pupil.objects.all() 
             subjects = Subject.objects.all() 
-        return render_to_response('SeguimientoAlumno.html', {'courses':courses, 'subjects':subjects, 'pupils':pupils, 'proyectos':proyectos},context)
+        return render_to_response('SeguimientoAlumno.html', {'courses':courses, 'subjects':subjects, 'pupils':pupils, 'proyectos':proyectos, 'stages':stages},context)
     
 def registerUser(request):
         context = RequestContext(request)

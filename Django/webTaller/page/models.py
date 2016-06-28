@@ -102,6 +102,8 @@ class Projects(models.Model):
 ##################################ETAPAS DE PROYECTOS##################################
 class ProjectStages(models.Model):
     namePS = models.CharField(max_length=128)
+    calification = models.IntegerField(null=True)
+    classes = models.IntegerField()
     idPS = models.AutoField(primary_key=True)
     idProject = models.ForeignKey(Projects)
     
