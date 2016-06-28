@@ -40,6 +40,15 @@ def seguimientoAl(request):
                 idS = request.GET.get('idSubject')
                 projects = Projects.objects.filter(idSubject=int(idS))
                 info = serializers.serialize('json', projects)
+            elif(queryid == "newProject"):
+                nameProject= request.GET.get('nameProject')
+                idSubject = request.GET.get('idSubject')
+                newProjecto=Projects()
+                newProjecto.nameProject = nameProject
+                subject = Subject.objects.get(idSubject=int(idSubject))
+                newProjecto.idSubject = subject
+                newProjecto.save()
+                info = "xd"
             print "\033[1m Respuesta a la peticion de " + queryid + ": \033[0m \n" + info
             return HttpResponse(info)
         else:

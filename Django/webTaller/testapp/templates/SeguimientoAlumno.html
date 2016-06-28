@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load staticfiles %}
 {% block content %}
 <!-- Checkbox de Asistencia -->
 <div>
@@ -63,12 +64,35 @@
     <div class="panel">
         <h1>Seguimiento Alumno</h1>
         <div class="panel-body">
-            <div class="col-sm-6" style="margin-left: 1005px; width: 178px;margin-top: -80px;">
-                <select class=" form-control js-example-basic-single " id="cbxProject" onchange="" style="width: 190px;margin-right: 20px;">
+            <div class="col-sm-6" style="float:right;width: 178px;margin-top: -80px;">
+                <select class=" form-control js-example-basic-single " id="cbxProject" onchange="">
                     <option value="zoidberg" class="default-text">Projecto</option>
                 </select>
+                <button id="addProject" data-target="#addProjectModal" data-toggle="modal" style="display:inline;left: 163px;top: -32px;" class="btn-sm btn-primary waves-effect waves-light">
+                    <i class="fa fa-plus"></i>
+                </button>
             </div>
 
+            <!-- Modal -->
+            <div id="addProjectModal" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Crear nuevo Projecto</h4>
+                        </div>
+                        <div class="modal-body">
+                            <input class="form-control" id="projectName" maxlength="128" name="projectName" placeholder="Nombre del Projecto" type="text">
+                        </div>
+                        <div class="modal-footer">
+                            <button id="projectSender" type="button" class="btn btn-default" data-dismiss="modal">Crear</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
         </div>
     </div>
 
@@ -150,7 +174,23 @@
             <li><a href="#">Trabajo Terminado</a></li>
         </ul>
     </nav>
+    <script src="{% static 'js/jquery-1.11.1.min.js'%}"></script>
     <script>
+        //Envio de datos para la creacion de otro projecto
+        $("#projectSender").click(
+            function(){
+                fafa=$('#cbxSubject').val();
+                console.log(fafa);
+                $.ajax({
+                    url: "{% url 'app_testapp:seg-al' %}", 
+                    type: 'GET',
+                    data: {nameProject: $('#projectName').val(),idSubject: $('#cbxSubject').val(), queryId: "newProject"},
+                    success: function(){
+                        //todo disabled	btn
+                        console.log("csoad");
+                    }
+                });
+            });
         function courseChanged(val){
             $("#tbleCon tbody").remove();
             $("#cbxSubject").val("").change();
@@ -194,7 +234,6 @@
             return;
         }
         function subjectChanged(val){
-        $('#cbxProject').prop('selectedIndex',0);
             $.ajax({
                 url: "{% url 'app_testapp:seg-al' %}", 
                 type: 'GET',
@@ -208,6 +247,8 @@
                         table.append('<tr><td>' + info[0].fields.nameFF[i] + '</td><td><div class="checkbox checkbox-success checkbox-circle"><input type="checkbox"><label></label></div></td></tr>');
                     }
                 }});
+            //Cambiar a la opcion por DEFAULT
+            $("#cbxProject").val("zoidberg").change();
             $.ajax({
                 url: "{% url 'app_testapp:seg-al' %}", 
                 type: 'GET',
@@ -220,7 +261,7 @@
                     //Agrega el valor DEFAULT
                     $('#cbxProject').append(new Option("Projecto","zoidberg"));
                     $('#cbxProject').val('zoidberg');
-                    
+
                     //Recorre todos los "Projectos"
                     for(var i=0;i<info.length;i++){
                         //"Value" es el nombre del projecto
