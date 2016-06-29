@@ -213,9 +213,8 @@
 
         function Add(){
             $("#btnAdd").prop('disabled', true);
-//            {% csrf_token %}
             $("#tblData tbody").append(
-                "<tr id='prueba'>"+
+                "{% csrf_token %}<tr id='prueba'>"+
                 "<td><input type='text' id='input1'/></td>"+
                 "<td><input type='number' id='input2'/></td>"+
                 "<td><input type='number' id='input3'/></td>"+
@@ -225,51 +224,34 @@
             }
 
             function Save(){
-                //            var par = $(this).parent().parent(); //tr
-                //            var Etapas = par.children("td:nth-child(1)");
-                //            var Nota = par.children("td:nth-child(2)");
-                //            var Clases_Utilizadas = par.children("td:nth-child(3)");
-                //            var tdButtons = par.children("td:nth-child(4)");
-                //
-                //            Etapas.html(Etapas.children("input[type=text]").val());
-                //            Nota.html(Nota.children("input[type=text]").val());
-                //            Clases_Utilizadas.html(Clases_Utilizadas.children("input[type=text]").val());
-                //            tdButtons.html("<i class='fa fa-trash-o' class='btnDelete' onclick='Delete()'></i><i class='fa fa-pencil' class='btnEdit' onclick='Edit()'></i>");
-                //            console.log("asd");
-
                 var a = $('#input1').val();
                 var b = $('#input2').val();
                 var c = $('#input3').val();
                 $("#tblData tbody").append(
-                    "<tr id=''Z>"+
+                    "<tr>"+
                     "<td>" + a + "</td>"+
                     "<td>" + b + "/10" + "</td>"+
                     "<td>" + c + " clases" + "</td>"+
                     "</tr>");
                 Delete();
-                /*var data={
+                var data={
                     csrfmiddlewaretoken: '{{ csrf_token }}',
                     dato1:$('#input1').val(),
                     dato2:$('#input2').val(),
                     dato3:$('#input3').val(),
-                }*/
+                    queryId: "projectStage",
+                    nameProject: "martillo",
+                    //idProject: $('#cbxProject').val(),
                 }
-
-            function Edit(){
-                var par = $(this).parent().parent(); //tr
-                var Etapas = par.children("td:nth-child(1)");
-                var tdPhone = par.children("td:nth-child(2)");
-                var Clases_Utilizadas = par.children("td:nth-child(3)");
-                var tdButtons = par.children("td:nth-child(4)");
-
-                Etapas.html("<input type='text' id='Etapas' value='"+Etapas.html()+"'/>");
-                Nota.html("<input type='text' id='Nota' value='"+Nota.html()+"'/>");
-                Clases_Utilizadas.html("<input type='text' id='Clases Utilizadas' value='"+Clases_Utilizadas.html()+"'/>");
-                tdButtons.html("<i class='fa fa-save' class='btnSave'></i>");
-
-                $(".btnSave").bind("click", Save);
-                $(".btnEdit").bind("click", Edit);
-                $(".btnDelete").bind("click", Delete);
+                $.ajax({
+                    url: "{% url 'app_testapp:seg-al' %}", 
+                    type: 'GET',
+                    data: data,
+                    success: function(info){
+                        console.log(info);
+                        console.log("CHUCHERROR");
+                    }
+                });
             }
 
             function Delete(){
@@ -281,3 +263,34 @@
             }
     </script>
     {% endblock %}
+
+    <!--
+function Edit(){
+var par = $(this).parent().parent(); //tr
+var Etapas = par.children("td:nth-child(1)");
+var tdPhone = par.children("td:nth-child(2)");
+var Clases_Utilizadas = par.children("td:nth-child(3)");
+var tdButtons = par.children("td:nth-child(4)");
+
+Etapas.html("<input type='text' id='Etapas' value='"+Etapas.html()+"'/>");
+Nota.html("<input type='text' id='Nota' value='"+Nota.html()+"'/>");
+Clases_Utilizadas.html("<input type='text' id='Clases Utilizadas' value='"+Clases_Utilizadas.html()+"'/>");
+tdButtons.html("<i class='fa fa-save' class='btnSave'></i>");
+
+$(".btnSave").bind("click", Save);
+$(".btnEdit").bind("click", Edit);
+$(".btnDelete").bind("click", Delete);
+}-->
+
+    <!--SAVE()
+//            var par = $(this).parent().parent(); //tr
+//            var Etapas = par.children("td:nth-child(1)");
+//            var Nota = par.children("td:nth-child(2)");
+//            var Clases_Utilizadas = par.children("td:nth-child(3)");
+//            var tdButtons = par.children("td:nth-child(4)");
+//
+//            Etapas.html(Etapas.children("input[type=text]").val());
+//            Nota.html(Nota.children("input[type=text]").val());
+//            Clases_Utilizadas.html(Clases_Utilizadas.children("input[type=text]").val());
+//            tdButtons.html("<i class='fa fa-trash-o' class='btnDelete' onclick='Delete()'></i><i class='fa fa-pencil' class='btnEdit' onclick='Edit()'></i>");
+//            console.log("asd");-->

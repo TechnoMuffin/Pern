@@ -105,7 +105,7 @@ class ProjectStages(models.Model):
     calification = models.IntegerField(null=True)
     classes = models.IntegerField()
     idPS = models.AutoField(primary_key=True)
-    idProject = models.ForeignKey(Projects)
+    nameProject = models.ForeignKey(Projects, max_length=128)
     
     class Meta:
         verbose_name = 'Project Stage'
