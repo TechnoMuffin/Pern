@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.template import RequestContext
 from django.shortcuts import render_to_response, render, redirect
-from page.models import Course, Pupil, Subject, PupilFollowing, CheckFF, Fulfillment, Projects, ProjectStages
+from page.models import *
 from django.core import serializers
 from django.http import HttpResponse
 import json
@@ -49,6 +49,25 @@ def seguimientoAl(request):
             nuevaEtapa.nameProject= project
             nuevaEtapa.save()
             info = "Stage Saved!"
+        elif(queryid == "projects"):
+                idS = request.GET.get('idSubject')
+                projects = Projects.objects.filter(idSubject=int(idS))
+                info = serializers.serialize('json', projects)
+        elif(queryid == "newProject"):
+            nameProject= request.GET.get('nameProject')
+            idSubject = request.GET.get('idSubject')
+            newProjecto=Projects()
+            newProjecto.nameProject = nameProject
+            subject = Subject.objects.get(idSubject=int(idSubject))
+            newProjecto.idSubject = subject
+            newProjecto.save()
+            info = "Se ha creado correctamente"
+        elif(queryid == "delProject"):
+            nameProject= request.GET.get('nameProject')
+            idSubject = request.GET.get('idSubject')
+            proj=Projects.objects.get(idSubject=int(idSubject),nameProject=str(nameProject))
+            proj.delete()
+            info = 'Se ha borrado correctamente el proyecto "'+nameProject+'"'
         print "\033[1m Respuesta a la peticion de " + str(queryid) + ": \033[0m \n" + str(info)
         return HttpResponse(info)
     else:

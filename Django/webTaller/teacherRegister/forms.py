@@ -1,16 +1,20 @@
+# coding=utf-8
 from django import forms
 from django.contrib.auth.models import User
 
-
 class RegistroUserForm(forms.Form):
 
-    username = forms.CharField(min_length=5,widget=forms.TextInput(attrs={'class': 'form-control'}))
+    username = forms.CharField(label='Nombre de Usuario',min_length=1,max_length=128,widget=forms.TextInput(attrs={'class': 'form-control','placeholder':'Usuario'}))
+    
+    firstname = forms.CharField(label='Nombre',min_length=1,max_length=128,widget=forms.TextInput(attrs={'class': 'form-control','placeholder':'Nombre'}))
+    
+    lastname = forms.CharField(label='Apellido',min_length=1,max_length=128,widget=forms.TextInput(attrs={'class': 'form-control','placeholder':'Apellido'}))
 
-    email = forms.EmailField(widget=forms.EmailInput(attrs={'class': 'form-control'}))
+    email = forms.EmailField(label=u'Dirección de email',widget=forms.EmailInput(attrs={'class': 'form-control','placeholder':'Email'}))
 
-    password = forms.CharField(min_length=5,widget=forms.PasswordInput(attrs={'class': 'form-control'}))
+    password = forms.CharField(label='Contraseña',min_length=5,widget=forms.PasswordInput(attrs={'class': 'form-control','placeholder':'Contraseña'}))
 
-    password2 = forms.CharField(min_length=5,widget=forms.PasswordInput(attrs={'class': 'form-control'}))
+    password2 = forms.CharField(label='Confirmación de Contraseña',min_length=5,widget=forms.PasswordInput(attrs={'class': 'form-control','placeholder':'Confirmación de Contraseña'}))
 
 
     def clean_username(self):
