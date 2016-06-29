@@ -38,21 +38,17 @@ def seguimientoAl(request):
             info = serializers.serialize('json', fulfillments)
         elif(queryid == "projectStage"):
             a1 = request.GET.get('dato1')
-            a2 = request.GET.get('dato2')
-            a3 = request.GET.get('dato3')
             idP = request.GET.get('nameProject')
             project = Projects.objects.get(nameProject=idP)
             nuevaEtapa = ProjectStages()
             nuevaEtapa.namePS = a1
-            nuevaEtapa.calification = a2
-            nuevaEtapa.classes = a3
             nuevaEtapa.nameProject= project
             nuevaEtapa.save()
             info = "Stage Saved!"
         elif(queryid == "projects"):
-                idS = request.GET.get('idSubject')
-                projects = Projects.objects.filter(idSubject=int(idS))
-                info = serializers.serialize('json', projects)
+            idS = request.GET.get('idSubject')
+            projects = Projects.objects.filter(idSubject=int(idS))
+            info = serializers.serialize('json', projects)
         elif(queryid == "newProject"):
             nameProject= request.GET.get('nameProject')
             idSubject = request.GET.get('idSubject')
@@ -71,13 +67,12 @@ def seguimientoAl(request):
         print "\033[1m Respuesta a la peticion de " + str(queryid) + ": \033[0m \n" + str(info)
         return HttpResponse(info)
     else:
-        stages = ProjectStages.objects.filter(nameProject="martillo")
         proyectos = Projects.objects.all()
         context = RequestContext(request)
         courses = Course.objects.all() 
         pupils = Pupil.objects.all() 
         subjects = Subject.objects.all() 
-        return render_to_response('SeguimientoAlumno.html', {'courses':courses, 'subjects':subjects, 'pupils':pupils, 'proyectos':proyectos, 'stages':stages},context)
+        return render_to_response('SeguimientoAlumno.html', {'courses':courses, 'subjects':subjects, 'pupils':pupils, 'proyectos':proyectos},context)
 
 def registerUser(request):
     context = RequestContext(request)

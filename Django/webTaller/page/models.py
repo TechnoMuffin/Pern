@@ -102,8 +102,8 @@ class Projects(models.Model):
 ##################################ETAPAS DE PROYECTOS##################################
 class ProjectStages(models.Model):
     namePS = models.CharField(max_length=128)
-    calification = models.IntegerField(null=True)
-    classes = models.IntegerField()
+#    calification = models.IntegerField(null=True)
+#    classes= models.IntegerField()
     idPS = models.AutoField(primary_key=True)
     nameProject = models.ForeignKey(Projects, max_length=128)
     
@@ -111,7 +111,7 @@ class ProjectStages(models.Model):
         verbose_name = 'Project Stage'
         verbose_name_plural = 'Project Stages'
     def __str__(self):
-        tagName = str(self.namePS) + "[" + str(self.idProject) +"]"
+        tagName = str(self.namePS) + "[" + str(self.nameProject) +"]"
         return tagName
     
 

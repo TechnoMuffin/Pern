@@ -152,28 +152,28 @@
 
                 </thead>
                 <tbody>
-                    {% for i in stages %}
-                    <tr role="row" class="gradeA odd">
+                    <!--   {% for i in stages %}
+<tr role="row" class="gradeA odd">
 
-                        <td class="sorting_1">{{i.namePS}}</td>
+<td class="sorting_1">{{i.namePS}}</td>
 
-                        <td>{{i.calification}}/10</td>
-                        <td>{{i.classes}} clases</td>
-                        <td class="actions">
-                            <a href="#" class="hidden on-editing save-row"><i class="fa fa-save"></i></a>
-                            <a href="#" class="hidden on-editing cancel-row"><i class="fa fa-times"></i></a>
-                            <a href="#" class="on-default edit-row"><i class="fa fa-pencil"></i></a>
-                            <a href="#" class="on-default remove-row"><i class="fa fa-trash-o"></i></a>
-                        </td>
-                    </tr>
-                    {% endfor %}
+<td>{{i.calification}}/10</td>
+<td>{{i.classes}} clases</td>
+<td class="actions">
+<a href="#" class="hidden on-editing save-row"><i class="fa fa-save"></i></a>
+<a href="#" class="hidden on-editing cancel-row"><i class="fa fa-times"></i></a>
+<a href="#" class="on-default edit-row"><i class="fa fa-pencil"></i></a>
+<a href="#" class="on-default remove-row"><i class="fa fa-trash-o"></i></a>
+</td>
+</tr>
+{% endfor %}-->
                 </tbody>
             </table>
         </div>
         <div class="row" style="margin-left:1206px;">
             <div class="col-sm-6">
                 <div class="m-b-30">
-                    <button id="btnAdd" onclick="Add()" style=" margin-top:25px" class="btn btn-primary waves-effect waves-light">Agregar <i class="fa fa-plus"></i></button>
+                    <button id="btnAdd" onclick="Add()" style=" margin-top:25px" class="btn btn-primary waves-effect waves-light" disabled="true">Agregar <i class="fa fa-plus"></i></button>
                 </div>   
             </div>
         </div>
@@ -322,9 +322,27 @@
         }
         function projectChanged(){
             if($('#cbxProject').val()!="zoidberg"){
+                $("#btnAdd").attr('disabled',false);
                 $("#delProject").attr('disabled',false);
+                $.ajax({
+                    url: "{% url 'app_testapp:seg-al' %}", 
+                    type: 'GET',
+                    data: {idSubject: $('#cbxProject').val(), queryId: "getStages"},
+                    dataType: 'json',
+                    success: function(info){
+                        $('#tblData tbody').empty();
+                        //Recorre todos los "Stages"
+                        for(var i=0;i<info.length;i++){
+                            //"Value" es el nombre del projecto
+                            var value = info[i].fields.nameProject;
+                            //"Text" es el id de la materia a la que esta asignada el projecto (asi es,Chucho)
+                            var text = info[i].pk;  
+                            //Agrega el projecto al cbx (si Chucho, podes getear el id del projecto del value del actual elemento en el cbx)
+                        }
+                    }});
             }else{
                 $("#delProject").attr('disabled',true);   
+                $("#btnAdd").attr('disabled',true);
             }
         }
         function pupilChanged(val){
@@ -347,10 +365,10 @@
         function Add(){
             $("#btnAdd").prop('disabled', true);
             $("#tblData tbody").append(
-                "{% csrf_token %}<tr id='prueba'>"+
+                "{% csrf_token %}<tr id='tableAdd'>"+
+                "<td></td>"+
+                "<td></td>"+
                 "<td><input type='text' id='input1'/></td>"+
-                "<td><input type='number' id='input2'/></td>"+
-                "<td><input type='number' id='input3'/></td>"+
                 "<td><i class='fa fa-save' id='btnSave' onclick='Save()'></i></td>"+
                 "</tr>");
             return;
@@ -358,23 +376,18 @@
 
         function Save(){
             var a = $('#input1').val();
-            var b = $('#input2').val();
-            var c = $('#input3').val();
+            console.log($('#cbxProject').val());
             $("#tblData tbody").append(
                 "<tr>"+
                 "<td>" + a + "</td>"+
-                "<td>" + b + "/10" + "</td>"+
-                "<td>" + c + " clases" + "</td>"+
                 "</tr>");
             Delete();
             var data={
                 csrfmiddlewaretoken: '{{ csrf_token }}',
                 dato1:$('#input1').val(),
-                dato2:$('#input2').val(),
-                dato3:$('#input3').val(),
                 queryId: "projectStage",
-                nameProject: "martillo",
-                //idProject: $('#cbxProject').val(),
+                //                nameProject: "martillo",
+                nameProject: $('#cbxProject').val(),
             }
             $.ajax({
                 url: "{% url 'app_testapp:seg-al' %}", 
@@ -385,6 +398,8 @@
                     console.log("CHUCHERROR");
                 }
             });
+            $("#tableAdd").empty();
+
         }
 
         function Delete(){
