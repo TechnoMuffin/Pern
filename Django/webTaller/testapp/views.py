@@ -45,6 +45,17 @@ def seguimientoAl(request):
             nuevaEtapa.nameProject= project
             nuevaEtapa.save()
             info = "Stage Saved!"
+            #ESTOOOOOOOOOOOOOO
+        elif(queryid == "editStage"):
+            newStageName = request.GET.get('newStageName')
+            idStage = request.GET.get('idStage')
+            ProjectStages.objects.get(idPS=int(idStage)).update(namePS=newStageName)
+            info = "Stage Changed!"
+        elif(queryid == "getStages"):
+            idProject = request.GET.get('idProject')
+            project = Projects.objects.get(nameProject=idProject)
+            stages = ProjectStages.objects.filter(nameProject=idProject)
+            info = serializers.serialize('json', stages)
         elif(queryid == "projects"):
             idS = request.GET.get('idSubject')
             projects = Projects.objects.filter(idSubject=int(idS))

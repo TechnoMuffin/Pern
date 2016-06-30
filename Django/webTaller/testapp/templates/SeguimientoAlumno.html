@@ -173,11 +173,51 @@
         <div class="row" style="margin-left:1206px;">
             <div class="col-sm-6">
                 <div class="m-b-30">
-                    <button id="btnAdd" onclick="Add()" style=" margin-top:25px" class="btn btn-primary waves-effect waves-light" disabled="true">Agregar <i class="fa fa-plus"></i></button>
+                    <button id="btnAdd" data-target="#addProjectStageModal" data-toggle="modal" style=" margin-top:25px" class="btn btn-primary waves-effect waves-light" disabled="true">Agregar Etapa<i class="fa fa-plus"></i></button>
                 </div>   
             </div>
         </div>
+        <!-- Modal Create Project-->
+        <div id="addProjectStageModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
 
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Crear nueva Etapa</h4>
+                    </div>
+                    <div class="modal-body">
+                        <input class="form-control" id="inputStage" maxlength="128" name="projectName" placeholder="Nombre de la Etapa" type="text">
+                    </div>
+                    <div class="modal-footer">
+                        <button id="stageCreator" onclick="Save()" type="button" class="btn btn-default" data-dismiss="modal">Crear Etapa</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!-- Modal Edit Stage  -->
+        <div id="editStage" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Editar Etapa</h4>
+                    </div>
+                    <div class="modal-body">
+                        <input class="form-control" id="inputEditStage" maxlength="128" name="editProjectName" placeholder="Nombre de la Etapa" type="text">
+                        <span id="idEditStage"></span>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" onclick="saveStageModal()" class="btn btn-default" data-dismiss="modal">Guardar</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
     </div>
 
     <!-- Boton Siguiente Alumno -->
@@ -215,6 +255,8 @@
                     alert("Debe completar el campo.");
                 }
             });
+
+        //Función
         $("#projectDeleter").click(
             function(){
                 if($('#cbxProject').val()!="zoidberg"){
@@ -321,23 +363,28 @@
                 }});
         }
         function projectChanged(){
+            $('#tblData tbody').empty();
             if($('#cbxProject').val()!="zoidberg"){
                 $("#btnAdd").attr('disabled',false);
                 $("#delProject").attr('disabled',false);
                 $.ajax({
                     url: "{% url 'app_testapp:seg-al' %}", 
                     type: 'GET',
-                    data: {idSubject: $('#cbxProject').val(), queryId: "getStages"},
+                    data: {idProject: $('#cbxProject').val(), queryId: "getStages"},
                     dataType: 'json',
                     success: function(info){
-                        $('#tblData tbody').empty();
                         //Recorre todos los "Stages"
-                        for(var i=0;i<info.length;i++){
-                            //"Value" es el nombre del projecto
-                            var value = info[i].fields.nameProject;
-                            //"Text" es el id de la materia a la que esta asignada el projecto (asi es,Chucho)
-                            var text = info[i].pk;  
-                            //Agrega el projecto al cbx (si Chucho, podes getear el id del projecto del value del actual elemento en el cbx)
+                        for(var i=0 ;i<info.length;i++){
+                            //"nameStage" es el nombre de la etapa 
+                            var nameStage = info[i].fields.namePS;
+                            var idStage = info[i].fields.idPS;
+                            $("#tblData tbody").append(
+                                "<tr id="+idStage+" class='trStage'>"+
+                                "<td>" + nameStage + "</td>"+
+                                "<td></td>"+
+                                "<td></td>"+
+                                "<td><button data-toggle='modal' onclick='editModal(this)' class='btnEdit btn-sm btn-primary waves-effect waves-light'><i class='fa fa-pencil'></i></button><button style='left:10px' data-toggle='modal' onclick='deleteModal(this)' class='btnEdit btn-sm btn-primary waves-effect waves-light'><i class='fa fa-trash'></i></button></td>"+
+                                "</tr>");
                         }
                     }});
             }else{
@@ -345,6 +392,41 @@
                 $("#btnAdd").attr('disabled',true);
             }
         }
+        function editModal(coso){
+            $("#editStage").modal("show");
+            fila=$(coso).parent().parent();
+            stageName=$("td:first-child", fila).text();
+            $("#inputEditStage").val(stageName);
+            idOfThisStage=$(fila).attr('id');
+            console.log(idOfThisStage);
+            $("#idEditStage").text(idOfThisStage);
+        }
+        function saveStageModal(){
+            console.log($("#inputEditStage").val());
+            console.log($("#idEditStage").text());
+            
+            var data={
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+                newStageName: $("#inputEditStage").val(),
+                idStage: $("#idEditStage").text(),
+                queryId: "editStage"
+            }
+            $.ajax({
+                url: "{% url 'app_testapp:seg-al' %}", 
+                type: 'GET',
+                data: data,
+                success:function(){
+                    projectChanged();
+                }
+            })
+        }
+
+        //        $(".trStage").mousehover(
+        //            function(){
+        //                console.log("hola");
+        //                $( ".btnEdit" ).show();
+        //            });
+
         function pupilChanged(val){
             $('#checkPresence').prop('checked', false);
             $('#obsAlum').val("");
@@ -362,52 +444,30 @@
             return;
         }
 
-        function Add(){
-            $("#btnAdd").prop('disabled', true);
-            $("#tblData tbody").append(
-                "{% csrf_token %}<tr id='tableAdd'>"+
-                "<td></td>"+
-                "<td></td>"+
-                "<td><input type='text' id='input1'/></td>"+
-                "<td><i class='fa fa-save' id='btnSave' onclick='Save()'></i></td>"+
-                "</tr>");
-            return;
-        }
+        //        function Add(){
+        //            $("#btnAdd").prop('disabled', true);
+        //            $("#tblData tbody").append(
+        //                "{% csrf_token %}<tr id='tableAdd'>"+
+        //                "<td><input type='text' id='input1'/></td>"+
+        //                "<td><i class='fa fa-save' id='btnSave' onclick='Save()'></i></td>"+
+        //                "</tr>");
+        //            return;
+        //        }
 
         function Save(){
-            var a = $('#input1').val();
-            console.log($('#cbxProject').val());
-            $("#tblData tbody").append(
-                "<tr>"+
-                "<td>" + a + "</td>"+
-                "</tr>");
-            Delete();
             var data={
                 csrfmiddlewaretoken: '{{ csrf_token }}',
-                dato1:$('#input1').val(),
+                dato1:$('#inputStage').val(),
                 queryId: "projectStage",
-                //                nameProject: "martillo",
                 nameProject: $('#cbxProject').val(),
             }
             $.ajax({
                 url: "{% url 'app_testapp:seg-al' %}", 
                 type: 'GET',
                 data: data,
-                success: function(info){
-                    console.log(info);
-                    console.log("CHUCHERROR");
-                }
             });
-            $("#tableAdd").empty();
-
-        }
-
-        function Delete(){
-            $("#prueba").remove();
-            $("#btnAdd").prop('disabled', false);
-
-            /*var par = $(this).parent().parent(); //tr
-            par.remove();*/
+            $('#inputStage').val("");
+            projectChanged();
         }
     </script>
     {% endblock %}
