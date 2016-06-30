@@ -66,13 +66,13 @@
         <h1>Seguimiento Alumno</h1>
         <div class="panel-body">
             <div class="col-sm-6" style="float:right;width: 178px;margin-top: -80px;">
-                <select class="form-control js-example-basic-single" id="cbxProject" onchange="projectChanged()" disabled="true">
+                <select class="form-control js-example-basic-single" id="cbxProject" onchange="projectChanged()"  style="left: -71px; position: relative;" disabled="true">
                     <option value="zoidberg" class="default-text">Projecto</option>
                 </select>
-                <button id="addProject" data-target="#addProjectModal" data-toggle="modal" style="display:inline;left: 163px;top: -32px;"  type="button" class="sm btn-primary waves-effect waves-light" disabled="true">
+                <button id="addProject" data-target="#addProjectModal" data-toggle="modal" style="display: inline; left: 106px; top: -32px;"      type="button" class="sm btn-primary waves-effect waves-light" disabled="true">
                     <i class="fa fa-plus"></i>
                 </button>
-                <button id="delProject" data-target="#delProjectModal" data-toggle="modal" style="display:inline;left: 163px;top: -32px;"  type="button" class="sm btn-primary waves-effect waves-light" disabled="false">
+                <button id="delProject" data-target="#delProjectModal" data-toggle="modal" style="display: inline; left: 108px; top: -32px;"  type="button" class="sm btn-primary waves-effect waves-light" disabled="false">
                     <i class="fa fa-minus"></i>
                 </button>
             </div>
@@ -107,7 +107,7 @@
                             <h4 class="modal-title">Borrar Projecto</h4>
                         </div>
                         <div class="modal-body">
-                            <p>Seguro que desea borrar este projecto? (Se borraran todas las etapas de todos los alumnos)</p>
+                            <p>¿Seguro que desea borrar este projecto? (Se borraran todas las etapas de todos los alumnos)</p>
                         </div>
                         <div class="modal-footer">
                             <button id="projectDeleter" type="button" class="btn btn-default" data-dismiss="modal">Borrar</button>
@@ -152,28 +152,13 @@
 
                 </thead>
                 <tbody>
-                    <!--   {% for i in stages %}
-<tr role="row" class="gradeA odd">
-
-<td class="sorting_1">{{i.namePS}}</td>
-
-<td>{{i.calification}}/10</td>
-<td>{{i.classes}} clases</td>
-<td class="actions">
-<a href="#" class="hidden on-editing save-row"><i class="fa fa-save"></i></a>
-<a href="#" class="hidden on-editing cancel-row"><i class="fa fa-times"></i></a>
-<a href="#" class="on-default edit-row"><i class="fa fa-pencil"></i></a>
-<a href="#" class="on-default remove-row"><i class="fa fa-trash-o"></i></a>
-</td>
-</tr>
-{% endfor %}-->
                 </tbody>
             </table>
         </div>
         <div class="row" style="margin-left:1206px;">
             <div class="col-sm-6">
                 <div class="m-b-30">
-                    <button id="btnAdd" data-target="#addProjectStageModal" data-toggle="modal" style=" margin-top:25px" class="btn btn-primary waves-effect waves-light" disabled="true">Agregar Etapa<i class="fa fa-plus"></i></button>
+                    <button id="btnAdd" data-target="#addProjectStageModal" data-toggle="modal" style="margin-top: 25px; position: relative; left: 14px;" class="btn btn-primary waves-effect waves-light" disabled="true"><i class="fa fa-plus"></i></button>
                 </div>   
             </div>
         </div>
@@ -208,7 +193,7 @@
                     </div>
                     <div class="modal-body">
                         <input class="form-control" id="inputEditStage" maxlength="128" name="editProjectName" placeholder="Nombre de la Etapa" type="text">
-                        <span id="idEditStage"></span>
+                        <span id="idEditStage" style="display:none"></span>
                     </div>
                     <div class="modal-footer">
                         <button type="button" onclick="saveStageModal()" class="btn btn-default" data-dismiss="modal">Guardar</button>
@@ -217,6 +202,45 @@
                 </div>
 
             </div>
+        </div>
+    </div>
+    <!-- Modal Delete Stage-->
+    <div id="delStageModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Borrar Etapa</h4>
+                </div>
+                <div class="modal-body">
+                    <p>¿Seguro que desea borrar esta etapa?</p>
+                    <span id="idDelStage" style="display:none"></span>
+                </div>
+                <div class="modal-footer">
+                    <button id="stageDeleter" onclick="StageDeleter()" type="button" class="btn btn-default" data-dismiss="modal">Borrar</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal Delete Stage Complete-->
+    <div id="delStageModalSuccess" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Éxito!</h4>
+                </div>
+                <div class="modal-body">
+                    <p id="delProjectResult"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Ok</button>
+                </div>
+            </div>
+
         </div>
     </div>
 
@@ -275,8 +299,8 @@
 
         function courseChanged(val){
             $("#tbleCon tbody").remove();
-            $("#cbxSubject").val("").change();
-            $("#cbxPupil").val("").change();
+//            $("#cbxSubject").val("").change();
+//            $("#cbxPupil").val("").change();
             if(val==""){
                 var lengthCbx = $('#cbxSubject > option').length;
                 $('#cbxSubject').empty();
@@ -308,7 +332,7 @@
                     $('#cbxPupil').empty();
                     $('#cbxPupil').append(new Option("Alumno", ""));
                     for(var i=0;i<info.length;i++){
-                        var text = info[i].fields.namePupil + " " + info[i].fields.surnamePupil;
+                        var text = info[i].fields.namePupil + " " +info[i].fields.surnamePupil;
                         var value = info[i].pk;
                         $('#cbxPupil').append(new Option(text, value));
                     }}});
@@ -377,13 +401,14 @@
                         for(var i=0 ;i<info.length;i++){
                             //"nameStage" es el nombre de la etapa 
                             var nameStage = info[i].fields.namePS;
-                            var idStage = info[i].fields.idPS;
+                            var idStage = info[i].pk;
                             $("#tblData tbody").append(
                                 "<tr id="+idStage+" class='trStage'>"+
                                 "<td>" + nameStage + "</td>"+
                                 "<td></td>"+
                                 "<td></td>"+
-                                "<td><button data-toggle='modal' onclick='editModal(this)' class='btnEdit btn-sm btn-primary waves-effect waves-light'><i class='fa fa-pencil'></i></button><button style='left:10px' data-toggle='modal' onclick='deleteModal(this)' class='btnEdit btn-sm btn-primary waves-effect waves-light'><i class='fa fa-trash'></i></button></td>"+
+                                "<td><button data-toggle='modal' onclick='editModal(this)' class='btnEdit btn-sm btn-primary waves-effect waves-light'><i class='fa fa-pencil'></i></button>"+
+                                "<button style='left:10px' data-toggle='modal' onclick='deleteStage(this)' class='btnEdit btn-sm btn-primary waves-effect waves-light'><i class='fa fa-trash'></i></button></td>"+
                                 "</tr>");
                         }
                     }});
@@ -392,24 +417,46 @@
                 $("#btnAdd").attr('disabled',true);
             }
         }
+        function deleteStage(coso){
+            $("#delStageModal").modal("show");
+            fila=$(coso).parent().parent();
+            idOfThisStage=$(coso).parent().parent().attr('id');
+            $("#idDelStage").text(idOfThisStage);
+        }
+        function StageDeleter(){
+            var data={
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+                idStage: $("#idDelStage").text(),
+                queryId: "deleteStage",
+            }
+            $.ajax({
+                url: "{% url 'app_testapp:seg-al' %}", 
+                type: 'GET',
+                data: data,
+                success:function(){
+                    $("#delStageModalSuccess").modal("show");
+                    projectChanged();
+                }
+            });
+        }
         function editModal(coso){
             $("#editStage").modal("show");
             fila=$(coso).parent().parent();
             stageName=$("td:first-child", fila).text();
             $("#inputEditStage").val(stageName);
-            idOfThisStage=$(fila).attr('id');
+            idOfThisStage=$(coso).parent().parent().attr('id');
             console.log(idOfThisStage);
             $("#idEditStage").text(idOfThisStage);
         }
         function saveStageModal(){
             console.log($("#inputEditStage").val());
             console.log($("#idEditStage").text());
-            
+
             var data={
                 csrfmiddlewaretoken: '{{ csrf_token }}',
                 newStageName: $("#inputEditStage").val(),
                 idStage: $("#idEditStage").text(),
-                queryId: "editStage"
+                queryId: "editStage",
             }
             $.ajax({
                 url: "{% url 'app_testapp:seg-al' %}", 
@@ -418,14 +465,9 @@
                 success:function(){
                     projectChanged();
                 }
-            })
+            });
         }
 
-        //        $(".trStage").mousehover(
-        //            function(){
-        //                console.log("hola");
-        //                $( ".btnEdit" ).show();
-        //            });
 
         function pupilChanged(val){
             $('#checkPresence').prop('checked', false);
@@ -444,15 +486,6 @@
             return;
         }
 
-        //        function Add(){
-        //            $("#btnAdd").prop('disabled', true);
-        //            $("#tblData tbody").append(
-        //                "{% csrf_token %}<tr id='tableAdd'>"+
-        //                "<td><input type='text' id='input1'/></td>"+
-        //                "<td><i class='fa fa-save' id='btnSave' onclick='Save()'></i></td>"+
-        //                "</tr>");
-        //            return;
-        //        }
 
         function Save(){
             var data={
@@ -471,34 +504,3 @@
         }
     </script>
     {% endblock %}
-
-    <!--
-function Edit(){
-var par = $(this).parent().parent(); //tr
-var Etapas = par.children("td:nth-child(1)");
-var tdPhone = par.children("td:nth-child(2)");
-var Clases_Utilizadas = par.children("td:nth-child(3)");
-var tdButtons = par.children("td:nth-child(4)");
-
-Etapas.html("<input type='text' id='Etapas' value='"+Etapas.html()+"'/>");
-Nota.html("<input type='text' id='Nota' value='"+Nota.html()+"'/>");
-Clases_Utilizadas.html("<input type='text' id='Clases Utilizadas' value='"+Clases_Utilizadas.html()+"'/>");
-tdButtons.html("<i class='fa fa-save' class='btnSave'></i>");
-
-$(".btnSave").bind("click", Save);
-$(".btnEdit").bind("click", Edit);
-$(".btnDelete").bind("click", Delete);
-}-->
-
-    <!--SAVE()
-//            var par = $(this).parent().parent(); //tr
-//            var Etapas = par.children("td:nth-child(1)");
-//            var Nota = par.children("td:nth-child(2)");
-//            var Clases_Utilizadas = par.children("td:nth-child(3)");
-//            var tdButtons = par.children("td:nth-child(4)");
-//
-//            Etapas.html(Etapas.children("input[type=text]").val());
-//            Nota.html(Nota.children("input[type=text]").val());
-//            Clases_Utilizadas.html(Clases_Utilizadas.children("input[type=text]").val());
-//            tdButtons.html("<i class='fa fa-trash-o' class='btnDelete' onclick='Delete()'></i><i class='fa fa-pencil' class='btnEdit' onclick='Edit()'></i>");
-//            console.log("asd");-->

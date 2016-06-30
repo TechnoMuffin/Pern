@@ -49,8 +49,15 @@ def seguimientoAl(request):
         elif(queryid == "editStage"):
             newStageName = request.GET.get('newStageName')
             idStage = request.GET.get('idStage')
-            ProjectStages.objects.get(idPS=int(idStage)).update(namePS=newStageName)
+            projecto=ProjectStages.objects.filter(idPS=idStage)
+            projecto.update(namePS=newStageName)
+            projecto[0].save()
             info = "Stage Changed!"
+        elif(queryid == "deleteStage"):
+            idStage = request.GET.get('idStage')
+            projecto=ProjectStages.objects.get(idPS=idStage)
+            projecto.delete()
+            info = "Stage Deleted!"
         elif(queryid == "getStages"):
             idProject = request.GET.get('idProject')
             project = Projects.objects.get(nameProject=idProject)
