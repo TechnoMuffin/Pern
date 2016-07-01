@@ -46,7 +46,7 @@ class Subject(models.Model):
     idSubject = models.AutoField(primary_key=True)
     nameSubject = models.CharField(max_length=128)
     idCourse = models.ManyToManyField(Course, blank=True)
-    nameFF = models.ManyToManyField(Fulfillment)
+    nameFF = models.ManyToManyField(Fulfillment, blank=True)
 
     
     class Meta:

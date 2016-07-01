@@ -5,7 +5,7 @@
 <!-- Checkbox de Asistencia -->
 <div>
     <div class="checkbox checkbox-primary checkbox-circle" style="margin-top: 22px; margin-left: 37px; font-size: 20px">
-        <input type="checkbox" id="checkPresence" onchange="changeAssist(this.value)">
+        <input type="checkbox" id="checkPresence" onchange="pupilFollow()">
         <label style="position:absolute">Asistencia</label>
     </div>
 </div>
@@ -13,7 +13,7 @@
     <!-- Seleccion de día -->
     <div class="col-sm-8" style="width: 190px; margin-right: 20px;">
         <div class="input-group" >
-            <input class="form-control datepicker" placeholder="yyyy-mm-dd" id="datepicker" type="text">
+            <input class="form-control datepicker" placeholder="yyyy-mm-dd" id="datepicker" type="text" value="2016-07-01">
             <!--            <span class="input-group-addon bg-primary b-0 text-white"><i class="ion-calendar"></i></span>-->
         </div>
     </div>
@@ -55,7 +55,7 @@
 <!-- Textarea de Observaciones -->    
 <div class="form-group" style="margin-left: 761px;">
     <label for="obsAlum" style="margin-top: 15px;">Observaciones</label>
-    <textarea class="form-control" rows="5" id="obsAlum" style="width: 590px; height: 335px;backgroun-color:red;"></textarea>
+    <textarea class="form-control" rows="5" id="obsAlum" style="width: 590px; height: 335px;backgroun-color:red;" onchange="pupilFollow()"></textarea>
 </div>
 
 
@@ -259,6 +259,21 @@
     </nav>
     <script src="{% static 'js/jquery-1.11.1.min.js'%}"></script>
     <script>
+        function pupilFollow(val){
+            presencePff =  $('#checkPresence').prop('checked');
+            if (presencePff == false){
+                $('.checkCont').prop('disabled',true)
+
+            }else{
+                $('.checkCont').prop('disabled',false)
+            }
+            $.ajax({
+                url: "{% url 'app_testapp:seg-al' %}", 
+                type: 'GET',
+                data: {idPupil: $('#cbxPupil').val(), idSubject: $('#cbxSubject').val(), assist: presencePff, date: $('#datepicker').val(), queryId: "pupilFollow",commentPF: $('#obsAlum').val()},
+                dataType: 'json'});
+            return;
+        }
         //Envio de datos para la creacion de otro projecto
         $("#projectSender").click(
             function(){

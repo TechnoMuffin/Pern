@@ -13,7 +13,6 @@ def base(request):
 def seguimientoAl(request):
     if request.is_ajax():
         queryid = request.GET.get('queryId')
-        print queryid
         info = "No entro en ninguna queryId"
         if(queryid == "course"):
             idC = request.GET.get('idCourse')
@@ -50,7 +49,20 @@ def seguimientoAl(request):
             nuevaEtapa.nameProject= project
             nuevaEtapa.save()
             info = "Stage Saved!"
-            #ESTOOOOOOOOOOOOOO
+        elif(queryid == "pupilFollow"):
+            idP = request.GET.get('idPupil')
+            idS = request.GET.get('idSubject')
+            date = request.GET.get('date')
+            commentPF = request.GET.get('commentPF')
+            presencePF = request.GET.get('assist')
+            pupilF = PupilFollowing.objects.filter(idPupil=int(idP), idSubject=int(idS), datePF=str(date))
+            pupilF.update(commentPF=commentPF)
+            if(presencePF == "true"):
+                pupilF.update(presencePF=True)
+            elif(presencePF == "false"):
+                pupilF.update(presencePF=False)
+            pupilF[0].save
+            info = "Comment updated!"
         elif(queryid == "editStage"):
             newStageName = request.GET.get('newStageName')
             idStage = request.GET.get('idStage')
