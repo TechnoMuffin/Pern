@@ -13,11 +13,16 @@ def base(request):
 def seguimientoAl(request):
     if request.is_ajax():
         queryid = request.GET.get('queryId')
+        print queryid
         info = "No entro en ninguna queryId"
         if(queryid == "course"):
             idC = request.GET.get('idCourse')
             courses = Course.objects.filter(idCourse=int(idC)) 
             info = serializers.serialize('json', courses)
+        elif(queryid == "CheckFF"):
+            idPF = request.GET.get('idPF')
+            data = CheckFF.objects.filter(idPF=int(idPF))
+            info = serializers.serialize('json', data)
         elif(queryid == "subjects"):
             idC = request.GET.get('idCourse')
             subjects = Subject.objects.filter(idCourse=int(idC))
@@ -111,3 +116,6 @@ def loginAdmin(request):
 def documentos(request):
     context = RequestContext(request)
     return render_to_response('Documentos.html',context)
+    
+    
+

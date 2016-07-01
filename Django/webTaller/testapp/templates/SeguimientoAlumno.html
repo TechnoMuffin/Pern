@@ -67,7 +67,7 @@
         <div class="panel-body">
             <div class="col-sm-6" style="float:right;width: 178px;margin-top: -80px;">
                 <select class="form-control js-example-basic-single" id="cbxProject" onchange="projectChanged()"  style="left: -71px; position: relative;" disabled="true">
-                    <option value="zoidberg" class="default-text">Projecto</option>
+                    <option value="zoidberg" class="default-text">Proyecto</option>
                 </select>
                 <button id="addProject" data-target="#addProjectModal" data-toggle="modal" style="display: inline; left: 106px; top: -32px;"      type="button" class="sm btn-primary waves-effect waves-light" disabled="true">
                     <i class="fa fa-plus"></i>
@@ -299,8 +299,8 @@
 
         function courseChanged(val){
             $("#tbleCon tbody").remove();
-//            $("#cbxSubject").val("").change();
-//            $("#cbxPupil").val("").change();
+            $("#cbxSubject").val("").change();
+            $("#cbxPupil").val("").change();
             if(val==""){
                 var lengthCbx = $('#cbxSubject > option').length;
                 $('#cbxSubject').empty();
@@ -339,6 +339,10 @@
             return;
         }
         function subjectChanged(val){
+            if($("#cbxSubject").val() == ""){
+                $("#cbxPupil").val("");
+                return;
+            }
             $.ajax({
                 url: "{% url 'app_testapp:seg-al' %}", 
                 type: 'GET',
@@ -349,7 +353,7 @@
                     for(var i=0;i<info[0].fields.nameFF.length;i++){
                         var tbody = $('#tbleCon').children('tbody');
                         var table = tbody.length ? tbody : $('#tbleCon');
-                        table.append('<tr><td>' + info[0].fields.nameFF[i] + '</td><td><div class="checkbox checkbox-success checkbox-circle"><input type="checkbox"><label></label></div></td></tr>');
+                        table.append('<tr><td id="row' + i +'">' + info[0].fields.nameFF[i] + '</td><td><div class="checkbox checkbox-success checkbox-circle"><input type="checkbox" id="rowCheck' + i +'"><label></label></div></td></tr>');
                     }
                 }});
             if($('#cbxSubject').val()!=""){
@@ -470,6 +474,9 @@
 
 
         function pupilChanged(val){
+            if($("#cbxPupil").val() == ""){
+                return;
+            }
             $('#checkPresence').prop('checked', false);
             $('#obsAlum').val("");
             $.ajax({
@@ -482,10 +489,38 @@
                     var observations = info[0].fields.commentPF;
                     $('#checkPresence').prop('checked', presence);
                     $('#obsAlum').val(observations);
+                    refreshFF(info);
                 }});
             return;
         }
 
+        function refreshFF(info){
+            $.ajax({
+                url: "{% url 'app_testapp:seg-al' %}", 
+                type: 'GET',
+                data: {idPF:info[0].pk, queryId: "CheckFF"},
+                dataType: 'json',
+                success: function(info){
+                    var rowCount = $('#tbleCon tbody tr').length;
+                    var dbbCount = info.length;
+                    for(var i=0;i<rowCount;i++){
+                        var rowText = $("#tbleCon #row" + i).text();
+                        var exists = false;
+                        for(var x=0;x<dbbCount;x++){
+                            var dbbValue = info[x].fields.check;
+                            var dbbText = info[x].fields.nameFF;
+                            if(rowText == dbbText){
+                                exists = true;
+                                $("#tbleCon #rowCheck" + i).prop('checked', dbbValue);
+                            }
+                            if(!exists){
+                                console.log("CREAR EN DBB: \t" + rowText);
+                            }
+                        }
+                    }
+                }
+            });
+        }
 
         function Save(){
             var data={
