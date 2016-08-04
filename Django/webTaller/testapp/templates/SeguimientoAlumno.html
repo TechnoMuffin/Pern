@@ -146,7 +146,7 @@
                     <tr role="row">
                         <th aria-label="Rendering engine: activate to sort column descending" aria-sort="ascending" style="width: 225px;" colspan="1" rowspan="1" aria-controls="datatable-editable" tabindex="0" class="sorting_asc">Etapas</th>
                         <th aria-label="Browser: activate to sort column ascending" style="width: 286px;" colspan="1" rowspan="1" aria-controls="datatable-editable" tabindex="0" class="sorting">Nota</th>
-                        <th aria-label="Platform(s): activate to sort column ascending" style="width: 257px;" colspan="1" rowspan="1" aria-controls="datatable-editable" tabindex="0" class="sorting">Clases_Utilizadas</th>
+                        <th aria-label="Platform(s): activate to sort column ascending" style="width: 257px;" colspan="1" rowspan="1" aria-controls="datatable-editable" tabindex="0" class="sorting">Clases Utilizadas</th>
                         <th aria-label="Actions" style="width: 116px;" colspan="1" rowspan="1" class="sorting_disabled"></th>
                     </tr>
 
@@ -371,11 +371,7 @@
                         table.append('<tr><td id="row' + i +'">' + info[0].fields.nameFF[i] + '</td><td><div class="checkbox checkbox-success checkbox-circle"><input type="checkbox" id="rowCheck' + i +'"><label></label></div></td></tr>');
                     }
                 }});
-            if($('#cbxSubject').val()!=""){
-                $("#cbxProject").attr('disabled',false);
-                $("#addProject").attr('disabled',false);
-                refreshProjects();
-            }
+
             return;
         }
         function refreshProjects(){
@@ -413,19 +409,21 @@
                 $.ajax({
                     url: "{% url 'app_testapp:seg-al' %}", 
                     type: 'GET',
-                    data: {idProject: $('#cbxProject').val(), queryId: "getStages"},
+                    data: {idProject: $('#cbxProject').val(), idPupil: $('#cbxPupil').val(), queryId: "getStages"},
                     dataType: 'json',
                     success: function(info){
                         //Recorre todos los "Stages"
                         for(var i=0 ;i<info.length;i++){
                             //"nameStage" es el nombre de la etapa 
                             var nameStage = info[i].fields.namePS;
+                            var note = info[i].fields.calification;
+                            var clases = info[i].fields.classes;
                             var idStage = info[i].pk;
                             $("#tblData tbody").append(
                                 "<tr id="+idStage+" class='trStage'>"+
                                 "<td>" + nameStage + "</td>"+
-                                "<td></td>"+
-                                "<td></td>"+
+                                "<td>"+note+"</td>"+
+                                "<td>"+clases+"</td>"+
                                 "<td><button data-toggle='modal' onclick='editModal(this)' class='btnEdit btn-sm btn-primary waves-effect waves-light'><i class='fa fa-pencil'></i></button>"+
                                 "<button style='left:10px' data-toggle='modal' onclick='deleteStage(this)' class='btnEdit btn-sm btn-primary waves-effect waves-light'><i class='fa fa-trash'></i></button></td>"+
                                 "</tr>");
@@ -435,6 +433,7 @@
                 $("#delProject").attr('disabled',true);   
                 $("#btnAdd").attr('disabled',true);
             }
+
         }
         function deleteStage(coso){
             $("#delStageModal").modal("show");
@@ -506,6 +505,11 @@
                     $('#obsAlum').val(observations);
                     refreshFF(info);
                 }});
+            if($('#cbxPupil').val()!=""){
+                $("#cbxProject").attr('disabled',false);
+                $("#addProject").attr('disabled',false);
+                refreshProjects();
+            }
             return;
         }
 
@@ -552,5 +556,29 @@
             $('#inputStage').val("");
             projectChanged();
         }
+        /*        function getCalifications(){
+            if($('#cbxProject').val()!="zoidberg"){
+                $.ajax({
+                    url: "{% url 'app_testapp:seg-al' %}", 
+                    type: 'GET',
+                    data: {idProject: $('#cbxProject').val(),idPupil: $('#cbxPupil').val(), queryId: "getCalifications"},
+                    dataType: 'json',
+                    success: function(info){
+                        //Recorre todos los "Stages"
+                        for(var i=0 ;i<info.length;i++){
+                            //"nameStage" es el nombre de la etapa 
+                            var calification = info[i].fields.note;
+                            var classes = info[i].fields.classes;
+                            var idCal = info[i].pk;
+                            $("#tblData tbody tr:eq("+i+") td:eq(2)").text(calification);
+                        }}});
+            }
+        }
+
+        function getCell(column, row) {
+            var column = $('#' + column).index();
+            var row = $('#' + row);
+            return row.find('td').eq(column);
+        }*/
     </script>
     {% endblock %}

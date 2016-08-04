@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Pupil, Course, Subject, PupilFollowing, Fulfillment, Projects, ProjectStages, CheckFF
+from models import *
 
 admin.site.register(Pupil)
 admin.site.register(CheckFF)

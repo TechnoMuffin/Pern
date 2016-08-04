@@ -77,13 +77,21 @@ def seguimientoAl(request):
             info = "Stage Deleted!"
         elif(queryid == "getStages"):
             idProject = request.GET.get('idProject')
+            idPupil = request.GET.get('idPupil')
             project = Projects.objects.get(nameProject=idProject)
-            stages = ProjectStages.objects.filter(nameProject=idProject)
+            pupil = Pupil.objects.get(idPupil=idPupil)
+            stages = ProjectStages.objects.filter(nameProject=idProject, idPupil=pupil)
             info = serializers.serialize('json', stages)
         elif(queryid == "projects"):
             idS = request.GET.get('idSubject')
             projects = Projects.objects.filter(idSubject=int(idS))
             info = serializers.serialize('json', projects)
+#        elif(queryid == "getCalifications"):
+#            idProject = request.GET.get('idProject')
+#            idPupil = request.GET.get('idPupil')  
+#            project = Projects.objects.get(nameProject=idProject)
+#            califications = Calification.objects.filter(idProject='idProject',idPupil='idPupil')
+#            info = serializers.serialize('json', califications)
         elif(queryid == "newProject"):
             nameProject= request.GET.get('nameProject')
             idSubject = request.GET.get('idSubject')
