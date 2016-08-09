@@ -42,12 +42,34 @@ def seguimientoAl(request):
             info = serializers.serialize('json', fulfillments)
         elif(queryid == "projectStage"):
             a1 = request.GET.get('dato1')
+            idCourse = request.GET.get('idCourse')
             idP = request.GET.get('nameProject')
+            todos = request.GET.get('todos')
+            idPupil = request.GET.get('idPupil')
             project = Projects.objects.get(nameProject=idP)
-            nuevaEtapa = ProjectStages()
-            nuevaEtapa.namePS = a1
-            nuevaEtapa.nameProject= project
-            nuevaEtapa.save()
+            print todos
+            if (todos=="1"): 
+                print "Todos los amiguitos"
+                course= Course.objects.get(idCourse=idCourse)
+                pupils = Pupil.objects.filter(idCourse=course)
+                for pupil in pupils:
+                    nuevaEtapa = ProjectStages()
+                    nuevaEtapa.namePS = a1
+                    nuevaEtapa.nameProject= project
+                    nuevaEtapa.calification=0
+                    nuevaEtapa.classes=0
+                    nuevaEtapa.idPupil=pupil
+                    nuevaEtapa.save()    
+            else:
+                print "Uno solo xd"
+                pupil = Pupil.objects.get(idPupil=idPupil)
+                nuevaEtapa = ProjectStages()
+                nuevaEtapa.namePS = a1
+                nuevaEtapa.nameProject= project
+                nuevaEtapa.calification=0
+                nuevaEtapa.classes=0
+                nuevaEtapa.idPupil=pupil
+                nuevaEtapa.save()
             info = "Stage Saved!"
         elif(queryid == "pupilFollow"):
             idP = request.GET.get('idPupil')

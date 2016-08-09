@@ -162,7 +162,7 @@
                 </div>   
             </div>
         </div>
-        <!-- Modal Create Project-->
+        <!-- Modal Create Stage-->
         <div id="addProjectStageModal" class="modal fade" role="dialog">
             <div class="modal-dialog">
 
@@ -174,6 +174,7 @@
                     </div>
                     <div class="modal-body">
                         <input class="form-control" id="inputStage" maxlength="128" name="projectName" placeholder="Nombre de la Etapa" type="text">
+                        <label><input type="checkbox" id="bxAddStage" checked="checked">Para Todos</label>
                     </div>
                     <div class="modal-footer">
                         <button id="stageCreator" onclick="Save()" type="button" class="btn btn-default" data-dismiss="modal">Crear Etapa</button>
@@ -474,7 +475,7 @@
                 csrfmiddlewaretoken: '{{ csrf_token }}',
                 newStageName: $("#inputEditStage").val(),
                 idStage: $("#idEditStage").text(),
-                queryId: "editStage",
+                queryId: "editStage",   
             }
             $.ajax({
                 url: "{% url 'app_testapp:seg-al' %}", 
@@ -542,11 +543,21 @@
         }
 
         function Save(){
+            if($('bxAddStage').checked) {
+                todos=1
+                console.log("es verdadero")
+            } else {
+                todos=0
+                console.log("es falso")
+            }
             var data={
                 csrfmiddlewaretoken: '{{ csrf_token }}',
                 dato1:$('#inputStage').val(),
                 queryId: "projectStage",
                 nameProject: $('#cbxProject').val(),
+                todos: todos,
+                idPupil: $('#cbxPupil').val(),
+                idCourse: $('#cbxCourse').val(),
             }
             $.ajax({
                 url: "{% url 'app_testapp:seg-al' %}", 
@@ -556,29 +567,5 @@
             $('#inputStage').val("");
             projectChanged();
         }
-        /*        function getCalifications(){
-            if($('#cbxProject').val()!="zoidberg"){
-                $.ajax({
-                    url: "{% url 'app_testapp:seg-al' %}", 
-                    type: 'GET',
-                    data: {idProject: $('#cbxProject').val(),idPupil: $('#cbxPupil').val(), queryId: "getCalifications"},
-                    dataType: 'json',
-                    success: function(info){
-                        //Recorre todos los "Stages"
-                        for(var i=0 ;i<info.length;i++){
-                            //"nameStage" es el nombre de la etapa 
-                            var calification = info[i].fields.note;
-                            var classes = info[i].fields.classes;
-                            var idCal = info[i].pk;
-                            $("#tblData tbody tr:eq("+i+") td:eq(2)").text(calification);
-                        }}});
-            }
-        }
-
-        function getCell(column, row) {
-            var column = $('#' + column).index();
-            var row = $('#' + row);
-            return row.find('td').eq(column);
-        }*/
     </script>
     {% endblock %}
