@@ -259,7 +259,7 @@
     <!-- Boton Trabajo Terminado -->
     <nav style="position: absolute; margin-left: 30px; margin-top: -65px;">
         <ul class="pager">
-            <li><a href="#">Trabajo Terminado</a></li>
+            <li onclick="promedioNotas()"><a href="#">Trabajo Terminado</a></li>
         </ul>
     </nav>
     <script src="{% static 'js/jquery-1.11.1.min.js'%}"></script>
@@ -427,7 +427,7 @@
                             $("#tblData tbody").append(
                                 "<tr id="+idStage+" class='trStage'>"+
                                 "<td>" + nameStage + "</td>"+
-                                "<td>"+note+"</td>"+
+                                "<td class='tdNota'>"+note+"</td>"+
                                 "<td>"+clases+"</td>"+
                                 "<td><button data-toggle='modal' onclick='editModal(this)' class='btnEdit btn-sm btn-primary waves-effect waves-light'><i class='fa fa-pencil'></i></button>"+
                                 "<button style='left:10px' data-toggle='modal' onclick='deleteStage(this)' class='btnEdit btn-sm btn-primary waves-effect waves-light'><i class='fa fa-trash'></i></button></td>"+
@@ -485,11 +485,11 @@
             console.log(idOfThisStage);
             $("#idEditStage").text(idOfThisStage);
         }
-        
+
         function saveStageModal(){
             console.log($("#inputEditStage").val());
             console.log($("#idEditStage").text());
-            
+
             if($('#bxEditStage').is(":checked")) {
                 todos=1
                 console.log("es verdadero")
@@ -599,6 +599,18 @@
             });
             $('#inputStage').val("");
             projectChanged();
+        }
+
+        function promedioNotas(){
+            avg = 0, amount = 0;
+            $(".tdNota").each(
+                function(){
+                    avg += +($(this).text());
+                    amount++;
+                }
+            );
+            avg /= amount;
+            console.log(avg);
         }
     </script>
     {% endblock %}
