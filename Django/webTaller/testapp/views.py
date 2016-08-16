@@ -88,9 +88,30 @@ def seguimientoAl(request):
         elif(queryid == "editStage"):
             newStageName = request.GET.get('newStageName')
             idStage = request.GET.get('idStage')
-            projecto=ProjectStages.objects.filter(idPS=idStage)
-            projecto.update(namePS=newStageName)
-            projecto[0].save()
+            projectAsoc = request.GET.get('nameProject')
+            todos = request.GET.get('todos')
+            idPupil = request.GET.get('idPupil')
+            idCourse = request.GET.get('idCourse')
+            calification = request.GET.get('calification')
+            classesUsed = request.GET.get('classesUsed')
+            project = Projects.objects.get(nameProject=projectAsoc)
+            course= Course.objects.get(idCourse=idCourse)
+            pupils = Pupil.objects.filter(idCourse=course)
+            if (todos=="1"):
+                #Get the name of the stage
+                stage=ProjectStages.objects.get(idPS=idStage)
+                nombre=stage.namePS
+                print(nombre)
+                #Update all Stages with the same name in the same project
+                stages=ProjectStages.objects.filter(namePS=nombre,nameProject=projectAsoc)
+                stages.update(namePS=newStageName)
+            else:
+                projecto=ProjectStages.objects.get(idPS=idStage)
+                projecto.namePS=newStageName
+                projecto.calification=calification
+                projecto.classes=classesUsed
+                projecto.save()
+                #projecto.update(namePS=newStageName)
             info = "Stage Changed!"
         elif(queryid == "deleteStage"):
             idStage = request.GET.get('idStage')

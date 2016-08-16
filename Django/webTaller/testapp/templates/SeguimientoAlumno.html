@@ -177,7 +177,7 @@
                         <label><input type="checkbox" id="bxAddStage" checked="checked">Para Todos</label>
                     </div>
                     <div class="modal-footer">
-                        <button id="stageCreator" onclick="Save()" type="button" class="btn btn-default" data-dismiss="modal">Crear Etapa</button>
+                        <button id="stageCreator" onclick="save()" type="button" class="btn btn-default" data-dismiss="modal">Crear Etapa</button>
                     </div>
                 </div>
 
@@ -194,6 +194,9 @@
                     </div>
                     <div class="modal-body">
                         <input class="form-control" id="inputEditStage" maxlength="128" name="editProjectName" placeholder="Nombre de la Etapa" type="text">
+                        <label><input type="checkbox" id="bxEditStage" checked="checked">Editar el nombre de esta etapa para todos los alumnos</label>
+                        <input class="form-control" id="inputNewCalificationStage" maxlength="1" name="editProjectName" placeholder="Nota" type="text">
+                        <input class="form-control" id="inputClassesStage" maxlength="5" name="editProjectName" placeholder="Cantidad de Clases" type="text">
                         <span id="idEditStage" style="display:none"></span>
                     </div>
                     <div class="modal-footer">
@@ -463,19 +466,37 @@
             fila=$(coso).parent().parent();
             stageName=$("td:first-child", fila).text();
             $("#inputEditStage").val(stageName);
+            stageCalification=$("td:nth-child(2)", fila).text();
+            $("#inputNewCalificationStage").val(stageCalification);
+            stageClasses=$("td:nth-child(3)", fila).text();
+            $("#inputClassesStage").val(stageClasses);
             idOfThisStage=$(coso).parent().parent().attr('id');
             console.log(idOfThisStage);
             $("#idEditStage").text(idOfThisStage);
         }
+        
         function saveStageModal(){
             console.log($("#inputEditStage").val());
             console.log($("#idEditStage").text());
-
+            
+            if($('#bxEditStage').is(":checked")) {
+                todos=1
+                console.log("es verdadero")
+            } else {
+                todos=0
+                console.log("es falso")
+            }
             var data={
                 csrfmiddlewaretoken: '{{ csrf_token }}',
                 newStageName: $("#inputEditStage").val(),
                 idStage: $("#idEditStage").text(),
                 queryId: "editStage",   
+                nameProject: $('#cbxProject').val(),
+                todos: todos,
+                idPupil: $('#cbxPupil').val(),
+                idCourse: $('#cbxCourse').val(),
+                calification: $('#inputNewCalificationStage').val(),
+                classesUsed: $('#inputClassesStage').val(),
             }
             $.ajax({
                 url: "{% url 'app_testapp:seg-al' %}", 
@@ -542,8 +563,8 @@
             });
         }
 
-        function Save(){
-            if($('bxAddStage').checked) {
+        function save(){
+            if($('#bxAddStage').is(":checked")) {
                 todos=1
                 console.log("es verdadero")
             } else {
