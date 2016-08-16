@@ -47,9 +47,7 @@ def seguimientoAl(request):
             todos = request.GET.get('todos')
             idPupil = request.GET.get('idPupil')
             project = Projects.objects.get(nameProject=idP)
-            print todos
             if (todos=="1"): 
-                print "Todos los amiguitos"
                 course= Course.objects.get(idCourse=idCourse)
                 pupils = Pupil.objects.filter(idCourse=course)
                 for pupil in pupils:
@@ -61,7 +59,6 @@ def seguimientoAl(request):
                     nuevaEtapa.idPupil=pupil
                     nuevaEtapa.save()    
             else:
-                print "Uno solo xd"
                 pupil = Pupil.objects.get(idPupil=idPupil)
                 nuevaEtapa = ProjectStages()
                 nuevaEtapa.namePS = a1
@@ -94,9 +91,18 @@ def seguimientoAl(request):
             info = "Stage Changed!"
         elif(queryid == "deleteStage"):
             idStage = request.GET.get('idStage')
-            projecto=ProjectStages.objects.get(idPS=idStage)
-            projecto.delete()
-            info = "Stage Deleted!"
+            etapaBorrada = request.GET.get('etapaBorrada')
+            if (etapaBorrada=="1"): 
+                etapa = ProjectStages.objects.get(idPS=idStage)
+                nombreStage = etapa.namePS
+                nombreProjecto = etapa.nameProject.nameProject
+                ProjectStages.objects.filter(namePS=nombreStage,nameProject=nombreProjecto).delete()
+            else :
+                etapa = ProjectStages.objects.get(idPS=idStage)
+                nombreStage = etapa.namePS
+                nombreProjecto = etapa.nameProject.nameProject
+                etapa.delete()
+            info = 'Se ha borrado correctamente la etapa "'+nombreStage+'" del proyecto "'+nombreProjecto+'"'
         elif(queryid == "getStages"):
             idProject = request.GET.get('idProject')
             idPupil = request.GET.get('idPupil')

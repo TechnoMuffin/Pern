@@ -63,7 +63,7 @@
 <!-- Tabla de Seguimiento de Alumno  -->
 <div class="card-box">
     <div class="panel">
-        <h1>Seguimiento Alumno</h1>
+        <h1>Tabla de Seguimiento</h1>
         <div class="panel-body">
             <div class="col-sm-6" style="float:right;width: 178px;margin-top: -80px;">
                 <select class="form-control js-example-basic-single" id="cbxProject" onchange="projectChanged()"  style="left: -71px; position: relative;" disabled="true">
@@ -174,9 +174,9 @@
                     </div>
                     <div class="modal-body">
                         <input class="form-control" id="inputStage" maxlength="128" name="projectName" placeholder="Nombre de la Etapa" type="text">
-                        <label><input type="checkbox" id="bxAddStage" checked="checked">Para Todos</label>
                     </div>
                     <div class="modal-footer">
+                        <label style="margin-right: 322px;"><input type="checkbox" id="bxAddStage" checked="checked">Para Todos</label>
                         <button id="stageCreator" onclick="Save()" type="button" class="btn btn-default" data-dismiss="modal">Crear Etapa</button>
                     </div>
                 </div>
@@ -219,6 +219,7 @@
                     <span id="idDelStage" style="display:none"></span>
                 </div>
                 <div class="modal-footer">
+                    <label style="margin-right: 252px;"><input type="checkbox" id="bxDelStage" checked="checked">Para Todos</label>
                     <button id="stageDeleter" onclick="StageDeleter()" type="button" class="btn btn-default" data-dismiss="modal">Borrar</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
                 </div>
@@ -235,7 +236,7 @@
                     <h4 class="modal-title">Éxito!</h4>
                 </div>
                 <div class="modal-body">
-                    <p id="delProjectResult"></p>
+                    <p id="delStageResult"></p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Ok</button>
@@ -443,18 +444,28 @@
             $("#idDelStage").text(idOfThisStage);
         }
         function StageDeleter(){
+            if($('#bxDelStage').is(':checked')) {
+                etapaBorrada=1
+                console.log("es verdadero")
+            } else {
+                etapaBorrada=0
+                console.log("es falso")
+            }
             var data={
                 csrfmiddlewaretoken: '{{ csrf_token }}',
                 idStage: $("#idDelStage").text(),
                 queryId: "deleteStage",
+                etapaBorrada: etapaBorrada,
             }
             $.ajax({
                 url: "{% url 'app_testapp:seg-al' %}", 
                 type: 'GET',
                 data: data,
-                success:function(){
+                success:function(info){
                     $("#delStageModalSuccess").modal("show");
                     projectChanged();
+                    $('#delStageResult').text(info);
+
                 }
             });
         }
@@ -543,7 +554,7 @@
         }
 
         function Save(){
-            if($('bxAddStage').checked) {
+            if($('#bxAddStage').is(':checked')) {
                 todos=1
                 console.log("es verdadero")
             } else {
