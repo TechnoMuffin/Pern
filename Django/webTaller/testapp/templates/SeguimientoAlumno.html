@@ -248,6 +248,30 @@
 
         </div>
     </div>
+    <!-- Modal Calcular Promedio de Etapas-->
+    <div id="mostrarPromedio" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">El promedio es de:</h4>
+                </div>
+                <div class="modal-body" style="margin-top: 9.5%;">
+                    <div class="col-lg-8" align="left" style="margin-top: -10.5%;">
+                        <p id="spanStar"></p>
+                    </div>
+                    <div class="col-lg-4" align="center" style="margin-top: -11.5%;">
+                        <p id="showProm" style="font-size: 55px;"></p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Continuar</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
 
     <!-- Boton Siguiente Alumno -->
     <nav style="margin-left: 1125px; margin-top: 10px;">
@@ -259,9 +283,8 @@
     <!-- Boton Trabajo Terminado -->
     <nav style="position: absolute; margin-left: 30px; margin-top: -65px;">
         <ul class="pager">
-            <li onclick="promedioNotas()"><a href="#">Trabajo Terminado</a></li>
+            <li onclick="promedioNotas()"><a href="#">Calcular Promedio</a></li>
         </ul>
-            <div id="spanStar"></div>
     </nav>
     <script src="{% static 'js/jquery-1.11.1.min.js'%}"></script>
     <script>
@@ -291,9 +314,7 @@
                         success: function(){
                             refreshProjects();
                             $('#cbxProject').val($('#projectName').val());
-                            console.log($('#projectName').val());
                             $('#projectName').val("");
-                            console.log($('#cbxProject').val());    
                         }
                     });
                 }else{
@@ -450,10 +471,8 @@
         function StageDeleter(){
             if($('#bxDelStage').is(':checked')) {
                 etapaBorrada=1
-                console.log("es verdadero")
             } else {
                 etapaBorrada=0
-                console.log("es falso")
             }
             var data={
                 csrfmiddlewaretoken: '{{ csrf_token }}',
@@ -483,20 +502,14 @@
             stageClasses=$("td:nth-child(3)", fila).text();
             $("#inputClassesStage").val(stageClasses);
             idOfThisStage=$(coso).parent().parent().attr('id');
-            console.log(idOfThisStage);
             $("#idEditStage").text(idOfThisStage);
         }
 
         function saveStageModal(){
-            console.log($("#inputEditStage").val());
-            console.log($("#idEditStage").text());
-
             if($('#bxEditStage').is(":checked")) {
                 todos=1
-                console.log("es verdadero")
             } else {
                 todos=0
-                console.log("es falso")
             }
             var data={
                 csrfmiddlewaretoken: '{{ csrf_token }}',
@@ -579,10 +592,8 @@
         function save(){
             if($('#bxAddStage').is(":checked")) {
                 todos=1
-                console.log("es verdadero")
             } else {
                 todos=0
-                console.log("es falso")
             }
             var data={
                 csrfmiddlewaretoken: '{{ csrf_token }}',
@@ -615,23 +626,23 @@
                 }
             );
             avg /= amount;
-            console.log(avg);
             avgNotFloat = Math.trunc(avg);
-            console.log(avgNotFloat);
             for(var i=0;i<avgNotFloat;i++){
-                $("#spanStar").append('<span class="fa fa-star"></span>');
+                $("#spanStar").append('<span class="fa fa-star fa-5x"></span>');
             }
             var avgOnlyFloat = avg - avgNotFloat;
-            console.log(avgOnlyFloat);
             if (avgOnlyFloat >= 0.1 && avgOnlyFloat <= 0.9){
-                $("#spanStar").append('<span class="fa fa-star-half-o"></span>');
+                $("#spanStar").append('<span class="fa fa-star-half-o fa-5x"></span>');
             }
             var emptyStar = 5 - avg;
             emptyStar = Math.trunc(emptyStar);
-            console.log(emptyStar);
             for (var i=0;i<emptyStar;i++){
-                $("#spanStar").append('<span class="fa fa-star-o"></span>');
+                $("#spanStar").append('<span class="fa fa-star-o fa-5x"></span>');
             }
+            var avgFinal = parseFloat(avg);
+            avgFinal = avgFinal.toFixed(2);
+            $("#showProm").text(avgFinal);
+            $('#mostrarPromedio').modal('show');
         }
     </script>
     {% endblock %}
