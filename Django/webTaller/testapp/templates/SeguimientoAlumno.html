@@ -176,8 +176,8 @@
                         <input class="form-control" id="inputStage" maxlength="128" name="projectName" placeholder="Nombre de la Etapa" type="text">
                     </div>
                     <div class="modal-footer">
-                        <label style="margin-right: 322px;"><input type="checkbox" id="bxAddStage" checked="checked">Para Todos</label>
-                        <button id="stageCreator" onclick="save()" type="button" class="btn btn-default" data-dismiss="modal">Crear Etapa</button>
+                        <div class="col-lg-6" align="left" style="margin-top:2.5%;"><label><input type="checkbox" id="bxAddStage" checked="checked">Para Todos</label></div>
+                        <div class="col-lg-6"><button id="stageCreator" onclick="save()" type="button" class="btn btn-default" data-dismiss="modal">Crear Etapa</button></div>
                     </div>
                 </div>
 
@@ -261,6 +261,7 @@
         <ul class="pager">
             <li onclick="promedioNotas()"><a href="#">Trabajo Terminado</a></li>
         </ul>
+            <div id="spanStar"></div>
     </nav>
     <script src="{% static 'js/jquery-1.11.1.min.js'%}"></script>
     <script>
@@ -596,13 +597,17 @@
                 url: "{% url 'app_testapp:seg-al' %}", 
                 type: 'GET',
                 data: data,
+                success:function(){
+                    projectChanged();
+                }
             });
             $('#inputStage').val("");
-            projectChanged();
         }
 
         function promedioNotas(){
-            avg = 0, amount = 0;
+            $("#spanStar").empty();
+            var avg = 0;
+            var amount = 0;
             $(".tdNota").each(
                 function(){
                     avg += +($(this).text());
@@ -611,6 +616,22 @@
             );
             avg /= amount;
             console.log(avg);
+            avgNotFloat = Math.trunc(avg);
+            console.log(avgNotFloat);
+            for(var i=0;i<avgNotFloat;i++){
+                $("#spanStar").append('<span class="fa fa-star"></span>');
+            }
+            var avgOnlyFloat = avg - avgNotFloat;
+            console.log(avgOnlyFloat);
+            if (avgOnlyFloat >= 0.1 && avgOnlyFloat <= 0.9){
+                $("#spanStar").append('<span class="fa fa-star-half-o"></span>');
+            }
+            var emptyStar = 5 - avg;
+            emptyStar = Math.trunc(emptyStar);
+            console.log(emptyStar);
+            for (var i=0;i<emptyStar;i++){
+                $("#spanStar").append('<span class="fa fa-star-o"></span>');
+            }
         }
     </script>
     {% endblock %}
