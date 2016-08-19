@@ -142,15 +142,15 @@
     <div class="row" style="margin-top: 10px;">
         <div class="col-sm-12">
             <table aria-describedby="datatable-editable_info" role="grid" class="table table-striped dataTable no-footer" id="tblData">
-                <thead>
+                <div><thead>
                     <tr role="row">
-                        <th aria-label="Rendering engine: activate to sort column descending" aria-sort="ascending" style="width: 225px;" colspan="1" rowspan="1" aria-controls="datatable-editable" tabindex="0" class="sorting_asc">Etapas</th>
-                        <th aria-label="Browser: activate to sort column ascending" style="width: 286px;" colspan="1" rowspan="1" aria-controls="datatable-editable" tabindex="0" class="sorting">Nota</th>
-                        <th aria-label="Platform(s): activate to sort column ascending" style="width: 257px;" colspan="1" rowspan="1" aria-controls="datatable-editable" tabindex="0" class="sorting">Clases Utilizadas</th>
+                        <th aria-label="Rendering engine: activate to sort column descending" aria-sort="ascending" style="width: 225px;" colspan="1" rowspan="1" aria-controls="datatable-editable" tabindex="0" class="sorting_asc,col-lg-4">Etapas</th>
+                        <th aria-label="Browser: activate to sort column ascending" style="width: 286px;" colspan="1" rowspan="1" aria-controls="datatable-editable" tabindex="0" class="sorting,col-lg-4">Nota</th>
+                        <th aria-label="Platform(s): activate to sort column ascending" style="width: 257px;" colspan="1" rowspan="1" aria-controls="datatable-editable" tabindex="0" class="sorting,col-lg-4">Clases Utilizadas</th>
                         <th aria-label="Actions" style="width: 116px;" colspan="1" rowspan="1" class="sorting_disabled"></th>
                     </tr>
 
-                </thead>
+                </thead></div>
                 <tbody>
                 </tbody>
             </table>
@@ -176,8 +176,8 @@
                         <input class="form-control" id="inputStage" maxlength="128" name="projectName" placeholder="Nombre de la Etapa" type="text">
                     </div>
                     <div class="modal-footer">
-                        <div class="col-lg-6" align="left" style="margin-top:2.5%;"><label><input type="checkbox" id="bxAddStage" checked="checked">Para Todos</label></div>
-                        <div class="col-lg-6"><button id="stageCreator" onclick="save()" type="button" class="btn btn-default" data-dismiss="modal">Crear Etapa</button></div>
+                        <div class="col-lg-6" align="left" style="margin-top:2.5%; padding-left: 0px;"><label><input type="checkbox" id="bxAddStage" checked="checked">Para Todos</label></div>
+                        <div class="col-lg-6" style="padding-right: 0px;"><button id="stageCreator" onclick="save()" type="button" class="btn btn-default" data-dismiss="modal">Crear Etapa</button></div>
                     </div>
                 </div>
 
@@ -222,9 +222,9 @@
                     <span id="idDelStage" style="display:none"></span>
                 </div>
                 <div class="modal-footer">
-                    <label style="margin-right: 252px;"><input type="checkbox" id="bxDelStage" checked="checked">Para Todos</label>
-                    <button id="stageDeleter" onclick="StageDeleter()" type="button" class="btn btn-default" data-dismiss="modal">Borrar</button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                    <div class="col-lg-4" style="margin-left: -13.5%;padding-left: 0px; margin-top: 2.5%;"><label><input type="checkbox" id="bxDelStage" checked="checked">Para Todos</label></div>
+                    <div class="col-lg-6"style="padding-right: 0px;margin-left: 30%;"><button id="stageDeleter" onclick="StageDeleter()" type="button" class="btn btn-default" data-dismiss="modal">Borrar</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button></div>
                 </div>
             </div>
         </div>
@@ -276,7 +276,7 @@
     <!-- Boton Siguiente Alumno -->
     <nav style="margin-left: 1125px; margin-top: 10px;">
         <ul class="pager">
-            <li><a href="#">Siguiente Alumno</a></li>
+            <li><a href="#" >Siguiente Alumno</a></li>
         </ul>
     </nav>
 
@@ -449,12 +449,13 @@
                             $("#tblData tbody").append(
                                 "<tr id="+idStage+" class='trStage'>"+
                                 "<td>" + nameStage + "</td>"+
-                                "<td class='tdNota'>"+note+"</td>"+
+                                "<td class='tdNota'>"+ "<span style='display:none'>"+note+"</span>" +"</td>"+
                                 "<td>"+clases+"</td>"+
                                 "<td><button data-toggle='modal' onclick='editModal(this)' class='btnEdit btn-sm btn-primary waves-effect waves-light'><i class='fa fa-pencil'></i></button>"+
                                 "<button style='left:10px' data-toggle='modal' onclick='deleteStage(this)' class='btnEdit btn-sm btn-primary waves-effect waves-light'><i class='fa fa-trash'></i></button></td>"+
                                 "</tr>");
                         }
+                    estrellasEtapa();
                     }});
             }else{
                 $("#delProject").attr('disabled',true);   
@@ -643,6 +644,19 @@
             avgFinal = avgFinal.toFixed(2);
             $("#showProm").text(avgFinal);
             $('#mostrarPromedio').modal('show');
+        }
+        function estrellasEtapa(){
+            $(".tdNota").each(
+                function(){
+                    for (var i=0; i<($(this).text());i++){
+                        $(this).append('<span class="fa fa-star fa-2x"></span>');    
+                    }
+                    var starempty = 5-$(this).text();
+                    for (var i=0; i<starempty;i++){
+                        $(this).append('<span class="fa fa-star-o fa-2x"></span>'); 
+                    }
+                }
+            );
         }
     </script>
     {% endblock %}
