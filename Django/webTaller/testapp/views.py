@@ -185,6 +185,3 @@ def loginAdmin(request):
 def documentos(request):
     context = RequestContext(request)
     return render_to_response('Documentos.html',context)
-    
-    
-
