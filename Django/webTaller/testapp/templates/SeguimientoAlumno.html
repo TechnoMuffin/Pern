@@ -150,7 +150,7 @@
                         <th aria-label="Actions" style="width: 116px;" colspan="1" rowspan="1" class="sorting_disabled"></th>
                     </tr>
 
-                </thead></div>
+                    </thead></div>
                 <tbody>
                 </tbody>
             </table>
@@ -180,7 +180,6 @@
                         <div class="col-lg-6" style="padding-right: 0px;"><button id="stageCreator" onclick="save()" type="button" class="btn btn-default" data-dismiss="modal">Crear Etapa</button></div>
                     </div>
                 </div>
-
             </div>
         </div>
         <!-- Modal Edit Stage  -->
@@ -224,7 +223,7 @@
                 <div class="modal-footer">
                     <div class="col-lg-4" style="margin-left: -13.5%;padding-left: 0px; margin-top: 2.5%;"><label><input type="checkbox" id="bxDelStage" checked="checked">Para Todos</label></div>
                     <div class="col-lg-6"style="padding-right: 0px;margin-left: 30%;"><button id="stageDeleter" onclick="StageDeleter()" type="button" class="btn btn-default" data-dismiss="modal">Borrar</button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button></div>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button></div>
                 </div>
             </div>
         </div>
@@ -239,16 +238,16 @@
                     <h4 class="modal-title">Calificar</h4>
                 </div>
                 <div class="modal-body">
-                        <div class="star_rating"> 
+                    <div class="star_rating"> 
                         {% for j in '12345' %}
-                            <span class="fa fa-star-o fa-2x" data-rating="{{j}}"></span>        
+                        <span class="fa fa-star-o fa-2x" data-rating="{{j}}"></span>        
                         {% endfor %}
                         <input type="hidden" name="whatever" id="calStar" class="rating-value" value="0">
                     </div>
                 </div>
                 <div class="modal-footer">
                     <div class="col-lg-6"style="padding-right: 0px;margin-left: 30%;"><button id="calSave" onclick="StageDeleter()" type="button" class="btn btn-default" data-dismiss="modal">Guardar</button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button></div>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button></div>
                 </div>
             </div>
         </div>
@@ -300,7 +299,7 @@
     <!-- Boton Siguiente Alumno -->
     <nav style="margin-left: 1125px; margin-top: 10px;">
         <ul class="pager">
-            <li><a href="#" >Siguiente Alumno</a></li>
+            <li id="sigAl" onclick="sigAlumno()"><a href="#" >Siguiente Alumno</a></li>
         </ul>
     </nav>
 
@@ -480,7 +479,7 @@
                                 "<button style='left:20px' data-toggle='modal' onclick='deleteStage(this)' class='btnEdit btn-sm btn-primary waves-effect waves-light'><i class='fa fa-trash'></i></button></td>"+
                                 "</tr>");
                         }
-                    estrellasEtapa();
+                        estrellasEtapa();
                     }});
             }else{
                 $("#delProject").attr('disabled',true);   
@@ -683,7 +682,7 @@
                 }
             );
         }
-        
+
         function bxEditChckBx(esto){
             if($(esto).is(":checked")){
                 $('#inputNewCalificationStage').hide();
@@ -693,10 +692,20 @@
                 $('#inputClassesStage').show();
             }
         }
-        function calificate(){
+
+        function calificate(coso){
             $("#modalCalificate").modal("show");
+            fila=$(coso).parent().parent();
+            stageName=$("td:first-child", fila).text();
+            $("#inputEditStage").val(stageName);
+            stageCalification=$("td:nth-child(2)", fila).text();
+            $("#inputNewCalificationStage").val(stageCalification);
+            stageClasses=$("td:nth-child(3)", fila).text();
+            $("#inputClassesStage").val(stageClasses);
+            idOfThisStage=$(coso).parent().parent().attr('id');
+            $("#idCalificationStage").text(idOfThisStage);
         }
-        
+
         var star_rating = $('.star_rating .fa');
         var SetRatingStar = function() {
             return star_rating.each(function() {
@@ -711,6 +720,31 @@
             star_rating.siblings('input.rating-value').val($(this).data('rating'));
             return SetRatingStar();
         });
-        $("#calSave").onclick()
+
+        $("#calSave").click(function(){
+            var data={
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+                idStage: $("#idEditStage").text(),
+                queryId: "saveCalification",
+                nameProject: $('#cbxProject').val(),
+                idPupil: $('#cbxPupil').val(),
+                idCourse: $('#cbxCourse').val(),
+                calification: $('#inputNewCalificationStage').val(),
+                classesUsed: $('#inputClassesStage').val(),
+            }
+            $.ajax({
+                url: "{% url 'app_testapp:seg-al' %}", 
+                type: 'GET',
+                data: data,
+                success:function(){
+                    projectChanged();
+                }
+            });
+        });
+
+        function sigAlumno(){
+            $('#cbxPupil').val($('#cbxPupil option:selected').next().val());
+            $('#cbxPupil').change();
+        }
     </script>
     {% endblock %}
