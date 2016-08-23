@@ -35,6 +35,16 @@ def seguimientoAl(request):
             idS = request.GET.get('idSubject')
             date = request.GET.get('date')
             pupilF = PupilFollowing.objects.filter(idPupil=int(idP), idSubject=int(idS), datePF=str(date))
+            try:
+                pupilF[0]
+            except IndexError:
+                newPF = PupilFollowing()
+                newPF.idPupil = Pupil.objects.get(idPupil=int(idP))
+                newPF.idSubject = Subject.objects.get(idSubject=int(idS))
+                newPF.datePF=str(date)
+                newPF.presencePF=True
+                newPF.save()
+                pupilF = PupilFollowing.objects.filter(idPupil=int(idP), idSubject=int(idS), datePF=str(date))
             info = serializers.serialize('json', pupilF)
         elif(queryid == "fulfillments"):
             idS = request.GET.get('idSubject')
@@ -98,7 +108,6 @@ def seguimientoAl(request):
                 #Get the name of the stage
                 stage=ProjectStages.objects.get(idPS=idStage)
                 nombre=stage.namePS
-                print(nombre)
                 #Update all Stages with the same name in the same project
                 stages=ProjectStages.objects.filter(namePS=nombre,nameProject=projectAsoc)
                 stages.update(namePS=newStageName)
@@ -155,8 +164,6 @@ def seguimientoAl(request):
             idSubject = request.GET.get('idSubject')
             proj=Projects.objects.get(idSubject=int(idSubject),nameProject=str(nameProject))
             proj.delete()
-            info = 'Se ha borrado correctamente el proyecto "'+nameProject+'"'
-        print "\033[1m Respuesta a la peticion de " + str(queryid) + ": \033[0m \n" + str(info)
         return HttpResponse(info)
     else:
         proyectos = Projects.objects.all()
