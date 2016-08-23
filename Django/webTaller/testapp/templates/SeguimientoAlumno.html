@@ -3,9 +3,9 @@
 {% block content %}
 {% load staticfiles %}
 <style>.bootstrap-iso .formden_header h2, .bootstrap-iso .formden_header p, .bootstrap-iso
-form{font-family: Arial, Helvetica, sans-serif; color: black}.bootstrap-iso
-form button, .bootstrap-iso
-form button:hover{color: white !important;} .asteriskField{color: red;}</style>
+    form{font-family: Arial, Helvetica, sans-serif; color: black}.bootstrap-iso
+    form button, .bootstrap-iso
+    form button:hover{color: white !important;} .asteriskField{color: red;}</style>
 
 <!-- Checkbox de Asistencia -->
 <div>
@@ -17,13 +17,13 @@ form button:hover{color: white !important;} .asteriskField{color: red;}</style>
 <div style="width: 860px; float:right;">
     <!-- Seleccion de día -->
     <div class="bootstrap-iso">
-    <div class="col-md-6 col-sm-6 col-xs-12" style="width: 190px; margin-right: 20px;">
-      <form class="form-horizontal" >
-       <div class="form-group">
-            <input class="form-control" id="datepicker" name="date" type="text"/>
+        <div class="col-md-6 col-sm-6 col-xs-12" style="width: 190px; margin-right: 20px;">
+            <form class="form-horizontal" >
+                <div class="form-group">
+                    <input class="form-control" id="datepicker" name="date" type="text"/>
+                </div>
+            </form>
         </div>
-      </form>
-</div>
     </div>
 
     <!-- Dropdown de Curso -->
@@ -159,7 +159,7 @@ form button:hover{color: white !important;} .asteriskField{color: red;}</style>
                         <th aria-label="Actions" style="width: 116px;" colspan="1" rowspan="1" class="sorting_disabled"></th>
                     </tr>
 
-                </thead></div>
+                    </thead></div>
                 <tbody>
                 </tbody>
             </table>
@@ -233,7 +233,7 @@ form button:hover{color: white !important;} .asteriskField{color: red;}</style>
                 <div class="modal-footer">
                     <div class="col-lg-4" style="margin-left: -13.5%;padding-left: 0px; margin-top: 2.5%;"><label><input type="checkbox" id="bxDelStage" checked="checked">Para Todos</label></div>
                     <div class="col-lg-6"style="padding-right: 0px;margin-left: 30%;"><button id="stageDeleter" onclick="StageDeleter()" type="button" class="btn btn-default" data-dismiss="modal">Borrar</button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button></div>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button></div>
                 </div>
             </div>
         </div>
@@ -248,16 +248,16 @@ form button:hover{color: white !important;} .asteriskField{color: red;}</style>
                     <h4 class="modal-title">Calificar</h4>
                 </div>
                 <div class="modal-body">
-                        <div class="star_rating"> 
+                    <div class="star_rating"> 
                         {% for j in '12345' %}
-                            <span class="fa fa-star-o fa-2x" data-rating="{{j}}"></span>        
+                        <span class="fa fa-star-o fa-2x" data-rating="{{j}}"></span>        
                         {% endfor %}
                         <input type="hidden" name="whatever" id="calStar" class="rating-value" value="0">
                     </div>
                 </div>
                 <div class="modal-footer">
                     <div class="col-lg-6"style="padding-right: 0px;margin-left: 30%;"><button id="calSave" onclick="StageDeleter()" type="button" class="btn btn-default" data-dismiss="modal">Guardar</button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button></div>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button></div>
                 </div>
             </div>
         </div>
@@ -489,7 +489,7 @@ form button:hover{color: white !important;} .asteriskField{color: red;}</style>
                                 "<button style='left:20px' data-toggle='modal' onclick='deleteStage(this)' class='btnEdit btn-sm btn-primary waves-effect waves-light'><i class='fa fa-trash'></i></button></td>"+
                                 "</tr>");
                         }
-                    estrellasEtapa();
+                        estrellasEtapa();
                     }});
             }else{
                 $("#delProject").attr('disabled',true);
@@ -705,7 +705,7 @@ form button:hover{color: white !important;} .asteriskField{color: red;}</style>
         function calificate(){
             $("#modalCalificate").modal("show");
         }
-        
+
         var star_rating = $('.star_rating .fa');
         var SetRatingStar = function() {
             return star_rating.each(function() {
@@ -720,6 +720,26 @@ form button:hover{color: white !important;} .asteriskField{color: red;}</style>
             star_rating.siblings('input.rating-value').val($(this).data('rating'));
             return SetRatingStar();
         });
-        $("#calSave").onclick()
+        $("#calSave").click(function (){
+            var data={
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+                idStage: $("#idEditStage").text(),
+                queryId: "saveCalification",
+                nameProject: $('#cbxProject').val(),
+                idPupil: $('#cbxPupil').val(),
+                idCourse: $('#cbxCourse').val(),
+                calification: $('#inputNewCalificationStage').val(),
+                classesUsed: $('#inputClassesStage').val(),
+            }
+            $.ajax({
+                url: "{% url 'app_testapp:seg-al' %}", 
+                type: 'GET',
+                data: data,
+                success:function(){
+                    projectChanged();
+                }
+            });
+        });
+
     </script>
     {% endblock %}
