@@ -2,6 +2,11 @@
 {% load staticfiles %}
 {% block content %}
 {% load staticfiles %}
+<style>.bootstrap-iso .formden_header h2, .bootstrap-iso .formden_header p, .bootstrap-iso
+form{font-family: Arial, Helvetica, sans-serif; color: black}.bootstrap-iso
+form button, .bootstrap-iso
+form button:hover{color: white !important;} .asteriskField{color: red;}</style>
+
 <!-- Checkbox de Asistencia -->
 <div>
     <div class="checkbox checkbox-primary checkbox-circle" style="margin-top: 22px; margin-left: 37px; font-size: 20px">
@@ -11,19 +16,23 @@
 </div>
 <div style="width: 860px; float:right;">
     <!-- Seleccion de día -->
-    <div class="col-sm-8" style="width: 190px; margin-right: 20px;">
-        <div class="input-group" >
-            <input class="form-control datepicker" placeholder="yyyy-mm-dd" id="datepicker" type="text" value="2016-07-01">
-            <!--            <span class="input-group-addon bg-primary b-0 text-white"><i class="ion-calendar"></i></span>-->
+    <div class="bootstrap-iso">
+    <div class="col-md-6 col-sm-6 col-xs-12" style="width: 190px; margin-right: 20px;">
+      <form class="form-horizontal" >
+       <div class="form-group">
+            <input class="form-control" id="datepicker" name="date" type="text"/>
         </div>
+      </form>
+</div>
     </div>
+
     <!-- Dropdown de Curso -->
     <select class=" form-control js-example-basic-single " id="cbxCourse" onchange="courseChanged(this.value)" style="width: 190px; margin-right: 20px;">
         <option class="default-text" value="">Curso</option>
-        {% for i in courses %} 
+        {% for i in courses %}
         <option value={{i.idCourse}}>{{i.courseType}}º año "{{i.courseDivision}}"</option>
-        {% endfor %}       
-    </select>   
+        {% endfor %}
+    </select>
     <!-- Dropdown de Materia -->
     <select class=" form-control js-example-basic-single " id="cbxSubject" onchange="subjectChanged(this.value)" style="width: 190px;margin-right: 20px;">
         <option value="" class="default-text">Materia</option>
@@ -31,13 +40,13 @@
     <!-- Dropdown de Alumno -->
     <select class=" form-control js-example-basic-single " id="cbxPupil" onchange="pupilChanged(this.value)" style="width: 190px;margin-right: 20px;">
         <option value="" class="default-text">Alumno</option>
-    </select>        
+    </select>
 </div>
 
 <!-- Tabla de Control -->
 <div class="card-box" style="width: 700px;margin-top: 76px; position:absolute;margin-left: 25px;">
     <div class="container">
-        <h2>Area de Control</h2>        
+        <h2>Area de Control</h2>
         <table class="table table-striped" id="tbleCon">
             <thead>
                 <tr>
@@ -52,7 +61,7 @@
     </div>
 </div>
 
-<!-- Textarea de Observaciones -->    
+<!-- Textarea de Observaciones -->
 <div class="form-group" style="margin-left: 761px;">
     <label for="obsAlum" style="margin-top: 15px;">Observaciones</label>
     <textarea class="form-control" rows="5" id="obsAlum" style="width: 590px; height: 335px;backgroun-color:red;" onchange="pupilFollow()"></textarea>
@@ -159,7 +168,7 @@
             <div class="col-sm-6">
                 <div class="m-b-30">
                     <button id="btnAdd" data-target="#addProjectStageModal" data-toggle="modal" style="margin-top: 25px; position: relative; left: 14px;" class="btn btn-primary waves-effect waves-light" disabled="true"><i class="fa fa-plus"></i></button>
-                </div>   
+                </div>
             </div>
         </div>
         <!-- Modal Create Stage-->
@@ -321,7 +330,7 @@
                 $('.checkCont').prop('disabled',false)
             }
             $.ajax({
-                url: "{% url 'app_testapp:seg-al' %}", 
+                url: "{% url 'app_testapp:seg-al' %}",
                 type: 'GET',
                 data: {idPupil: $('#cbxPupil').val(), idSubject: $('#cbxSubject').val(), assist: presencePff, date: $('#datepicker').val(), queryId: "pupilFollow",commentPF: $('#obsAlum').val()},
                 dataType: 'json'});
@@ -332,7 +341,7 @@
             function(){
                 if($('#projectName').val()!=""){
                     $.ajax({
-                        url: "{% url 'app_testapp:seg-al' %}", 
+                        url: "{% url 'app_testapp:seg-al' %}",
                         type: 'GET',
                         data: {nameProject: $('#projectName').val(),idSubject: $('#cbxSubject').val(), queryId: "newProject"},
                         success: function(){
@@ -351,7 +360,7 @@
             function(){
                 if($('#cbxProject').val()!="zoidberg"){
                     $.ajax({
-                        url: "{% url 'app_testapp:seg-al' %}", 
+                        url: "{% url 'app_testapp:seg-al' %}",
                         type: 'GET',
                         data: {nameProject: $('#cbxProject').val(),idSubject: $('#cbxSubject').val(), queryId: "delProject"},
                         success: function(info){
@@ -376,7 +385,7 @@
                 return;
             }
             $.ajax({
-                url: "{% url 'app_testapp:seg-al' %}", 
+                url: "{% url 'app_testapp:seg-al' %}",
                 type: 'GET',
                 data: {idCourse: $('#cbxCourse').val(), queryId: "subjects"},
                 dataType: 'json',
@@ -390,7 +399,7 @@
                     }
                 }});
             $.ajax({
-                url: "{% url 'app_testapp:seg-al' %}", 
+                url: "{% url 'app_testapp:seg-al' %}",
                 type: 'GET',
                 data: {idCourse: $('#cbxCourse').val(), queryId: "pupils"},
                 dataType: 'json',
@@ -410,7 +419,7 @@
                 return;
             }
             $.ajax({
-                url: "{% url 'app_testapp:seg-al' %}", 
+                url: "{% url 'app_testapp:seg-al' %}",
                 type: 'GET',
                 data: {idSubject: $('#cbxSubject').val(), queryId: "fulfillments"},
                 dataType: 'json',
@@ -429,7 +438,7 @@
             //Cambiar a la opcion por DEFAULT
             $("#cbxProject").val("zoidberg").change();
             $.ajax({
-                url: "{% url 'app_testapp:seg-al' %}", 
+                url: "{% url 'app_testapp:seg-al' %}",
                 type: 'GET',
                 data: {idSubject: $('#cbxSubject').val(), queryId: "projects"},
                 dataType: 'json',
@@ -446,7 +455,7 @@
                         //"Value" es el nombre del projecto
                         var value = info[i].fields.nameProject;
                         //"Text" es el id de la materia a la que esta asignada el projecto (asi es,Chucho)
-                        var text = info[i].pk;  
+                        var text = info[i].pk;
                         //Agrega el projecto al cbx (si Chucho, podes getear el id del projecto del value del actual elemento en el cbx)
                         $('#cbxProject').append('<option value='+text+'>'+text+'</option>');
                     }
@@ -458,14 +467,14 @@
                 $("#btnAdd").attr('disabled',false);
                 $("#delProject").attr('disabled',false);
                 $.ajax({
-                    url: "{% url 'app_testapp:seg-al' %}", 
+                    url: "{% url 'app_testapp:seg-al' %}",
                     type: 'GET',
                     data: {idProject: $('#cbxProject').val(), idPupil: $('#cbxPupil').val(), queryId: "getStages"},
                     dataType: 'json',
                     success: function(info){
                         //Recorre todos los "Stages"
                         for(var i=0 ;i<info.length;i++){
-                            //"nameStage" es el nombre de la etapa 
+                            //"nameStage" es el nombre de la etapa
                             var nameStage = info[i].fields.namePS;
                             var note = info[i].fields.calification;
                             var clases = info[i].fields.classes;
@@ -483,7 +492,7 @@
                     estrellasEtapa();
                     }});
             }else{
-                $("#delProject").attr('disabled',true);   
+                $("#delProject").attr('disabled',true);
                 $("#btnAdd").attr('disabled',true);
             }
 
@@ -507,7 +516,7 @@
                 etapaBorrada: etapaBorrada,
             }
             $.ajax({
-                url: "{% url 'app_testapp:seg-al' %}", 
+                url: "{% url 'app_testapp:seg-al' %}",
                 type: 'GET',
                 data: data,
                 success:function(info){
@@ -541,7 +550,7 @@
                 csrfmiddlewaretoken: '{{ csrf_token }}',
                 newStageName: $("#inputEditStage").val(),
                 idStage: $("#idEditStage").text(),
-                queryId: "editStage",   
+                queryId: "editStage",
                 nameProject: $('#cbxProject').val(),
                 todos: todos,
                 idPupil: $('#cbxPupil').val(),
@@ -550,7 +559,7 @@
                 classesUsed: $('#inputClassesStage').val(),
             }
             $.ajax({
-                url: "{% url 'app_testapp:seg-al' %}", 
+                url: "{% url 'app_testapp:seg-al' %}",
                 type: 'GET',
                 data: data,
                 success:function(){
@@ -567,7 +576,7 @@
             $('#checkPresence').prop('checked', false);
             $('#obsAlum').val("");
             $.ajax({
-                url: "{% url 'app_testapp:seg-al' %}", 
+                url: "{% url 'app_testapp:seg-al' %}",
                 type: 'GET',
                 data: {idPupil: $('#cbxPupil').val(), idSubject: $('#cbxSubject').val(), date: $('#datepicker').val(), queryId: "pupilFollowing"},
                 dataType: 'json',
@@ -588,7 +597,7 @@
 
         function refreshFF(info){
             $.ajax({
-                url: "{% url 'app_testapp:seg-al' %}", 
+                url: "{% url 'app_testapp:seg-al' %}",
                 type: 'GET',
                 data: {idPF:info[0].pk, queryId: "CheckFF"},
                 dataType: 'json',
@@ -631,7 +640,7 @@
                 idCourse: $('#cbxCourse').val(),
             }
             $.ajax({
-                url: "{% url 'app_testapp:seg-al' %}", 
+                url: "{% url 'app_testapp:seg-al' %}",
                 type: 'GET',
                 data: data,
                 success:function(){
@@ -674,16 +683,16 @@
             $(".tdNota").each(
                 function(){
                     for (var i=0; i<($(this).text());i++){
-                        $(this).append('<span class="fa fa-star fa-2x"></span>');    
+                        $(this).append('<span class="fa fa-star fa-2x"></span>');
                     }
                     var starempty = 5-$(this).text();
                     for (var i=0; i<starempty;i++){
-                        $(this).append('<span class="fa fa-star-o fa-2x"></span>'); 
+                        $(this).append('<span class="fa fa-star-o fa-2x"></span>');
                     }
                 }
             );
         }
-        
+
         function bxEditChckBx(esto){
             if($(esto).is(":checked")){
                 $('#inputNewCalificationStage').hide();
