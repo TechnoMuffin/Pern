@@ -20,7 +20,7 @@
         <div class="col-md-6 col-sm-6 col-xs-12" style="width: 190px; margin-right: 20px;">
             <form class="form-horizontal" >
                 <div class="form-group">
-                    <input class="form-control" id="datepicker" name="date" type="text"/>
+                    <input class="form-control" id="datepicker" onchange="refreshDatePickerSo()" name="date" type="text"/>
                 </div>
             </form>
         </div>
@@ -201,8 +201,8 @@
                     </div>
                     <div class="modal-body">
                         <input class="form-control" id="inputEditStage" maxlength="128" name="editProjectName" placeholder="Nombre de la Etapa" type="text">
-                        <label><input type="checkbox" id="bxEditStage" onchange="bxEditChckBx(this)">Editar el nombre de esta etapa para todos los alumnos</label>
-                        <input class="form-control" id="inputNewCalificationStage" maxlength="1" name="editProjectName" placeholder="Nota" type="text">
+                        <label><input type="checkbox" id="bxEditStage" onchange="bxEditChckBx(this)">Editar el nombre de esta etapa para todos los alumnos</label><br>Nota:
+                        <input class="form-control" id="inputNewCalificationStage" maxlength="1" name="editProjectName" placeholder="Nota" type="text">Cantidad de dias:
                         <input class="form-control" id="inputClassesStage" maxlength="5" name="editProjectName" placeholder="Cantidad de Clases" type="text">
                         <span id="idEditStage" style="display:none"></span>
                     </div>
@@ -417,9 +417,9 @@
 
         function subjectChanged(val){
             $("#cbxProject").val("").change();
-            if($("#cbxSubject").val() == ""){
+            if(val == ""){
                 $("#cbxPupil").val("").change();
-                $('#cbxProject').empty()
+                $('#cbxProject').empty();
                 $('#cbxProject').append(new Option("Proyecto", ""));
                 return;
             }
@@ -436,9 +436,17 @@
                         table.append('<tr><td id="row' + i +'">' + info[0].fields.nameFF[i] + '</td><td><div class="checkbox checkbox-success checkbox-circle"><input type="checkbox" id="rowCheck' + i +'"><label></label></div></td></tr>');
                     }
                 }});
-
+            refreshProjects();
             return;
         }
+        //$("#datepicker").change(
+        function refreshDatePickerSo(){
+            $("#tbleCon tbody").remove();
+            $("#obsAlum").val("");
+            console.log("cambiatres");
+            subjectChanged($("#cbxSubject").val());
+            pupilChanged($("#cbxPupil").val());
+        }//);
         function refreshProjects(){
             //Cambiar a la opcion por DEFAULT
             $("#cbxProject").val("").change();
@@ -576,6 +584,7 @@
 
         function pupilChanged(val){
             if($("#cbxPupil").val() == ""){
+                $('#obsAlum').val("");
                 return;
             }
             $('#checkPresence').prop('checked', false);
