@@ -1,27 +1,38 @@
 {% extends 'base.html' %}
+{% load staticfiles %}
 {% block content %}
+{% load staticfiles %}
+<style>.bootstrap-iso .formden_header h2, .bootstrap-iso .formden_header p, .bootstrap-iso
+    form{font-family: Arial, Helvetica, sans-serif; color: black}.bootstrap-iso
+    form button, .bootstrap-iso
+    form button:hover{color: white !important;} .asteriskField{color: red;}</style>
+
 <!-- Checkbox de Asistencia -->
 <div>
     <div class="checkbox checkbox-primary checkbox-circle" style="margin-top: 22px; margin-left: 37px; font-size: 20px">
-        <input type="checkbox" id="checkPresence" onchange="changeAssist(this.value)">
+        <input type="checkbox" id="checkPresence" onchange="pupilFollow()">
         <label style="position:absolute">Asistencia</label>
     </div>
 </div>
 <div style="width: 860px; float:right;">
     <!-- Seleccion de día -->
-    <div class="col-sm-8" style="width: 190px; margin-right: 20px;">
-        <div class="input-group" >
-            <input class="form-control datepicker" placeholder="yyyy-mm-dd" id="datepicker" type="text">
-            <!--            <span class="input-group-addon bg-primary b-0 text-white"><i class="ion-calendar"></i></span>-->
+    <div class="bootstrap-iso">
+        <div class="col-md-6 col-sm-6 col-xs-12" style="width: 190px; margin-right: 20px;">
+            <form class="form-horizontal" >
+                <div class="form-group">
+                    <input class="form-control" id="datepicker" name="date" type="text"/>
+                </div>
+            </form>
         </div>
     </div>
+
     <!-- Dropdown de Curso -->
     <select class=" form-control js-example-basic-single " id="cbxCourse" onchange="courseChanged(this.value)" style="width: 190px; margin-right: 20px;">
         <option class="default-text" value="">Curso</option>
-        {% for i in courses %} 
+        {% for i in courses %}
         <option value={{i.idCourse}}>{{i.courseType}}º año "{{i.courseDivision}}"</option>
-        {% endfor %}       
-    </select>   
+        {% endfor %}
+    </select>
     <!-- Dropdown de Materia -->
     <select class=" form-control js-example-basic-single " id="cbxSubject" onchange="subjectChanged(this.value)" style="width: 190px;margin-right: 20px;">
         <option value="" class="default-text">Materia</option>
@@ -29,13 +40,13 @@
     <!-- Dropdown de Alumno -->
     <select class=" form-control js-example-basic-single " id="cbxPupil" onchange="pupilChanged(this.value)" style="width: 190px;margin-right: 20px;">
         <option value="" class="default-text">Alumno</option>
-    </select>        
+    </select>
 </div>
 
 <!-- Tabla de Control -->
 <div class="card-box" style="width: 700px;margin-top: 76px; position:absolute;margin-left: 25px;">
     <div class="container">
-        <h2>Area de Control</h2>        
+        <h2>Area de Control</h2>
         <table class="table table-striped" id="tbleCon">
             <thead>
                 <tr>
@@ -44,16 +55,15 @@
                 </tr>
             </thead>
             <tbody>
-
             </tbody>
         </table>
     </div>
 </div>
 
-<!-- Textarea de Observaciones -->    
+<!-- Textarea de Observaciones -->
 <div class="form-group" style="margin-left: 761px;">
     <label for="obsAlum" style="margin-top: 15px;">Observaciones</label>
-    <textarea class="form-control" rows="5" id="obsAlum" style="width: 590px; height: 335px;backgroun-color:red;"></textarea>
+    <textarea class="form-control" rows="5" id="obsAlum" style="width: 590px; height: 335px;backgroun-color:red;" onchange="pupilFollow()"></textarea>
 </div>
 
 
@@ -61,117 +71,326 @@
 <!-- Tabla de Seguimiento de Alumno  -->
 <div class="card-box">
     <div class="panel">
-        <h1>Seguimiento Alumno</h1>
+        <h1>Tabla de Seguimiento</h1>
         <div class="panel-body">
-
-
-            <div class="col-sm-6" style="margin-left: 1005px; width: 178px;margin-top: -80px;">
-                <div class="dataTables_filter" id="datatable-editable_filter">
-                    <label>Buscar:<input aria-controls="datatable-editable" placeholder="" class="form-control input-sm" type="search"></label>
-                </div>
+            <div class="col-sm-6" style="float:right;width: 178px;margin-top: -80px;">
+                <select class="form-control js-example-basic-single" id="cbxProject" onchange="projectChanged()"  style="left: -71px; position: relative;" disabled="true">
+                    <option value="" class="default-text">Proyecto</option>
+                </select>
+                <button id="addProject" data-target="#addProjectModal" data-toggle="modal" style="display: inline; left: 106px; top: -32px;"      type="button" class="sm btn-primary waves-effect waves-light" disabled="true">
+                    <i class="fa fa-plus"></i>
+                </button>
+                <button id="delProject" data-target="#delProjectModal" data-toggle="modal" style="display: inline; left: 108px; top: -32px;"  type="button" class="sm btn-primary waves-effect waves-light" disabled="false">
+                    <i class="fa fa-minus"></i>
+                </button>
             </div>
 
+            <!-- Modal Create Project-->
+            <div id="addProjectModal" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Crear nuevo proyecto</h4>
+                        </div>
+                        <div class="modal-body">
+                            <input class="form-control" id="projectName" maxlength="128" name="projectName" placeholder="Nombre del proyecto" type="text">
+                        </div>
+                        <div class="modal-footer">
+                            <button id="projectSender" type="button" class="btn btn-default" data-dismiss="modal">Crear</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <!-- Modal Delete Project-->
+            <div id="delProjectModal" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Borrar proyecto</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p>¿Seguro que desea borrar este proyecto? (Se borraran todas las etapas de todos los alumnos)</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button id="projectDeleter" type="button" class="btn btn-default" data-dismiss="modal">Borrar</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Modal Delete Project Complete-->
+            <div id="delProjectModalSuccess" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Éxito!</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p id="delProjectResult"></p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Ok</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
         </div>
     </div>
 
 
     <div class="row" style="margin-top: 10px;">
         <div class="col-sm-12">
-            <table aria-describedby="datatable-editable_info" role="grid" class="table table-striped dataTable no-footer" id="datatable-editable">
-                <thead>
+            <table aria-describedby="datatable-editable_info" role="grid" class="table table-striped dataTable no-footer" id="tblData">
+                <div><thead>
                     <tr role="row">
-                        <th aria-label="Rendering engine: activate to sort column descending" aria-sort="ascending" style="width: 225px;" colspan="1" rowspan="1" aria-controls="datatable-editable" tabindex="0" class="sorting_asc">Etapas</th>
-                        <th aria-label="Browser: activate to sort column ascending" style="width: 286px;" colspan="1" rowspan="1" aria-controls="datatable-editable" tabindex="0" class="sorting">Nota</th>
-                        <th aria-label="Platform(s): activate to sort column ascending" style="width: 257px;" colspan="1" rowspan="1" aria-controls="datatable-editable" tabindex="0" class="sorting">Clases Utilizadas</th>
-                        <th aria-label="Actions" style="width: 116px;" colspan="1" rowspan="1" class="sorting_disabled">Observaciones</th></tr>
-                </thead>
+                        <th aria-label="Rendering engine: activate to sort column descending" aria-sort="ascending" style="width: 225px;" colspan="1" rowspan="1" aria-controls="datatable-editable" tabindex="0" class="sorting_asc,col-lg-4">Etapas</th>
+                        <th aria-label="Browser: activate to sort column ascending" style="width: 286px;" colspan="1" rowspan="1" aria-controls="datatable-editable" tabindex="0" class="sorting,col-lg-4">Nota</th>
+                        <th aria-label="Platform(s): activate to sort column ascending" style="width: 257px;" colspan="1" rowspan="1" aria-controls="datatable-editable" tabindex="0" class="sorting,col-lg-4">Clases Utilizadas</th>
+                        <th aria-label="Actions" style="width: 116px;" colspan="1" rowspan="1" class="sorting_disabled"></th>
+                    </tr>
+
+                    </thead></div>
                 <tbody>
-                    <tr role="row" class="gradeA odd">
-                        <td class="sorting_1">Cara 1</td>
-                        <td>4/5</td>
-                        <td>8 clases</td>
-                        <td class="actions">
-                            <a href="#" class="hidden on-editing save-row"><i class="fa fa-save"></i></a>
-                            <a href="#" class="hidden on-editing cancel-row"><i class="fa fa-times"></i></a>
-                            <a href="#" class="on-default edit-row"><i class="fa fa-pencil"></i></a>
-                            <a href="#" class="on-default remove-row"><i class="fa fa-trash-o"></i></a>
-                        </td>
-                    </tr><tr role="row" class="gradeA even">
-                    <td class="sorting_1">Cara 2</td>
-                    <td>2/5</td>
-                    <td>4 clases</td>
-                    <td class="actions">
-                        <a href="#" class="hidden on-editing save-row"><i class="fa fa-save"></i></a>
-                        <a href="#" class="hidden on-editing cancel-row"><i class="fa fa-times"></i></a>
-                        <a href="#" class="on-default edit-row"><i class="fa fa-pencil"></i></a>
-                        <a href="#" class="on-default remove-row"><i class="fa fa-trash-o"></i></a>
-                    </td>
-                    </tr><tr role="row" class="gradeA odd">
-                    <td class="sorting_1">Pulido</td>
-                    <td>5/5</td>
-                    <td>4 clases</td>
-                    <td class="actions">
-                        <a href="#" class="hidden on-editing save-row"><i class="fa fa-save"></i></a>
-                        <a href="#" class="hidden on-editing cancel-row"><i class="fa fa-times"></i></a>
-                        <a href="#" class="on-default edit-row"><i class="fa fa-pencil"></i></a>
-                        <a href="#" class="on-default remove-row"><i class="fa fa-trash-o"></i></a>
-                    </td>
-                    </tr><tr role="row" class="gradeA even">
-                    <td class="sorting_1">Rasqueteado</td>
-                    <td>4/5</td>
-                    <td>3 clases</td>
-                    <td class="actions">
-                        <a href="#" class="hidden on-editing save-row"><i class="fa fa-save"></i></a>
-                        <a href="#" class="hidden on-editing cancel-row"><i class="fa fa-times"></i></a>
-                        <a href="#" class="on-default edit-row"><i class="fa fa-pencil"></i></a>
-                        <a href="#" class="on-default remove-row"><i class="fa fa-trash-o"></i></a>
-                    </td>
-                    </tr></tbody>
+                </tbody>
             </table>
         </div>
         <div class="row" style="margin-left:1206px;">
             <div class="col-sm-6">
                 <div class="m-b-30">
-                    <button id="addToTable" style=" margin-top:25px" class="btn btn-primary waves-effect waves-light">Agregar <i class="fa fa-plus"></i></button>
-                </div>   
+                    <button id="btnAdd" data-target="#addProjectStageModal" data-toggle="modal" style="margin-top: 25px; position: relative; left: 14px;" class="btn btn-primary waves-effect waves-light" disabled="true"><i class="fa fa-plus"></i></button>
+                </div>
             </div>
         </div>
+        <!-- Modal Create Stage-->
+        <div id="addProjectStageModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
 
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Crear nueva Etapa</h4>
+                    </div>
+                    <div class="modal-body">
+                        <input class="form-control" id="inputStage" maxlength="128" name="projectName" placeholder="Nombre de la Etapa" type="text">
+                    </div>
+                    <div class="modal-footer">
+                        <div class="col-lg-6" align="left" style="margin-top:2.5%; padding-left: 0px;"><label><input type="checkbox" id="bxAddStage" checked="checked">Para Todos</label></div>
+                        <div class="col-lg-6" style="padding-right: 0px;"><button id="stageCreator" onclick="save()" type="button" class="btn btn-default" data-dismiss="modal">Crear Etapa</button></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal Edit Stage  -->
+        <div id="editStage" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Editar Etapa</h4>
+                    </div>
+                    <div class="modal-body">
+                        <input class="form-control" id="inputEditStage" maxlength="128" name="editProjectName" placeholder="Nombre de la Etapa" type="text">
+                        <label><input type="checkbox" id="bxEditStage" onchange="bxEditChckBx(this)">Editar el nombre de esta etapa para todos los alumnos</label>
+                        <input class="form-control" id="inputNewCalificationStage" maxlength="1" name="editProjectName" placeholder="Nota" type="text">
+                        <input class="form-control" id="inputClassesStage" maxlength="5" name="editProjectName" placeholder="Cantidad de Clases" type="text">
+                        <span id="idEditStage" style="display:none"></span>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" onclick="saveStageModal()" class="btn btn-default" data-dismiss="modal">Guardar</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- Modal Delete Stage-->
+    <div id="delStageModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Borrar Etapa</h4>
+                </div>
+                <div class="modal-body">
+                    <p>¿Seguro que desea borrar esta etapa?</p>
+                    <span id="idDelStage" style="display:none"></span>
+                </div>
+                <div class="modal-footer">
+                    <div class="col-lg-4" style="margin-left: -13.5%;padding-left: 0px; margin-top: 2.5%;"><label><input type="checkbox" id="bxDelStage" checked="checked">Para Todos</label></div>
+                    <div class="col-lg-6"style="padding-right: 0px;margin-left: 30%;"><button id="stageDeleter" onclick="StageDeleter()" type="button" class="btn btn-default" data-dismiss="modal">Borrar</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal calificate Stage-->
+    <div id="modalCalificate" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Calificar</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="star_rating"> 
+                        {% for j in '12345' %}
+                        <span class="fa fa-star-o fa-2x" data-rating="{{j}}"></span>        
+                        {% endfor %}
+                        <input type="hidden" name="whatever" id="calStar" class="rating-value" value="0">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="col-lg-6"style="padding-right: 0px;margin-left: 30%;"><button id="calSave" onclick="StageDeleter()" type="button" class="btn btn-default" data-dismiss="modal">Guardar</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal Delete Stage Complete-->
+    <div id="delStageModalSuccess" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Éxito!</h4>
+                </div>
+                <div class="modal-body">
+                    <p id="delStageResult"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Ok</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!-- Modal Calcular Promedio de Etapas-->
+    <div id="mostrarPromedio" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">El promedio es de:</h4>
+                </div>
+                <div class="modal-body" style="margin-top: 9.5%;">
+                    <div class="col-lg-8" align="left" style="margin-top: -10.5%;">
+                        <p id="spanStar"></p>
+                    </div>
+                    <div class="col-lg-4" align="center" style="margin-top: -11.5%;">
+                        <p id="showProm" style="font-size: 55px;"></p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Continuar</button>
+                </div>
+            </div>
+
+        </div>
     </div>
 
     <!-- Boton Siguiente Alumno -->
     <nav style="margin-left: 1125px; margin-top: 10px;">
         <ul class="pager">
-            <li><a href="#">Siguiente Alumno</a></li>
+            <li id="sigAl" onclick="sigAlumno()"><a href="#" >Siguiente Alumno</a></li>
         </ul>
     </nav>
 
     <!-- Boton Trabajo Terminado -->
     <nav style="position: absolute; margin-left: 30px; margin-top: -65px;">
         <ul class="pager">
-            <li><a href="#">Trabajo Terminado</a></li>
+            <li onclick="promedioNotas()"><a href="#">Calcular Promedio</a></li>
         </ul>
     </nav>
+    <script src="{% static 'js/jquery-1.11.1.min.js'%}"></script>
     <script>
+        function pupilFollow(val){
+            presencePff =  $('#checkPresence').prop('checked');
+            if (presencePff == false){
+                $('.checkCont').prop('disabled',true)
+
+            }else{
+                $('.checkCont').prop('disabled',false)
+            }
+            $.ajax({
+                url: "{% url 'app_testapp:seg-al' %}",
+                type: 'GET',
+                data: {idPupil: $('#cbxPupil').val(), idSubject: $('#cbxSubject').val(), assist: presencePff, date: $('#datepicker').val(), queryId: "pupilFollow",commentPF: $('#obsAlum').val()},
+                dataType: 'json'});
+            return;
+        }
+        //Envio de datos para la creacion de otro proyecto
+        $("#projectSender").click(
+            function(){
+                if($('#projectName').val()!=""){
+                    $.ajax({
+                        url: "{% url 'app_testapp:seg-al' %}",
+                        type: 'GET',
+                        data: {nameProject: $('#projectName').val(),idSubject: $('#cbxSubject').val(), queryId: "newProject"},
+                        success: function(){
+                            refreshProjects();
+                            $('#cbxProject').val($('#projectName').val());
+                            $('#projectName').val("");
+                        }
+                    });
+                }else{
+                    alert("Debe completar el campo.");
+                }
+            });
+
+        //Función
+        $("#projectDeleter").click(
+            function(){
+                if($('#cbxProject').val()!=""){
+                    $.ajax({
+                        url: "{% url 'app_testapp:seg-al' %}",
+                        type: 'GET',
+                        data: {nameProject: $('#cbxProject').val(),idSubject: $('#cbxSubject').val(), queryId: "delProject"},
+                        success: function(info){
+                            refreshProjects();
+                            $('#delProjectModalSuccess').modal('show');
+                            $('#delProjectResult').text(info);
+                        }
+                    });
+                }
+            });
+
         function courseChanged(val){
             $("#tbleCon tbody").remove();
             $("#cbxSubject").val("").change();
             $("#cbxPupil").val("").change();
+            $("#cbxProject").val("").change();
             if(val==""){
                 var lengthCbx = $('#cbxSubject > option').length;
                 $('#cbxSubject').empty();
                 $('#cbxPupil').empty();
+                $('#cbxProject').empty();
                 $('#cbxSubject').append(new Option("Materia", ""));
                 $('#cbxPupil').append(new Option("Alumno", ""));
+                $('#cbxProject').append(new Option("Proyecto", ""));
                 return;
             }
             $.ajax({
-                url: "{% url 'app_testapp:seg-al' %}", 
+                url: "{% url 'app_testapp:seg-al' %}",
                 type: 'GET',
                 data: {idCourse: $('#cbxCourse').val(), queryId: "subjects"},
                 dataType: 'json',
                 success: function(info){
-                    var lengthCbx = $('#cbxSubject > option').length;
                     $('#cbxSubject').empty();
                     $('#cbxSubject').append(new Option("Materia", ""));
                     for(var i=0;i<info.length;i++){
@@ -181,7 +400,7 @@
                     }
                 }});
             $.ajax({
-                url: "{% url 'app_testapp:seg-al' %}", 
+                url: "{% url 'app_testapp:seg-al' %}",
                 type: 'GET',
                 data: {idCourse: $('#cbxCourse').val(), queryId: "pupils"},
                 dataType: 'json',
@@ -189,15 +408,23 @@
                     $('#cbxPupil').empty();
                     $('#cbxPupil').append(new Option("Alumno", ""));
                     for(var i=0;i<info.length;i++){
-                        var text = info[i].fields.namePupil + " " + info[i].fields.surnamePupil;
+                        var text = info[i].fields.namePupil + " " +info[i].fields.surnamePupil;
                         var value = info[i].pk;
                         $('#cbxPupil').append(new Option(text, value));
                     }}});
             return;
         }
+
         function subjectChanged(val){
+            $("#cbxProject").val("").change();
+            if($("#cbxSubject").val() == ""){
+                $("#cbxPupil").val("").change();
+                $('#cbxProject').empty()
+                $('#cbxProject').append(new Option("Proyecto", ""));
+                return;
+            }
             $.ajax({
-                url: "{% url 'app_testapp:seg-al' %}", 
+                url: "{% url 'app_testapp:seg-al' %}",
                 type: 'GET',
                 data: {idSubject: $('#cbxSubject').val(), queryId: "fulfillments"},
                 dataType: 'json',
@@ -206,16 +433,155 @@
                     for(var i=0;i<info[0].fields.nameFF.length;i++){
                         var tbody = $('#tbleCon').children('tbody');
                         var table = tbody.length ? tbody : $('#tbleCon');
-                        table.append('<tr><td>' + info[0].fields.nameFF[i] + '</td><td><div class="checkbox checkbox-success checkbox-circle"><input type="checkbox"><label></label></div></td></tr>');
+                        table.append('<tr><td id="row' + i +'">' + info[0].fields.nameFF[i] + '</td><td><div class="checkbox checkbox-success checkbox-circle"><input type="checkbox" id="rowCheck' + i +'"><label></label></div></td></tr>');
                     }
                 }});
+
             return;
         }
+        function refreshProjects(){
+            //Cambiar a la opcion por DEFAULT
+            $("#cbxProject").val("").change();
+            $.ajax({
+                url: "{% url 'app_testapp:seg-al' %}",
+                type: 'GET',
+                data: {idSubject: $('#cbxSubject').val(), queryId: "projects"},
+                dataType: 'json',
+                success: function(info){
+                    //-------Carga de proyectos-------
+                    //Vacia el cbx de proyectos
+                    $('#cbxProject').empty();
+                    //Agrega el valor DEFAULT
+                    $('#cbxProject').append(new Option("Proyecto",""));
+                    $('#cbxProject').val('');
+
+                    //Recorre todos los "proyectos"
+                    for(var i=0;i<info.length;i++){
+                        //"Value" es el nombre del proyecto
+                        var value = info[i].fields.nameProject;
+                        //"Text" es el id de la materia a la que esta asignada el proyecto (asi es,Chucho)
+                        var text = info[i].pk;  
+                        //Agrega el proyecto al cbx (si Chucho, podes getear el id del proyecto del value del actual elemento en el cbx)
+                        $('#cbxProject').append('<option value='+text+'>'+text+'</option>');
+                    }
+                }});
+        }
+        function projectChanged(){
+            $('#tblData tbody').empty();
+            if($('#cbxProject').val()!=""){
+                $("#btnAdd").attr('disabled',false);
+                $("#delProject").attr('disabled',false);
+                $.ajax({
+                    url: "{% url 'app_testapp:seg-al' %}",
+                    type: 'GET',
+                    data: {idProject: $('#cbxProject').val(), idPupil: $('#cbxPupil').val(), queryId: "getStages"},
+                    dataType: 'json',
+                    success: function(info){
+                        //Recorre todos los "Stages"
+                        for(var i=0 ;i<info.length;i++){
+                            //"nameStage" es el nombre de la etapa
+                            var nameStage = info[i].fields.namePS;
+                            var note = info[i].fields.calification;
+                            var clases = info[i].fields.classes;
+                            var idStage = info[i].pk;
+                            $("#tblData tbody").append(
+                                "<tr id="+idStage+" class='trStage'>"+
+                                "<td>" + nameStage + "</td>"+
+                                "<td class='tdNota'>"+ "<span style='display:none'>"+note+"</span>" +"</td>"+
+                                "<td>"+clases+"</td>"+
+                                "<td><button style='left:10px' data-toggle='modal' onclick='calificate(this)' class='btnEdit btn-sm btn-primary waves-effect waves-light'><i class='fa fa-star'></i></button>"+
+                                "<button style='left:15px' data-toggle='modal' onclick='editModal(this)' class='btnEdit btn-sm btn-primary waves-effect waves-light'><i class='fa fa-pencil'></i></button>"+
+                                "<button style='left:20px' data-toggle='modal' onclick='deleteStage(this)' class='btnEdit btn-sm btn-primary waves-effect waves-light'><i class='fa fa-trash'></i></button></td>"+
+                                "</tr>");
+                        }
+                        estrellasEtapa();
+                    }});
+            }else{
+                $("#delProject").attr('disabled',true);
+                $("#btnAdd").attr('disabled',true);
+            }
+
+        }
+        function deleteStage(coso){
+            $("#delStageModal").modal("show");
+            fila=$(coso).parent().parent();
+            idOfThisStage=$(coso).parent().parent().attr('id');
+            $("#idDelStage").text(idOfThisStage);
+        }
+        function StageDeleter(){
+            if($('#bxDelStage').is(':checked')) {
+                etapaBorrada=1
+            } else {
+                etapaBorrada=0
+            }
+            var data={
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+                idStage: $("#idDelStage").text(),
+                queryId: "deleteStage",
+                etapaBorrada: etapaBorrada,
+            }
+            $.ajax({
+                url: "{% url 'app_testapp:seg-al' %}",
+                type: 'GET',
+                data: data,
+                success:function(info){
+                    $("#delStageModalSuccess").modal("show");
+                    projectChanged();
+                    $('#delStageResult').text(info);
+
+                }
+            });
+        }
+        function editModal(coso){
+            $("#editStage").modal("show");
+            fila=$(coso).parent().parent();
+            stageName=$("td:first-child", fila).text();
+            $("#inputEditStage").val(stageName);
+            stageCalification=$("td:nth-child(2)", fila).text();
+            $("#inputNewCalificationStage").val(stageCalification);
+            stageClasses=$("td:nth-child(3)", fila).text();
+            $("#inputClassesStage").val(stageClasses);
+            idOfThisStage=$(coso).parent().parent().attr('id');
+            $("#idEditStage").text(idOfThisStage);
+        }
+
+        function saveStageModal(){
+            if($('#bxEditStage').is(":checked")) {
+                todos=1
+            } else {
+                todos=0
+            }
+            var data={
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+                newStageName: $("#inputEditStage").val(),
+                idStage: $("#idEditStage").text(),
+                queryId: "editStage",
+                nameProject: $('#cbxProject').val(),
+                todos: todos,
+                idPupil: $('#cbxPupil').val(),
+                idCourse: $('#cbxCourse').val(),
+                calification: $('#inputNewCalificationStage').val(),
+                classesUsed: $('#inputClassesStage').val(),
+            }
+            $.ajax({
+                url: "{% url 'app_testapp:seg-al' %}",
+                type: 'GET',
+                data: data,
+                success:function(){
+                    projectChanged();
+                }
+            });
+        }
+
+
         function pupilChanged(val){
+            if($("#cbxPupil").val() == ""){
+                return;
+            }
             $('#checkPresence').prop('checked', false);
             $('#obsAlum').val("");
             $.ajax({
-                url: "{% url 'app_testapp:seg-al' %}", 
+                url: "{% url 'app_testapp:seg-al' %}",
                 type: 'GET',
                 data: {idPupil: $('#cbxPupil').val(), idSubject: $('#cbxSubject').val(), date: $('#datepicker').val(), queryId: "pupilFollowing"},
                 dataType: 'json',
@@ -224,8 +590,176 @@
                     var observations = info[0].fields.commentPF;
                     $('#checkPresence').prop('checked', presence);
                     $('#obsAlum').val(observations);
+                    refreshFF(info);
                 }});
+            if($('#cbxPupil').val()!=""){
+                $("#cbxProject").attr('disabled',false);
+                $("#addProject").attr('disabled',false);
+                refreshProjects();
+            }
             return;
+        }
+
+        function refreshFF(info){
+            $.ajax({
+                url: "{% url 'app_testapp:seg-al' %}",
+                type: 'GET',
+                data: {idPF:info[0].pk, queryId: "CheckFF"},
+                dataType: 'json',
+                success: function(info){
+                    var rowCount = $('#tbleCon tbody tr').length;
+                    var dbbCount = info.length;
+                    for(var i=0;i<rowCount;i++){
+                        var rowText = $("#tbleCon #row" + i).text();
+                        var exists = false;
+                        for(var x=0;x<dbbCount;x++){
+                            var dbbValue = info[x].fields.check;
+                            var dbbText = info[x].fields.nameFF;
+                            if(rowText == dbbText){
+                                exists = true;
+                                $("#tbleCon #rowCheck" + i).prop('checked', dbbValue);
+                            }
+                            if(!exists){
+                                console.log("CREAR EN DBB: \t" + rowText);
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+
+        function save(){
+            if($('#bxAddStage').is(":checked")) {
+                todos=1
+            } else {
+                todos=0
+            }
+            var data={
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+                dato1:$('#inputStage').val(),
+                queryId: "projectStage",
+                nameProject: $('#cbxProject').val(),
+                todos: todos,
+                idPupil: $('#cbxPupil').val(),
+                idCourse: $('#cbxCourse').val(),
+            }
+            $.ajax({
+                url: "{% url 'app_testapp:seg-al' %}",
+                type: 'GET',
+                data: data,
+                success:function(){
+                    projectChanged();
+                }
+            });
+            $('#inputStage').val("");
+        }
+
+        function promedioNotas(){
+            $("#spanStar").empty();
+            var avg = 0;
+            var amount = 0;
+            $(".tdNota").each(
+                function(){
+                    avg += +($(this).text());
+                    amount++;
+                }
+            );
+            avg /= amount;
+            avgNotFloat = Math.trunc(avg);
+            for(var i=0;i<avgNotFloat;i++){
+                $("#spanStar").append('<span class="fa fa-star fa-5x"></span>');
+            }
+            var avgOnlyFloat = avg - avgNotFloat;
+            if (avgOnlyFloat >= 0.1 && avgOnlyFloat <= 0.9){
+                $("#spanStar").append('<span class="fa fa-star-half-o fa-5x"></span>');
+            }
+            var emptyStar = 5 - avg;
+            emptyStar = Math.trunc(emptyStar);
+            for (var i=0;i<emptyStar;i++){
+                $("#spanStar").append('<span class="fa fa-star-o fa-5x"></span>');
+            }
+            var avgFinal = parseFloat(avg);
+            avgFinal = avgFinal.toFixed(2);
+            $("#showProm").text(avgFinal);
+            $('#mostrarPromedio').modal('show');
+        }
+        function estrellasEtapa(){
+            $(".tdNota").each(
+                function(){
+                    for (var i=0; i<($(this).text());i++){
+                        $(this).append('<span class="fa fa-star fa-2x"></span>');
+                    }
+                    var starempty = 5-$(this).text();
+                    for (var i=0; i<starempty;i++){
+                        $(this).append('<span class="fa fa-star-o fa-2x"></span>');
+                    }
+                }
+            );
+        }
+
+        function bxEditChckBx(esto){
+            if($(esto).is(":checked")){
+                $('#inputNewCalificationStage').hide();
+                $('#inputClassesStage').hide();
+            }else{
+                $('#inputNewCalificationStage').show();
+                $('#inputClassesStage').show();
+            }
+        }
+
+        function calificate(coso){
+            $("#modalCalificate").modal("show");
+            fila=$(coso).parent().parent();
+            stageName=$("td:first-child", fila).text();
+            $("#inputEditStage").val(stageName);
+            stageCalification=$("td:nth-child(2)", fila).text();
+            $("#inputNewCalificationStage").val(stageCalification);
+            stageClasses=$("td:nth-child(3)", fila).text();
+            $("#inputClassesStage").val(stageClasses);
+            idOfThisStage=$(coso).parent().parent().attr('id');
+            $("#idCalificationStage").text(idOfThisStage);
+        }
+
+        var star_rating = $('.star_rating .fa');
+        var SetRatingStar = function() {
+            return star_rating.each(function() {
+                if (parseInt(star_rating.siblings('input.rating-value').val()) >= parseInt($(this).data('rating'))) {
+                    return $(this).removeClass('fa-star-o').addClass('fa-star');
+                } else {
+                    return $(this).removeClass('fa-star').addClass('fa-star-o');
+                }
+            });
+        };
+        star_rating.on('click', function() {
+            star_rating.siblings('input.rating-value').val($(this).data('rating'));
+            return SetRatingStar();
+        });
+
+        $("#calSave").click(function (){
+            var data={
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+                idStage: $("#idEditStage").text(),
+                queryId: "saveCalification",
+                nameProject: $('#cbxProject').val(),
+                idPupil: $('#cbxPupil').val(),
+                idCourse: $('#cbxCourse').val(),
+                calification: $('#inputNewCalificationStage').val(),
+                classesUsed: $('#inputClassesStage').val(),
+            }
+            $.ajax({
+                url: "{% url 'app_testapp:seg-al' %}", 
+                type: 'GET',
+                data: data,
+                success:function(){
+                    projectChanged();
+                }
+            });
+        });
+
+        function sigAlumno(){
+            $('#cbxPupil').val($('#cbxPupil option:selected').next().val());
+            $('#cbxPupil').change();
         }
     </script>
     {% endblock %}
