@@ -184,7 +184,10 @@
                         <input class="form-control" id="inputStage" maxlength="128" name="projectName" placeholder="Nombre de la Etapa" type="text">
                     </div>
                     <div class="modal-footer">
-                        <div class="col-lg-6" align="left" style="margin-top:2.5%; padding-left: 0px;"><label><input type="checkbox" id="bxAddStage" checked="checked">Para Todos</label></div>
+                        <div class="col-lg-6 checkbox checkbox-primary checkbox-circle" align="left" style="margin-top:2.5%; padding-left: 20px;">
+                            <input type="checkbox" id="bxAddStage" checked="checked">
+                            <label>Para Todos</label>
+                        </div>
                         <div class="col-lg-6" style="padding-right: 0px;"><button id="stageCreator" onclick="save()" type="button" class="btn btn-default" data-dismiss="modal">Crear Etapa</button></div>
                     </div>
                 </div>
@@ -201,8 +204,14 @@
                     </div>
                     <div class="modal-body">
                         <input class="form-control" id="inputEditStage" maxlength="128" name="editProjectName" placeholder="Nombre de la Etapa" type="text">
-                        <label><input type="checkbox" id="bxEditStage" onchange="bxEditChckBx(this)">Editar el nombre de esta etapa para todos los alumnos</label>
-                        <input class="form-control" id="inputNewCalificationStage" maxlength="1" name="editProjectName" placeholder="Nota" type="text">
+                            <div class="checkbox checkbox-primary checkbox-circle">
+                                <input type="checkbox" id="bxEditStage" onchange="bxEditChckBx(this)">
+                                <label style="position:absolute">
+                                    Editar el nombre de esta etapa para todos los alumnos
+                                </label>
+                            </div>
+                        <br><p id="paragraph1" >Nota:</p>
+                        <input class="form-control" id="inputNewCalificationStage" maxlength="1" name="editProjectName" placeholder="Nota" type="text"><p id="paragraph2" >Cant. de dias:</p>
                         <input class="form-control" id="inputClassesStage" maxlength="5" name="editProjectName" placeholder="Cantidad de Clases" type="text">
                         <span id="idEditStage" style="display:none"></span>
                     </div>
@@ -229,7 +238,10 @@
                     <span id="idDelStage" style="display:none"></span>
                 </div>
                 <div class="modal-footer">
-                    <div class="col-lg-4" style="margin-left: -13.5%;padding-left: 0px; margin-top: 2.5%;"><label><input type="checkbox" id="bxDelStage" checked="checked">Para Todos</label></div>
+                    <div class="col-lg-4 checkbox checkbox-primary checkbox-circle" style="margin-left: -13.5%;padding-left: 0px; margin-top: 2.5%;">
+                        <input type="checkbox" id="bxDelStage" checked="checked">
+                        <label>Para Todos</label>
+                    </div>
                     <div class="col-lg-6"style="padding-right: 0px;margin-left: 30%;"><button id="stageDeleter" onclick="StageDeleter()" type="button" class="btn btn-default" data-dismiss="modal">Borrar</button>
                         <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button></div>
                 </div>
@@ -699,13 +711,10 @@
         }
 
         function bxEditChckBx(esto){
-            if($(esto).is(":checked")){
-                $('#inputNewCalificationStage').hide();
-                $('#inputClassesStage').hide();
-            }else{
-                $('#inputNewCalificationStage').show();
-                $('#inputClassesStage').show();
-            }
+            $('#inputNewCalificationStage').toggle();
+            $('#inputClassesStage').toggle();
+            $('#paragraph1').toggle();
+            $('#paragraph2').toggle();
         }
 
         function calificate(coso){
