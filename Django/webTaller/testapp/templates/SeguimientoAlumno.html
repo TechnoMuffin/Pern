@@ -201,8 +201,8 @@
                     </div>
                     <div class="modal-body">
                         <input class="form-control" id="inputEditStage" maxlength="128" name="editProjectName" placeholder="Nombre de la Etapa" type="text">
-                        <label><input type="checkbox" id="bxEditStage" onchange="bxEditChckBx(this)">Editar el nombre de esta etapa para todos los alumnos</label><br>Nota:
-                        <input class="form-control" id="inputNewCalificationStage" maxlength="1" name="editProjectName" placeholder="Nota" type="text">Cantidad de dias:
+                        <label><input type="checkbox" id="bxEditStage" onchange="bxEditChckBx(this)">Editar el nombre de esta etapa para todos los alumnos</label><br><p id="palabra1">Nota:</p>
+                        <input class="form-control" id="inputNewCalificationStage" maxlength="1" name="editProjectName" placeholder="Nota" type="text"><p id="palabra2">Cantidad de dias:</p>
                         <input class="form-control" id="inputClassesStage" maxlength="5" name="editProjectName" placeholder="Cantidad de Clases" type="text">
                         <span id="idEditStage" style="display:none"></span>
                     </div>
@@ -433,13 +433,26 @@
                     for(var i=0;i<info[0].fields.nameFF.length;i++){
                         var tbody = $('#tbleCon').children('tbody');
                         var table = tbody.length ? tbody : $('#tbleCon');
-                        table.append('<tr><td id="row' + i +'">' + info[0].fields.nameFF[i] + '</td><td><div class="checkbox checkbox-success checkbox-circle"><input type="checkbox" id="rowCheck' + i +'"><label></label></div></td></tr>');
+                        table.append('<tr><td id="row' + i +'">' + info[0].fields.nameFF[i] + '</td><td><div class="checkbox checkbox-success checkbox-circle"><input type="checkbox" id="rowCheck' + i +'" onchange="saveFF(this)"><label></label></div></td></tr>');
                     }
                 }});
             refreshProjects();
             return;
         }
         //$("#datepicker").change(
+        function saveFF(coso){
+            cosoID = $(coso).prop('id').substr(8);
+            cosoStatus = $(coso).prop('checked');
+            nameFF=$('#row'+cosoID).text();
+            $.ajax({
+                url: "{% url 'app_testapp:seg-al' %}",
+                type: 'GET',
+                data: {checked: cosoStatus ,nameFF:nameFF ,date:$('#datepicker').val(),idPupil: $('#cbxPupil').val(),idSubject: $('#cbxSubject').val(), queryId: "saveFF"},
+                success: function(info){
+                    
+                }});
+
+        }
         function refreshDatePickerSo(){
             $("#tbleCon tbody").remove();
             $("#obsAlum").val("");
@@ -711,9 +724,13 @@
             if($(esto).is(":checked")){
                 $('#inputNewCalificationStage').hide();
                 $('#inputClassesStage').hide();
+                $('#palabra1').hide();
+                $('#palabra2').hide();
             }else{
                 $('#inputNewCalificationStage').show();
                 $('#inputClassesStage').show();
+                $('#palabra1').show();
+                $('#palabra2').show();
             }
         }
 

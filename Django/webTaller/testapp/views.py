@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.template import RequestContext
 from django.shortcuts import render_to_response, render, redirect
+from django.core.exceptions import ObjectDoesNotExist
 from page.models import *
 from django.core import serializers
 from django.http import HttpResponse
@@ -22,6 +23,30 @@ def seguimientoAl(request):
             idPF = request.GET.get('idPF')
             data = CheckFF.objects.filter(idPF=int(idPF))
             info = serializers.serialize('json', data)
+        elif(queryid=="saveFF"):
+            idS = request.GET.get('idSubject');
+            checked = request.GET.get('checked');
+            idP = request.GET.get('idPupil');
+            date = request.GET.get('date');
+            nameFF = request.GET.get('nameFF');
+            pupilF = PupilFollowing.objects.get(idPupil=int(idP), idSubject=int(idS), datePF=str(date))
+            FF = Fulfillment.objects.get(nameFF=str(nameFF))
+            if(str(checked)=="true"):
+                checked=True
+            elif(str(checked)=="false"):
+                checked=False
+            else:
+                print str(checked)
+            try:
+                FFchecks = CheckFF.objects.filter(nameFF=FF,idPF=pupilF.idPF)
+                FFchecks.update(check=checked)
+            except ObjectDoesNotExist:
+                FFchecks = CheckFF()
+                FFchecks.nameFF=FF
+                FFchecks.idPF=pupilF
+                FFchecks.check=checked
+                print("kjssssssssssssssssssssssssssssssssssssssssssssssssjjjjjjjjjjjjjjjjjjjjj")
+                FFchecks.save()
         elif(queryid == "subjects"):
             idC = request.GET.get('idCourse')
             subjects = Subject.objects.filter(idCourse=int(idC))
