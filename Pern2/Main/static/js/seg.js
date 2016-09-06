@@ -3,12 +3,11 @@
 ////////////////////////////////////////////
 /*Aqui se conecta BACKEND con FRONTEND, betch!
 Y usamos variables universalessss, mas info aqueeh: http://librosweb.es/libro/javascript/capitulo_4/ambito_de_las_variables.html*/
+var cbxCourse=$("#cbxCourse");
+var cbxPupil=$("#cbxPupil");
+var cbxSubject=$("#cbxSubject");
 
-var cbxCourse=$("#cbxCourse")
-var cbxPupil=$("#cbxPupil")
-var cbxSubject=$("#cbxSubject")
-
-cbxCourse.on('change',courseChanged());
+cbxCourse.on('change',function(){courseChanged()});
 
 /////////////////////////////////
 //Funciones para limpiar campos//
@@ -18,12 +17,14 @@ cbxCourse.on('change',courseChanged());
 function resetPupilField(){
     cbxPupil.empty();
     cbxPupil.append(new Option('Alumno', ''));
+    cbxPupil.refresh();
 }
 
 //Resetear ComboBox de Módulos a valores iniciales
 function resetSubjectField(){
     cbxSubject.empty();
     cbxSubject.append(new Option('Módulo', ''));
+    cbxSubject.selectpicker('refresh');
 }
 
 ///////////////////////
@@ -33,25 +34,27 @@ function resetSubjectField(){
 //Esta funcion hace algo
 function courseChanged(){
     if(this.val!=''){
-        resetSubjectField();
-        console.log("entro")
         $.ajax({
-            url: "{% url 'Main:seg-al' %}",
+            url: url,
             type: 'GET',
             data: {idCourse: cbxCourse.val(), queryId: "subjects"},
             dataType: 'json',
             success: function(info){
+                resetSubjectField();
+                $("#cbxSubject").empty();
+                $("#cbxSubject").append(new Option('Módulo', ''));
                 for(var i=0;i<info.length;i++){
                     var text = info[i].fields.nameSubject;
                     var value = info[i].pk;
-                    console.log(text+":"+value);
+                    console.log(text+": "+value);
                     cbxSubject.append(new Option(text, value));
+                    cbxSubject.selectpicker('refresh');
                 }
             }
         });
 
         /*$.ajax({
-        url: "{% url 'app_Main:seg-al' %}",
+        url: "{% url 'app_main:seg-al' %}",
         type: 'GET',
         data: {idCourse: cbxCourse.val(), queryId: "pupils"},
         dataType: 'json',
