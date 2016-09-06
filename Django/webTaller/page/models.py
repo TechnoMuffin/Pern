@@ -1,5 +1,6 @@
-# encoding: utf-8
+# -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+import os, sys
 from django.db import models
     
 
@@ -97,7 +98,7 @@ class Projects(models.Model):
         verbose_name = 'Project'
         verbose_name_plural = 'Projects'
     def __str__(self):
-        tagName = str(self.nameProject) + "[" + str(self.idSubject) + "]"
+        tagName = u""+str(self.nameProject) + "[" + str(self.idSubject) + "]"
         return tagName
     
 ##################################ETAPAS DE PROYECTOS##################################
@@ -113,7 +114,7 @@ class ProjectStages(models.Model):
         verbose_name = 'Project Stage'
         verbose_name_plural = 'Project Stages'
     def __str__(self):
-        tagName = str(self.namePS) + "[" + str(self.nameProject) +"]" + "(" + str(self.idPupil) + ")"
+        tagName = u""+ str(self.namePS) + "[" + str(self.nameProject) +"]" + "(" + str(self.idPupil) + ")"
         return tagName
     
 ###################################CALIFICATION##################################

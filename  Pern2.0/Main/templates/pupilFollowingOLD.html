@@ -1,0 +1,173 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block content %}
+<div class="container" id="HalfPage-Container-A">
+    <div class="row">
+        <!-- Panel "Selección de Campos" -->
+        <div class="col-xs-12">
+            <div class="panel panel-orange">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Seleccione campos</h3>
+                </div>
+                <div class="panel-body">
+                    <select class="selectpicker">
+                        <option>Curso</option>
+                        <option>1º año A</option>
+                        <option>1º año B</option>
+                        <option>1º año C</option>
+                        <option>2º año A</option>
+                        <option>2º año B</option>
+                        <option>2º año C</option>
+                        <option>3º año A</option>
+                        <option>3º año B</option>
+                        <option>3º año C</option>
+                    </select>
+                    <select class="selectpicker">
+                        <option>Modulo</option>
+                        <option>Ajuste</option>
+                        <option>Carpinteria</option>
+                        <option>Hojalateria</option>
+                    </select>
+                    <div class="input-group">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button">
+                                <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+                            </button>
+                        </span>
+                        <input type="text" class="form-control" id="datepicker" name="date" placeholder="Fecha">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Panel "Alumnos" -->
+        <div class="col-xs-9">
+            <div class="panel panel-orange">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Alumnos</h3>
+                </div>
+                <div class="panel-body">
+                    <table class="table table-responsive">
+                        <thead>
+                            <tr>
+                                <th>Presente</th>
+                                <th>Alumno</th>
+                                <th>Actividad</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><input type="checkbox"></td>
+                                <td>Franco Heredia</td>
+                                <td style="text-align:center;">C1</td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox"></td>
+                                <td>Matias Ferreyra</td>
+                                <td style="text-align:center;">-</td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox"></td>
+                                <td>Adriel Chagay</td>
+                                <td style="text-align:center;">C2</td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox"></td>
+                                <td>Santiago Garcia</td>
+                                <td style="text-align:center;">C1</td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox"></td>
+                                <td>Fabrizio Cuassolo</td>
+                                <td style="text-align:center;">-</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-3">
+            <div class="panel panel-orange">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Cumplimientos de Franco Heredia</h3>
+                </div>
+                <div class="panel-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Check</th>
+                                <th>Condicion</th>
+                                <th>Porcentaje</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><input type="checkbox"></td>
+                                <td>Limas</td>
+                                <td style="color:red;font-weight: bold;text-align:center;">50%</td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox"></td>
+                                <td>Guardapolvo</td>
+                                <td style="color:green;font-weight: bold;text-align:center;">100%</td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox"></td>
+                                <td>Antiparras</td>
+                                <td style="color:orange;font-weight: bold;text-align:center;">70%</td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox"></td>
+                                <td>Guantes</td>
+                                <td style="color:green;font-weight: bold;text-align:center;">90%</td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox"></td>
+                                <td>Cepillo Limas</td>
+                                <td style="color:red;font-weight: bold;text-align:center;">20%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+
+        </div>
+    </div>
+    <div class="panel panel-orange" style="float:left;width: 700px;height: 180px;margin-bottom:0px;">
+        <div class="panel-heading">
+            <h3 class="panel-title">Seguimiento personal de Franco Heredia</h3>
+        </div>
+        <div class="panel-body">
+            <div class="form-group" style="float:right; margin-right:45px;margin-top:-10px;">
+                <label>Actividades</label>
+                <select class="selectpicker">
+                    <option>-</option>
+                    <option>Limar como negro</option>
+                </select>
+            </div>
+            <div style="float: right;width: 400px;height: 80px;margin-top: -15px;">
+                <div style="width:33%;float:left;height:100%;vertical-align:top;"><div style="vertical-align:top;height:50%;">Nombre:</div><div style="vertical-align:bottom;height:50%;">Demora:</div></div><div style="width:33%;margin-right:33%;float:right;height:100%;vertical-align:top;"><div style="vertical-align:top;height:50%;">Codigo:</div><div style="vertical-align:bottom;height:50%;">Velocidad:</div></div><div style="width:33%;float:right;height:100%;margin-top:-80px;"><div style="vertical-align:top;height:50%;">Status:</div><div style="vertical-align:bottom;height:50%;">Nota:</div></div>
+            </div>
+            <div class="form-group" style="margin-top:-10px;margin-bottom:0px;">
+                <label >Observaciones</label>
+                <textarea class="form-control" rows="4" style="width:250px;resize: none;"></textarea>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<div class="container" id="HalfPage-Container-B" style="width:100px;float:right;">
+    <div class="panel panel-orange" style="float: right;width:420px;height:595px;margin-bottom: 0px;">
+        <div class="panel-heading">
+            <h3 class="panel-title">Seguimiento del modulo</h3>
+        </div>
+        <div class="panel-body">
+
+        </div>
+    </div>
+</div>
+{% endblock %}
