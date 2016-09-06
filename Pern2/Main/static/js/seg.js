@@ -16,14 +16,14 @@ cbxCourse.on('change',courseChanged());
 
 //Resetear ComboBox de Alumnos a valores iniciales
 function resetPupilField(){
-    Pupil.empty();
-    Pupil.append(new Option("Alumno", ""));
+    cbxPupil.empty();
+    cbxPupil.append(new Option('Alumno', ''));
 }
 
 //Resetear ComboBox de Módulos a valores iniciales
 function resetSubjectField(){
     cbxSubject.empty();
-    cbxSubject.append(new Option("Módulo", ""));
+    cbxSubject.append(new Option('Módulo', ''));
 }
 
 ///////////////////////
@@ -32,35 +32,37 @@ function resetSubjectField(){
 
 //Esta funcion hace algo
 function courseChanged(){
-    resetSubjectField();
-    console.log("entro")
-    $.ajax({
-        url: "{% url 'app_Main:seg-al' %}",
-        type: 'GET',
-        data: {idCourse: cbxCourse.val(), queryId: "subjects"},
-        dataType: 'json',
-        success: function(info){
-            for(var i=0;i<info.length;i++){
-                var text = info[i].fields.nameSubject;
-                var value = info[i].pk;
-                console.log(text+":"+value);
-                cbxSubject.append(new Option(text, value));
+    if(this.val!=''){
+        resetSubjectField();
+        console.log("entro")
+        $.ajax({
+            url: "{% url 'Main:seg-al' %}",
+            type: 'GET',
+            data: {idCourse: cbxCourse.val(), queryId: "subjects"},
+            dataType: 'json',
+            success: function(info){
+                for(var i=0;i<info.length;i++){
+                    var text = info[i].fields.nameSubject;
+                    var value = info[i].pk;
+                    console.log(text+":"+value);
+                    cbxSubject.append(new Option(text, value));
+                }
             }
-        }
-    });
+        });
 
-    /*$.ajax({
+        /*$.ajax({
         url: "{% url 'app_Main:seg-al' %}",
         type: 'GET',
         data: {idCourse: cbxCourse.val(), queryId: "pupils"},
         dataType: 'json',
         success: function(info){
-            Pupil.empty();
-            Pupil.append(new Option("Alumno", ""));
+            cbxPupil.empty();
+            cbxPupil.append(new Option("Alumno", ""));
             for(var i=0;i<info.length;i++){
                 var text = info[i].fields.namePupil + " " +info[i].fields.surnamePupil;
                 var value = info[i].pk;
-                Pupil.append(new Option(text, value));
+                cbxPupil.append(new Option(text, value));
             }}});
     return;*/
+    }
 }

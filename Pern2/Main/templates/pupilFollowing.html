@@ -11,22 +11,13 @@
                 </div>
                 <div class="panel-body">
                     <select id="cbxCourse" class="selectpicker" data-width="100%">
-                        <option>Curso</option>
+                        <option value=''>Curso</option>
                         {% for i in courses %}
                         <option value={{i.idCourse}}>{{i.courseType}}º año "{{i.courseDivision}}"</option>
                         {% endfor %}
                     </select>
                     <select id="cbxSubject" class="selectpicker" data-width="100%">
-                        <option>Módulo</option>
-                        <option>1º año A</option>
-                        <option>1º año B</option>
-                        <option>1º año C</option>
-                        <option>2º año A</option>
-                        <option>2º año B</option>
-                        <option>2º año C</option>
-                        <option>3º año A</option>
-                        <option>3º año B</option>
-                        <option>3º año C</option>
+                        <option value=''>Módulo</option>
                     </select>
                     <div class="input-group col-xs-12">
                         <span class="input-group-btn">
@@ -221,5 +212,74 @@
 {% endblock %}
 {% block scripts %}
 <script src="{% static 'js/jquery-1.11.1.min.js'%}"></script>
-<script src="{% static 'js/seg.js'%}"></script>
+<script src="{% static 'js/bootstrap-select.js'%}"></script>
+<!--<script src="{% static 'js/seg.js'%}"></script>-->
+<script>
+    var cbxCourse=$("#cbxCourse");
+    var cbxPupil=$("#cbxPupil");
+    var cbxSubject=$("#cbxSubject");
+    
+    cbxCourse.on('change',function(){courseChanged()});
+
+    /////////////////////////////////
+    //Funciones para limpiar campos//
+    /////////////////////////////////
+
+    //Resetear ComboBox de Alumnos a valores iniciales
+    function resetPupilField(){
+        cbxPupil.empty();
+        cbxPupil.append(new Option('Alumno', ''));
+        cbxPupil.refresh();
+    }
+
+    //Resetear ComboBox de Módulos a valores iniciales
+    function resetSubjectField(){
+        cbxSubject.empty();
+        cbxSubject.append(new Option('Módulo', ''));
+        cbxSubject.selectpicker('refresh');
+    }
+
+    ///////////////////////
+    //Funciones para AJAX//
+    ///////////////////////
+
+    //Esta funcion hace algo
+    function courseChanged(){
+        if(this.val!=''){
+            $.ajax({
+                url: '{% url "app_main:seg-al" %}',
+                type: 'GET',
+                data: {idCourse: cbxCourse.val(), queryId: "subjects"},
+                dataType: 'json',
+                success: function(info){
+                    resetSubjectField();
+                    $("#cbxSubject").empty();
+                    $("#cbxSubject").append(new Option('Módulo', ''));
+                    for(var i=0;i<info.length;i++){
+                        var text = info[i].fields.nameSubject;
+                        var value = info[i].pk;
+                        console.log(text+": "+value);
+                        cbxSubject.append(new Option(text, value));
+                        cbxSubject.selectpicker('refresh');
+                    }
+                }
+            });
+
+            /*$.ajax({
+        url: "{% url 'app_main:seg-al' %}",
+        type: 'GET',
+        data: {idCourse: cbxCourse.val(), queryId: "pupils"},
+        dataType: 'json',
+        success: function(info){
+            cbxPupil.empty();
+            cbxPupil.append(new Option("Alumno", ""));
+            for(var i=0;i<info.length;i++){
+                var text = info[i].fields.namePupil + " " +info[i].fields.surnamePupil;
+                var value = info[i].pk;
+                cbxPupil.append(new Option(text, value));
+            }}});
+    return;*/
+        }
+    }
+</script>
 {% endblock %}
