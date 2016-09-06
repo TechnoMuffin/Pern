@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 {% block content %}
-<div class="container" id="HalfPage-Container-A">
+<div class="container">
     <div class="col-xs-12 col-md-4">
         <!-- Panel "Alumnos" -->
         <div class="col-xs-12 col-md-12">
@@ -10,8 +10,14 @@
                     Alumnos
                 </div>
                 <div class="panel-body">
-                    <select class="selectpicker">
+                    <select id="cbxCourse" class="selectpicker" data-width="100%">
                         <option>Curso</option>
+                        {% for i in courses %}
+                        <option value={{i.idCourse}}>{{i.courseType}}º año "{{i.courseDivision}}"</option>
+                        {% endfor %}
+                    </select>
+                    <select id="cbxSubject" class="selectpicker" data-width="100%">
+                        <option>Módulo</option>
                         <option>1º año A</option>
                         <option>1º año B</option>
                         <option>1º año C</option>
@@ -22,13 +28,7 @@
                         <option>3º año B</option>
                         <option>3º año C</option>
                     </select>
-                    <select class="selectpicker">
-                        <option>Modulo</option>
-                        <option>Ajuste</option>
-                        <option>Carpinteria</option>
-                        <option>Hojalateria</option>
-                    </select>
-                    <div class="input-group">
+                    <div class="input-group col-xs-12">
                         <span class="input-group-btn">
                             <button class="btn btn-default" type="button">
                                 <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
@@ -70,25 +70,25 @@
                                 <td>Fabrizio Cuassolo</td>
                                 <td style="text-align:center;">-</td>
                             </tr><tr>
-                                <td><input type="checkbox"></td>
-                                <td>Fabrizio Cuassolo</td>
-                                <td style="text-align:center;">-</td>
+                            <td><input type="checkbox"></td>
+                            <td>Fabrizio Cuassolo</td>
+                            <td style="text-align:center;">-</td>
                             </tr><tr>
-                                <td><input type="checkbox"></td>
-                                <td>Fabrizio Cuassolo</td>
-                                <td style="text-align:center;">-</td>
+                            <td><input type="checkbox"></td>
+                            <td>Fabrizio Cuassolo</td>
+                            <td style="text-align:center;">-</td>
                             </tr><tr>
-                                <td><input type="checkbox"></td>
-                                <td>Fabrizio Cuassolo</td>
-                                <td style="text-align:center;">-</td>
+                            <td><input type="checkbox"></td>
+                            <td>Fabrizio Cuassolo</td>
+                            <td style="text-align:center;">-</td>
                             </tr><tr>
-                                <td><input type="checkbox"></td>
-                                <td>Fabrizio Cuassolo</td>
-                                <td style="text-align:center;">-</td>
+                            <td><input type="checkbox"></td>
+                            <td>Fabrizio Cuassolo</td>
+                            <td style="text-align:center;">-</td>
                             </tr><tr>
-                                <td><input type="checkbox"></td>
-                                <td>Fabrizio Cuassolo</td>
-                                <td style="text-align:center;">-</td>
+                            <td><input type="checkbox"></td>
+                            <td>Fabrizio Cuassolo</td>
+                            <td style="text-align:center;">-</td>
                             </tr>
                         </tbody>
                     </table>
@@ -138,13 +138,13 @@
                                 <td>Cepillo Limas</td>
                                 <td style="color:red;font-weight: bold;text-align:center;">20%</td>
                             </tr><tr>
-                                <td><input type="checkbox"></td>
-                                <td>Cepillo Limas</td>
-                                <td style="color:red;font-weight: bold;text-align:center;">20%</td>
+                            <td><input type="checkbox"></td>
+                            <td>Cepillo Limas</td>
+                            <td style="color:red;font-weight: bold;text-align:center;">20%</td>
                             </tr><tr>
-                                <td><input type="checkbox"></td>
-                                <td>Cepillo Limas</td>
-                                <td style="color:red;font-weight: bold;text-align:center;">20%</td>
+                            <td><input type="checkbox"></td>
+                            <td>Cepillo Limas</td>
+                            <td style="color:red;font-weight: bold;text-align:center;">20%</td>
                             </tr>
                         </tbody>
                     </table>
@@ -152,7 +152,7 @@
             </div>
         </div>
         <!-- Panel Seguimiento Personal -->
-        <div class="col-xs-6">
+        <div class="col-xs-12 col-md-6">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     Seguimiento personal de Franco Heredia
@@ -218,4 +218,8 @@
         </div>
     </div>
 </div>
+{% endblock %}
+{% block scripts %}
+<script src="{% static 'js/jquery-1.11.1.min.js'%}"></script>
+<script src="{% static 'js/seg.js'%}"></script>
 {% endblock %}
