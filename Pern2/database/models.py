@@ -3,8 +3,12 @@ from __future__ import unicode_literals
 import os, sys
 from django.db import models
     
+#Changes:
+#
+#Added Rotation
+#ProjectStages-->Activities
+#Added Usuario
 
-    
 ##################################CUMPLIMIENTOS##################################
 class Fulfillment(models.Model):
     nameFF = models.CharField(max_length=128, primary_key=True)
@@ -58,6 +62,14 @@ class Subject(models.Model):
         tagName = str(self.nameSubject)
         return tagName
     
+##################################USUARIO##################################
+class Usuario(models.Model):
+    name = models.CharField(max_length=128)
+    surname = models.CharField(max_length=128)
+    email = models.EmailField(max_length=254)
+    dni = models.DecimalField(max_digits=9)
+    idU = models.AutoField(primary_key=True)
+
 ##################################ALUMNO##################################
 
 class Pupil(models.Model):
@@ -102,7 +114,7 @@ class Projects(models.Model):
         return tagName
     
 ##################################ETAPAS DE PROYECTOS##################################
-class ProjectStages(models.Model):
+class Activities(models.Model):
     namePS = models.CharField(max_length=128)
     calification = models.IntegerField()
     classes = models.IntegerField()
@@ -111,8 +123,8 @@ class ProjectStages(models.Model):
     idPupil = models.ForeignKey(Pupil)
     
     class Meta:
-        verbose_name = 'Project Stage'
-        verbose_name_plural = 'Project Stages'
+        verbose_name = 'Activitie'
+        verbose_name_plural = 'Activities'
     def __str__(self):
         tagName = u""+ str(self.namePS) + "[" + str(self.nameProject) +"]" + "(" + str(self.idPupil) + ")"
         return tagName
@@ -131,8 +143,7 @@ class ProjectStages(models.Model):
 #        verbose_name_plural = 'notas'
 #    def __str__(self):
 #        tagName = str(self.idPupil) + " [" + str(self.idPS) + "] " + " (" + str(self.note) + ")"
-#        return tagName   
-#    
+#        return tagName 
 
 ##################################CONTROL##################################
 class CheckFF(models.Model):
@@ -147,4 +158,16 @@ class CheckFF(models.Model):
         tagName = str(self.nameFF) + "[" + str(self.idPF) + "]"
         return tagName
     
- 
+##################################CONTROL##################################
+class Rotation(models.Model):
+    nameRotation = models.CharField(max_length=32)
+    idRotation = models.AutoField(primary_key=True)
+    idSubject = models.ForeignKey(Subject)
+    idCourse = models.ForeignKey(Course)
+    
+    class Meta:
+        verbose_name = 'Rotation'
+        verbose_name_plural = 'Rotations'
+    def __str__(self):
+        tagName = u""+ str(self.nameRotation) + "[" + str(self.idSubject) +"]" + "(" + str(self.idCourse) + ")"
+        return tagName
