@@ -41,7 +41,7 @@ class Teacher(User):
 ##################################CURSOS##################################
 class Course(models.Model):
     idCourse = models.AutoField(primary_key=True)
-    cicle = models.IntegerField()
+    cycle = models.IntegerField()
     COURSE_OPTIONS = (
     (u'1', u'1º año'),
     (u'2', u'2º año'),
