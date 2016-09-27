@@ -67,7 +67,7 @@ class Usuario(models.Model):
     name = models.CharField(max_length=128)
     surname = models.CharField(max_length=128)
     email = models.EmailField(max_length=254)
-    dni = models.DecimalField(max_digits=9)
+    #dni = models.DecimalField(max_digits=9)
     idU = models.AutoField(primary_key=True)
 
 ##################################ALUMNO##################################
