@@ -95,7 +95,7 @@ class Student(User):
 class Module(models.Model):
     idModule = models.AutoField(primary_key=True)
     nameModule = models.CharField(max_length=128)
-    idRotation = models.ForeignKey(Rotation, blank=True)
+    idCourse = models.ForeignKey(Course, blank=True)
 
 
     class Meta:
@@ -197,4 +197,3 @@ class Working(models.Model):
     def __str__(self):
         tagName = str(self.idActivity) + " " + str(self.idStudent)
         return tagName
-
