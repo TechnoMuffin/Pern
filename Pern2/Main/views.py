@@ -7,7 +7,7 @@ import json
 
 def pupilFollowing(request):
     queryId = request.GET.get('queryId')
-    info="como andas bro?"
+    info='...'
     if request.is_ajax():
         if(queryId == "subjects"):
             idC = request.GET.get('idCourse')
@@ -16,6 +16,10 @@ def pupilFollowing(request):
                 info = serializers.serialize('json', subjects)
             else:
                 info = "No se ha pedido ningun modulo"
+        elif(queryId == "students"):
+            idC = request.GET.get('idCourse')
+            pupils = Pupil.objects.filter(idCourse=int(idC))
+            info = serializers.serialize('json', pupils)
         print info
         return HttpResponse(info)
     else:
