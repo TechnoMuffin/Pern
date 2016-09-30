@@ -1,8 +1,9 @@
 ////////////////////////////////////////////
 //Asignación de funciones a elementos HTML//
 ////////////////////////////////////////////
-/*Aqui se conecta BACKEND con FRONTEND, betch!
+/*Aqui se conecta AJAX con FRONTEND, betch!
 Y usamos variables universalessss, mas info aqueeh: http://librosweb.es/libro/javascript/capitulo_4/ambito_de_las_variables.html*/
+
 var cbxCourse = $("#cbxCourse");
 var cbxModule = $("#cbxModule");
 var tbStudent = $("#tbAlumnos");
@@ -45,7 +46,7 @@ function courseChanged(){
                 cbxModule.empty();
                 cbxModule.append(new Option('Módulo', ''));
                 for(var i=0;i<info.length;i++){
-                    var text = info[i].fields.nameSubject;
+                    var text = info[i].fields.nameModule;
                     var value = info[i].pk;
                     console.log(text+": "+value);
                     cbxModule.append(new Option(text, value));

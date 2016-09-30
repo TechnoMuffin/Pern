@@ -61,7 +61,7 @@ class Course(models.Model):
         verbose_name_plural = 'Courses'
 
     def __str__(self):
-        tagName = str(self.courseType) + str(self.courseDivision) + " - " + str(self.cicle)
+        tagName = str(self.courseType) + str(self.courseDivision) + " - " + str(self.cycle)
         return tagName
 
 ##################################ROTACIONES##################################
@@ -83,12 +83,11 @@ class Student(User):
     idRotation = models.ForeignKey(Rotation)
     numberOfRegistration = models.IntegerField()
 
-
     class Meta:
         verbose_name = 'Alumno'
         verbose_name_plural = 'Alumnos'
     def __str__(self):
-        tagName = str(self.name) + " [" + str(self.idRotation) + "]"
+        tagName = str(self.name)+" "+str(self.surname)+ " [" + str(self.idRotation) + "]"
         return tagName
 
 ##################################MODULOS##################################
@@ -120,9 +119,9 @@ class Document(models.Model):
         tagName = str(self.nameDocument) + "(" + str(self.idModule) + ")"
         return tagName
 
-##################################CUMPLIMIENTOs##################################
+##################################CUMPLIMIENTOS##################################
 class Fulfillment(models.Model):
-    nameFF = models.CharField(max_length=128, primary_key=True)
+    nameFF = models.CharField(max_length=128)
     idFF = models.AutoField(primary_key=True)
     idModule = models.ManyToManyField(Module, blank=True)
 
@@ -136,7 +135,7 @@ class Fulfillment(models.Model):
 
 ##################################PROYECTOS##################################
 class Project(models.Model):
-    nameProject = models.CharField(max_length=128, primary_key=True)
+    nameProject = models.CharField(max_length=128)
     idProject = models.AutoField(primary_key=True)
     idTeacher = models.ManyToManyField(Teacher)
     idModule = models.ForeignKey(Module)
@@ -164,7 +163,7 @@ class StudentFollowing(models.Model):
         verbose_name = 'Seguimiento de Alumno'
         verbose_name_plural = 'Seguimientos de Alumno'
     def __str__(self):
-        tagName = str(self.idPupil) + "(" + str(self.idModule) + ")"
+        tagName = str(self.idStudent) + "(" + str(self.idModule) + ")"
         return tagName
 
 ##################################ACTIVIDADES##################################
