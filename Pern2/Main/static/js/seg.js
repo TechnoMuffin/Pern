@@ -7,9 +7,11 @@ Y usamos variables universalessss, mas info aqueeh: http://librosweb.es/libro/ja
 var cbxCourse = $("#cbxCourse");
 var cbxModule = $("#cbxModule");
 var tbStudent = $("#tbAlumnos");
+var tableStudents = $('#myTable');
 
 cbxCourse.on('change', function(){courseChanged()});
 cbxModule.on('change', function(){moduleChanged()});
+tableStudents.on('click', '.clickable-row', function(event) {$(this).addClass('active').siblings().removeClass('active');});
 
 /////////////////////////////////
 //Funciones para limpiar campos//
@@ -70,10 +72,14 @@ function moduleChanged(){
                     var text = info[i].fields.name + " " + info[i].fields.surname;
                     var value = info[i].pk;
                     console.log(text);
-                    var elemento = '<tr><td><input type="checkbox"></td><td>'+text+'</td><td style="text-align:center;">C1</td></tr>';
+                    var elemento = '<tr class="clickable-row" onclick="testFunction(event)"><td><input type="checkbox"></td><td>'+text+'</td><td style="text-align:center;">C1</td></tr>';
                     tbStudent.append(elemento);
                 }
             }
         });
     }
+}
+
+function testFunction(evt) {
+    alert("anda funcion");
 }
