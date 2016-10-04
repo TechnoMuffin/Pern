@@ -24,6 +24,9 @@ class User(models.Model):
     email = models.EmailField(max_length=254)
     dni = models.IntegerField()
     idUser = models.AutoField(primary_key=True)
+    
+    class Meta:
+        abstract = True
 
 ##################################PROFESOR##################################
 class Teacher(User):
@@ -82,7 +85,7 @@ class Rotation(models.Model):
 class Student(User):
     idRotation = models.ForeignKey(Rotation)
     numberOfRegistration = models.IntegerField()
-
+    
     class Meta:
         verbose_name = 'Alumno'
         verbose_name_plural = 'Alumnos'

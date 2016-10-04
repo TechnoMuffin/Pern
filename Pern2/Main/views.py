@@ -25,7 +25,6 @@ def pupilFollowing(request):
             curso = Course.objects.get(idCourse=int(idC))
             rotation = Rotation.objects.filter(idCourse=curso)
             students = Student.objects.filter(idRotation=rotation)
-            print students
             info = serializers.serialize('json', students)
         print info
         return HttpResponse(info)

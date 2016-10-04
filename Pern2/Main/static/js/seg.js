@@ -67,7 +67,7 @@ function moduleChanged(){
             dataType: 'json',
             success: function(info){
                 for(var i=0;i<info.length;i++){
-                    var text = info[i].fields.namePupil + " " + info[i].fields.surnamePupil;
+                    var text = info[i].fields.name + " " + info[i].fields.surname;
                     var value = info[i].pk;
                     console.log(text);
                     var elemento = '<tr><td><input type="checkbox"></td><td>'+text+'</td><td style="text-align:center;">C1</td></tr>';
