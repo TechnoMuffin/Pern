@@ -16,7 +16,7 @@
                         <option value={{i.idCourse}}>{{i.courseType}}º año "{{i.courseDivision}}"</option>
                         {% endfor %}
                     </select>
-                    <select id="cbxSubject" class="selectpicker" data-width="100%">
+                    <select id="cbxModule" class="selectpicker" data-width="100%">
                         <option value=''>Módulo</option>
                     </select>
                     <div class="input-group col-xs-12">
@@ -35,6 +35,7 @@
                                 <th>Actividad</th>
                             </tr>
                         </thead>
+<<<<<<< HEAD
                         <tbody id="tbalumnos">
                             <tr class='clickable-row'  onclick="testFunction(event)">
                                 <td><input type="checkbox"></td>
@@ -81,6 +82,9 @@
                             <td>Fabrizio Cuassolo</td>
                             <td style="text-align:center;">-</td>
                             </tr>
+=======
+                        <tbody id='tbAlumnos'>
+>>>>>>> a924e15c55a4a4f15f11cf9265a9d7fc329bba98
                         </tbody>
                     </table>
                 </div>
@@ -211,11 +215,16 @@
 </div>
 {% endblock %}
 {% block scripts %}
+<!--<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>-->
 <script src="{% static 'js/jquery-1.11.1.min.js'%}"></script>
 <script src="{% static 'js/bootstrap-select.js'%}"></script>
 
 <!-- Siempre antes de importar la libreria de Pern se debe agregar el siguiente elemento SCRIPT -->
 <script> var url = '{% url "app_main:seg-al" %}';</script>
-
 <script src="{% static 'js/seg.js'%}"></script>
+<script>
+    function getAlumnos(){
+        
+    }
+</script>
 {% endblock %}
