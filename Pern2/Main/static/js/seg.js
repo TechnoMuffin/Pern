@@ -1,13 +1,14 @@
 ////////////////////////////////////////////
 //Asignación de funciones a elementos HTML//
 ////////////////////////////////////////////
-/*Aqui se conecta AJAX con FRONTEND, betch!
+/*Aqui se conecta Javascript con FRONTEND, betch!
 Y usamos variables universalessss, mas info aqueeh: http://librosweb.es/libro/javascript/capitulo_4/ambito_de_las_variables.html*/
 
 var cbxCourse = $("#cbxCourse");
 var cbxModule = $("#cbxModule");
 var tbStudent = $("#tbAlumnos");
 var tableStudents = $('#myTable');
+var date = $('#datepicker');
 
 cbxCourse.on('change', function(){courseChanged()});
 cbxModule.on('change', function(){moduleChanged()});
@@ -73,7 +74,7 @@ function moduleChanged(){
                     var value = info[i].pk;
                     console.log(text);
                     console.log(value);
-                    var elemento = '<tr class="clickable-row" onclick="selectStudent(event,this,'+value+')"><td><input type="checkbox"></td><td>'+text+'</td><td style="text-align:center;">C1</td></tr>';
+                    var elemento = '<tr class="clickable-row" onclick="selectStudent(event,'+value+')"><td><input type="checkbox"></td><td>'+text+'</td><td style="text-align:center;">C1</td></tr>';
                     tbStudent.append(elemento);
                 }
             }
@@ -81,8 +82,8 @@ function moduleChanged(){
     }
 }
 
-
-function selectStudent(evt,esto,valor) {
+//ACA PASA LA MAGIA DE LA SELECCION DE ESTUDIANTE
+function selectStudent(evt,valor) {
     //$(this).isthepencilofsterpiscore();
     console.log(valor);
     $.ajax({
