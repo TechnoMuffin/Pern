@@ -17,7 +17,7 @@ def pupilFollowing(request):
                 modulos = Module.objects.filter(idCourse=curso)
                 info = serializers.serialize('json', modulos)
             else:
-                info = "No se ha pedido ningun modulo"
+                info = "ERROR: No existe el modulo pedido"
                 
         elif(queryId == "students"):
         #Devuelve todos los alumnos pertenecientes al curso y al modulo
@@ -25,7 +25,16 @@ def pupilFollowing(request):
             curso = Course.objects.get(idCourse=int(idC))
             rotation = Rotation.objects.filter(idCourse=curso)
             students = Student.objects.filter(idRotation=rotation)
-            info = serializers.serialize('json', students)
+            info = serializers.serialize('json', students)   
+            
+        elif(queryId == "getDataStudent"):
+        #Devuelve la informacion del alumno seleccionado
+            FCKINGID = request.GET.get('idStudent')
+            if(FCKINGID!=''):
+                student = Student.objects.filter(idUser=FCKINGID)
+                info = serializers.serialize('json', student)
+            else:
+                info="ERROR: ID de Estudiante no encontrado"
         print info
         return HttpResponse(info)
     else:

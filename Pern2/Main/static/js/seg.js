@@ -72,7 +72,8 @@ function moduleChanged(){
                     var text = info[i].fields.name + " " + info[i].fields.surname;
                     var value = info[i].pk;
                     console.log(text);
-                    var elemento = '<tr class="clickable-row" onclick="testFunction(event)"><td><input type="checkbox"></td><td>'+text+'</td><td style="text-align:center;">C1</td></tr>';
+                    console.log(value);
+                    var elemento = '<tr class="clickable-row" onclick="selectStudent(event,this,'+value+')"><td><input type="checkbox"></td><td>'+text+'</td><td style="text-align:center;">C1</td></tr>';
                     tbStudent.append(elemento);
                 }
             }
@@ -80,6 +81,17 @@ function moduleChanged(){
     }
 }
 
-function testFunction(evt) {
-    alert("anda funcion");
+
+function selectStudent(evt,esto,valor) {
+    //$(this).isthepencilofsterpiscore();
+    console.log(valor);
+    $.ajax({
+            url: url,
+            type: 'GET',
+            data: {idStudent: valor, queryId: "getDataStudent"},
+            dataType: 'json',
+            success: function(){
+                console.log("sadhaskjdhaksjhdakjksahfuydjh");
+            }
+        });
 }
