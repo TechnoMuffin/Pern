@@ -60,8 +60,8 @@ class Course(models.Model):
 
 
     class Meta:
-        verbose_name = 'Course'
-        verbose_name_plural = 'Courses'
+        verbose_name = 'Curso'
+        verbose_name_plural = 'Cursos'
 
     def __str__(self):
         tagName = str(self.courseType) + str(self.courseDivision) + " - " + str(self.cycle)
