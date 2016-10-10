@@ -10,22 +10,28 @@
                     Alumnos
                 </div>
                 <div class="panel-body">
-                    <select id="cbxCourse" class="selectpicker" data-width="100%">
-                        <option value=''>Curso</option>
-                        {% for i in courses %}
-                        <option value={{i.idCourse}}>{{i.courseType}}º año "{{i.courseDivision}}"</option>
-                        {% endfor %}
-                    </select>
-                    <select id="cbxModule" class="selectpicker" data-width="100%">
-                        <option value=''>Módulo</option>
-                    </select>
-                    <div class="input-group col-xs-12">
-                        <span class="input-group-btn">
-                            <button class="btn btn-default" type="button">
-                                <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
-                            </button>
-                        </span>
-                        <input type="text" class="form-control" id="datepicker" name="date" placeholder="Fecha">
+                    <div class="form-group col-xs-12">
+                        <select id="cbxCourse" class="selectpicker" data-width="100%">
+                            <option value=''>Curso</option>
+                            {% for i in courses %}
+                            <option value={{i.idCourse}}>{{i.courseType}}º año "{{i.courseDivision}}"</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group col-xs-12">
+                        <select id="cbxModule" class="selectpicker" data-width="100%">
+                            <option value=''>Módulo</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-xs-12">
+                        <div class="input-group col-xs-12">
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" type="button">
+                                    <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+                                </button>
+                            </span>
+                            <input type="text" class="form-control" id="datepicker" name="date" placeholder="Fecha" value="2016-10-09">
+                        </div>
                     </div>
                     <table class="table table-responsive" id="myTable">
                         <thead>
@@ -47,7 +53,7 @@
         <div class="col-xs-12 col-md-6">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    Cumplimientos de Franco Heredia
+                    Cumplimientos de <span class="nameStudent"></span>
                 </div>
                 <div class="panel-body">
                     <table class="table">
@@ -99,52 +105,46 @@
         </div>
         <!-- Panel Seguimiento Personal -->
         <div class="col-xs-12 col-md-6">
-            <div class="panel panel-default">
+            <div id="personalFollow" class="panel panel-default disabledDIV">
                 <div class="panel-heading">
-                    Seguimiento personal de Franco Heredia
+                    Seguimiento personal de <span class="nameStudent"></span>
                 </div>
 
                 <div class="panel-body">
-                    <div class="col-xs-12">
-                        <div class="form-group col-xs-12">
-                            <label>Actividades</label>
-                            <select class="selectpicker">
-                                <option>-------</option>
-                                <option>Limar como negro</option>
-                            </select>
-                        </div>
-                        <div class="col-xs-12">
-                            <div class="col-xs-6">
-                                <span>Nombre:</span>
-                                <span>Juan</span>
-                            </div>
-                            <div class="col-xs-6">
-                                <span>Codigo:</span>
-                                <span>123</span>
-                            </div>
-                        </div><br>
-                        <div class="col-xs-12">
-                            <div class="col-xs-6">
-                                <span>Status:</span>
-                                <span>sad</span>
-                            </div>
-                            <div class="col-xs-6">
-                                <span>Demora:</span>
-                                <span>21312</span>
-                            </div>
-                        </div><br>
-                        <div class="col-xs-12">
-                            <div class="col-xs-6">
-                                <span>Velocidad:</span>
-                                <span>sad</span>
-                            </div>
-                            <div class="col-xs-6">
-                                <span>Nota:</span>
-                                <span>21</span>
-                            </div>
-                        </div>
+                    <div class="form-group col-xs-12">
+                        <select id="cbxProject" class="selectpicker" data-width="100%">
+                            <option value=''>Proyectos</option>
+                        </select>
                     </div>
-                    <br>
+                    <div class="form-group col-xs-12">
+                        <select id="cbxActivity" class="selectpicker" data-width="100%">
+                            <option value=''>Actividades</option>
+                        </select>
+                    </div>
+                    <table class="table table-responsive">
+                        <tbody id="tbAlumnos">
+                            <tr>
+                                <td><span>Nombre:</span></td>
+                                <td><span id='actName'>---</span></td>
+                            </tr>
+                            <tr>
+                                <td><span>Codigo:</span></td>
+                                <td><span id='actCode'>---</span></td>
+                            </tr>
+                            <tr>
+                                <td><span>Clases:</span></td>
+                                <td><span id='actClasses'>---</span></td>
+                            </tr>
+                            <tr>
+                                <td><span>Status:</span></td>
+                                <td><span id='actStatus'>---</span></td>
+                            </tr>
+                            <tr>
+                                <td><span>Nota:</span></td>
+                                <td><span id='actCalification'>---</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
                     <div class="form-group col-xs-12">
                         <label >Observaciones</label>
                         <textarea class="form-control" rows="4"></textarea>
@@ -166,8 +166,7 @@
 </div>
 {% endblock %}
 {% block scripts %}
-<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-<!--<script src="{% static 'js/jquery-1.11.1.min.js'%}"></script>-->
+<script src="{% static 'js/jquery-3.1.0.js'%}"></script>
 <script src="{% static 'js/bootstrap-select.js'%}"></script>
 
 <!-- Siempre antes de importar la libreria de Pern se debe agregar el siguiente elemento SCRIPT -->
