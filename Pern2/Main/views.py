@@ -19,6 +19,37 @@ def pupilFollowing(request):
             else:
                 info = "ERROR: No existe el modulo pedido"
                 
+        if(queryId == "projects"):
+        #Devuelve todos los proyectos correspondientes al modulo
+            idModule = request.GET.get('module')
+            if(idModule!=''):
+                module = Module.objects.get(idModule=int(idModule))
+                projects = Project.objects.filter(idModule=module)
+                info = serializers.serialize('json', projects)
+            else:
+                info = "ERROR: No existe el proyecto pedido"
+        
+        if(queryId == "activities"):
+        #Devuelve todos las actividades correspondientes al proyecto
+            idProject = request.GET.get('idProject')
+            if(idProject!=''):
+                project = Project.objects.get(idProject=int(idProject))
+                activities = Activity.objects.filter(idProject=project)
+                info = serializers.serialize('json', activities)
+            else:
+                info = "ERROR: No existen actividades para este proyecto"
+                
+        if(queryId == "working"):
+        #Devuelve la informacion del trabajo correspondiente a la actividad seleccionada
+            idActivity = request.GET.get('idActivity')
+            idStudent = request.GET.get('idStudent')
+            if(idActivity!=''):
+                work = Working.objects.get(idActivity=int(idActivity),idStudent=int(idStudent))
+                activity = Activity.objects.get(idActivity=int(idActivity))
+                info = serializers.serialize('json', [work,activity])
+            else:
+                info= 'ERROR: No hay trabajo para esa actividad'
+                
         elif(queryId == "students"):
         #Devuelve todos los alumnos pertenecientes al curso y al modulo
             idC = request.GET.get('idCourse')

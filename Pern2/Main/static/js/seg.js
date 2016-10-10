@@ -6,12 +6,28 @@ Y usamos variables universalessss, mas info aqueeh: http://librosweb.es/libro/ja
 
 var cbxCourse = $("#cbxCourse");
 var cbxModule = $("#cbxModule");
-var tbStudent = $("#tbAlumnos");
-var tableStudents = $('#myTable');
+var cbxProject = $("#cbxProject");
+var cbxActivity = $("#cbxActivity");
+
+var currentStudentSelected; //Necesitaremos guardar en esta variable el alumno seleccionado para algunas funciones
+
+var tableStudents = $('#myTable'); //Table
+var tbStudent = $("#tbAlumnos"); //Body table
+
 var date = $('#datepicker');
+var nameStudentHTML = $('.nameStudent')
+
+//Activity fields
+var actName=$('#actName');
+var actCode=$('#actCode');
+var actStatus=$('#actStatus');
+var actClasses=$('#actClasses');
+var actCalification=$('#actCalification');
 
 cbxCourse.on('change', function(){courseChanged()});
 cbxModule.on('change', function(){moduleChanged()});
+cbxProject.on('change', function(){projectChanged()});
+cbxActivity.on('change', function(){activityChanged()});
 tableStudents.on('click', '.clickable-row', function(event) {$(this).addClass('active').siblings().removeClass('active');});
 
 /////////////////////////////////
@@ -30,8 +46,27 @@ function resetModuleField(){
     cbxModule.selectpicker('refresh');
 }
 
+function resetProjectField(){
+    cbxProject.empty();
+    cbxProject.append(new Option('Proyecto', ''));
+    cbxProject.selectpicker('refresh');
+}
+
+function resetActivityField(){
+    cbxActivity.empty();
+    cbxActivity.append(new Option('Actividad', ''));
+    cbxActivity.selectpicker('refresh');
+}
+function resetActivityData(){
+    actName.val('---');
+    actCode.val('---');
+    actStatus.val('---');
+    actClasses.val('---');
+    actCalification.val('---');
+}
+
 ///////////////////////
-//Funciones para AJAX//   El kokoro del codigo
+//Funciones para AJAX//
 ///////////////////////
 
 //Esta funcion hace algo
@@ -46,9 +81,8 @@ function courseChanged(){
             dataType: 'json',
             success: function(info){
                 resetModuleField();
-                cbxModule.empty();
-                cbxModule.append(new Option('Módulo', ''));
                 for(var i=0;i<info.length;i++){
+                    //El valor de las opciones de los select es el ID de los modulos
                     var text = info[i].fields.nameModule;
                     var value = info[i].pk;
                     console.log(text+": "+value);
@@ -56,13 +90,15 @@ function courseChanged(){
                 }
                 cbxModule.selectpicker('refresh');
             }
-        });       
+        });
     }
 }
 
 function moduleChanged(){
     resetStudentTable();
+    resetProjectField();
     if(this.val!=''){
+        //Carga de Alumnos
         $.ajax({
             url: url,
             type: 'GET',
@@ -70,29 +106,104 @@ function moduleChanged(){
             dataType: 'json',
             success: function(info){
                 for(var i=0;i<info.length;i++){
-                    var text = info[i].fields.name + " " + info[i].fields.surname;
+                    var texto = info[i].fields.name + " " + info[i].fields.surname;
                     var value = info[i].pk;
-                    console.log(text);
-                    console.log(value);
-                    var elemento = '<tr class="clickable-row" onclick="selectStudent(event,'+value+')"><td><input type="checkbox"></td><td>'+text+'</td><td style="text-align:center;">C1</td></tr>';
+                    var elemento = '<tr class="clickable-row" onclick="selectStudent(event,'+value+')"><td><input type="checkbox"></td><td>'+texto+'</td><td style="text-align:center;">C1</td></tr>';
                     tbStudent.append(elemento);
                 }
+            }
+        });
+
+        //Carga de Projectos
+        $.ajax({
+            url: url,
+            type: 'GET',
+            data: {module: cbxModule.val(), queryId: "projects"},
+            dataType: 'json',
+            success: function(info){
+                for(var i=0;i<info.length;i++){
+                    //El valor de las opciones de los select es el ID de los proyectos
+                    var nameProject = info[i].fields.nameProject;
+                    var value = info[i].pk;
+                    console.log(nameProject+": "+value);
+                    cbxProject.append(new Option(nameProject, value));
+                }
+                cbxProject.selectpicker('refresh');
             }
         });
     }
 }
 
+function projectChanged(){
+    resetActivityField();
+    $.ajax({
+        url: url,
+        type: 'GET',
+        data: {idCourse: cbxCourse.val(),
+               idProject: cbxProject.val(),
+               queryId: "activities"},
+        dataType: 'json',
+        success: function(info){
+            for(var i=0;i<info.length;i++){
+                //El valor de las opciones de los select es el ID de las Activities
+                var nameActivity = info[i].fields.nameActivity;
+                var value = info[i].pk;
+                console.log(nameActivity+": "+value);
+                cbxActivity.append(new Option(nameActivity, value));
+            }
+            cbxActivity.selectpicker('refresh');
+        }
+    });
+}
+
+function activityChanged(){
+    resetActivityData();
+    $.ajax({
+        url: url,
+        type: 'GET',
+        data: {idActivity: cbxActivity.val(),
+               idStudent: currentStudentSelected,
+               queryId: "working"},
+        dataType: 'json',
+        success: function(info){
+            i=info[0].fields;
+            i2=info[1].fields;
+            actName.text(i2.nameActivity);
+            actCode.text(info[1].pk);
+            if(i.hasFinish){
+                actStatus.css('color','green');
+                actStatus.text('Terminado');
+            }else{
+                actStatus.css('color','yellow');
+                actStatus.text('Pendiente');
+            }
+            actClasses.text(i.numberOfClasses);
+            actCalification.text(i.calification);
+        }
+    });
+    //TODO Bloquear todo si ninguno es seleccionado
+    //TODO Desbloquear todo si alguien es seleccionado
+    //TODO Crear un working si no existe
+}
+
 //ACA PASA LA MAGIA DE LA SELECCION DE ESTUDIANTE
 function selectStudent(evt,valor) {
-    //$(this).isthepencilofsterpiscore();
     console.log(valor);
-    $.ajax({
+    currentStudentSelected=valor;
+    //nameStudentHTML.text(texto);
+
+    /*$.ajax({
             url: url,
             type: 'GET',
-            data: {idStudent: valor, queryId: "getDataStudent"},
+            data: {idStudent: valor,
+                   date: date.val(),
+                   project: cbxProject.val(),
+                   module: cbxModule.val(),
+                   queryId: "getActivities"},
             dataType: 'json',
-            success: function(){
-                console.log("sadhaskjdhaksjhdakjksahfuydjh");
+            success: function(info){
+                console.log("entro");
+
             }
-        });
+        });*/
 }
