@@ -9,6 +9,8 @@ var cbxModule = $("#cbxModule");
 var cbxProject = $("#cbxProject");
 var cbxActivity = $("#cbxActivity");
 
+var personalFollowHTML = $("#personalFollow")
+
 var currentStudentSelected; //Necesitaremos guardar en esta variable el alumno seleccionado para algunas funciones
 
 var tableStudents = $('#myTable'); //Table
@@ -48,7 +50,7 @@ function resetModuleField(){
 
 function resetProjectField(){
     cbxProject.empty();
-    cbxProject.append(new Option('Proyecto', ''));
+    cbxProject.append(new Option('Proyectos', ''));
     cbxProject.selectpicker('refresh');
 }
 
@@ -56,15 +58,21 @@ function resetActivityField(){
     cbxActivity.empty();
     cbxActivity.append(new Option('Actividad', ''));
     cbxActivity.selectpicker('refresh');
+    resetActivityData();
 }
 function resetActivityData(){
-    actName.val('---');
-    actCode.val('---');
-    actStatus.val('---');
-    actClasses.val('---');
-    actCalification.val('---');
+    actName.text('---');
+    actCode.text('---');
+    actStatus.text('---');
+    actClasses.text('---');
+    actCalification.text('---');
 }
 
+function resetPersonalFollow(){
+    resetProjectField();
+    resetActivityField();
+    personalFollowHTML.addClass('disabledDIV');
+}
 ///////////////////////
 //Funciones para AJAX//
 ///////////////////////
@@ -73,6 +81,7 @@ function resetActivityData(){
 function courseChanged(){
     resetModuleField();
     resetStudentTable();
+    resetPersonalFollow();
     if(this.val!=''){
         $.ajax({
             url: url,
@@ -94,9 +103,11 @@ function courseChanged(){
     }
 }
 
+//Cambia CBX MODULO
 function moduleChanged(){
     resetStudentTable();
     resetProjectField();
+    resetPersonalFollow();
     if(this.val!=''){
         //Carga de Alumnos
         $.ajax({
@@ -181,29 +192,23 @@ function activityChanged(){
             actCalification.text(i.calification);
         }
     });
-    //TODO Bloquear todo si ninguno es seleccionado
-    //TODO Desbloquear todo si alguien es seleccionado
-    //TODO Crear un working si no existe
 }
 
 //ACA PASA LA MAGIA DE LA SELECCION DE ESTUDIANTE
 function selectStudent(evt,valor) {
     console.log(valor);
     currentStudentSelected=valor;
-    //nameStudentHTML.text(texto);
-
-    /*$.ajax({
-            url: url,
-            type: 'GET',
-            data: {idStudent: valor,
-                   date: date.val(),
-                   project: cbxProject.val(),
-                   module: cbxModule.val(),
-                   queryId: "getActivities"},
-            dataType: 'json',
-            success: function(info){
-                console.log("entro");
-
-            }
-        });*/
+    $.ajax({
+        url: url,
+        type: 'GET',
+        data: {idStudent: currentStudentSelected,
+               queryId: "onlyStudent"},
+        dataType: 'json',
+        success: function(info){
+            nameStudentHTML.text(info[0].fields.name+' '+info[0].fields.surname);
+        }
+    });
+    personalFollowHTML.removeClass('disabledDIV');
+    cbxActivity[0].selectedIndex = 0;
+    resetActivityData();
 }
