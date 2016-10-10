@@ -53,7 +53,7 @@ function courseChanged(){
                 }
                 cbxModule.selectpicker('refresh');
             }
-        });       
+        });
     }
 }
 

@@ -18,7 +18,7 @@ def pupilFollowing(request):
                 info = serializers.serialize('json', modulos)
             else:
                 info = "No se ha pedido ningun modulo"
-                
+
         elif(queryId == "students"):
         #Devuelve todos los alumnos pertenecientes al curso y al modulo
             idC = request.GET.get('idCourse')
