@@ -122,20 +122,6 @@ class Document(models.Model):
         tagName = str(self.nameDocument) + "(" + str(self.idModule) + ")"
         return tagName
 
-##################################CUMPLIMIENTOS##################################
-class Fulfillment(models.Model):
-    nameFF = models.CharField(max_length=128)
-    idFF = models.AutoField(primary_key=True)
-    idModule = models.ManyToManyField(Module, blank=True)
-
-
-    class Meta:
-        verbose_name = 'Cumplimiento'
-        verbose_name_plural = 'Cumplimientos'
-    def __str__(self):
-        tagName = str(self.nameFF) + "(" + str(self.idModule) + ")"
-        return tagName
-
 ##################################PROYECTOS##################################
 class Project(models.Model):
     nameProject = models.CharField(max_length=128)
@@ -149,6 +135,20 @@ class Project(models.Model):
         verbose_name_plural = 'Proyectos'
     def __str__(self):
         tagName = str(self.nameProject) + "[" + str(self.idModule) + "]" + "(" + str(self.idTeacher) + ")"
+        return tagName
+
+##################################CUMPLIMIENTOS##################################
+class Fulfillment(models.Model):
+    nameFF = models.CharField(max_length=128)
+    idFF = models.AutoField(primary_key=True)
+    idProject = models.ManyToManyField(Project, blank=True)
+
+
+    class Meta:
+        verbose_name = 'Cumplimiento'
+        verbose_name_plural = 'Cumplimientos'
+    def __str__(self):
+        tagName = str(self.nameFF) + "(" + str(self.idModule) + ")"
         return tagName
 
 ##################################SEGUIMIENTO DE ALUMNO##################################
@@ -172,9 +172,8 @@ class StudentFollowing(models.Model):
 ##################################ACTIVIDADES##################################
 class Activity(models.Model):
     nameActivity = models.CharField(max_length=128)
-    idActivity = models.AutoField(primary_key=True)
+    idActivity = models.CharField(primary_key=True, max_length=12)
     idProject = models.ForeignKey(Project)
-    idModule = models.ManyToManyField(Module, blank=True)
 
 
     class Meta:
