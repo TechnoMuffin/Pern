@@ -24,7 +24,7 @@ class User(models.Model):
     email = models.EmailField(max_length=254)
     dni = models.IntegerField()
     idUser = models.AutoField(primary_key=True)
-    
+
     class Meta:
         abstract = True
 
@@ -85,7 +85,7 @@ class Rotation(models.Model):
 class Student(User):
     idRotation = models.ForeignKey(Rotation)
     numberOfRegistration = models.IntegerField()
-    
+
     class Meta:
         verbose_name = 'Alumno'
         verbose_name_plural = 'Alumnos'
@@ -174,7 +174,7 @@ class Activity(models.Model):
     nameActivity = models.CharField(max_length=128)
     idActivity = models.AutoField(primary_key=True)
     idProject = models.ForeignKey(Project)
-    idSF = models.ManyToManyField(StudentFollowing)
+    idModule = models.ManyToManyField(Module, blank=True)
 
 
     class Meta:
