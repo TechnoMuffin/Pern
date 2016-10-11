@@ -8,6 +8,7 @@ var cbxCourse = $("#cbxCourse");
 var cbxModule = $("#cbxModule");
 var cbxProject = $("#cbxProject");
 var cbxActivity = $("#cbxActivity");
+var cbxProjectFW = $("#cbxProjectFW");
 
 var personalFollowHTML = $("#personalFollow")
 
@@ -26,6 +27,7 @@ var actStatus=$('#actStatus');
 var actClasses=$('#actClasses');
 var actCalification=$('#actCalification');
 
+cbxProjectFW.on('change', function(){projectWFChanged()});
 cbxCourse.on('change', function(){courseChanged()});
 cbxModule.on('change', function(){moduleChanged()});
 cbxProject.on('change', function(){projectChanged()});
@@ -103,27 +105,34 @@ function courseChanged(){
     }
 }
 
+function projectWFChanged(){
+  resetStudentTable();
+  resetProjectField();
+  resetPersonalFollow();
+  if(this.val!=''){
+      //Carga de Alumnos
+      $.ajax({
+          url: url,
+          type: 'GET',
+          data: {idCourse: cbxCourse.val(), queryId: "students"},
+          dataType: 'json',
+          success: function(info){
+              for(var i=0;i<info.length;i++){
+                  var texto = info[i].fields.name + " " + info[i].fields.surname;
+                  var value = info[i].pk;
+                  var elemento = '<tr class="clickable-row" onclick="selectStudent(event,'+value+')"><td><input type="checkbox"></td><td>'+texto+'</td><td style="text-align:center;"></td></tr>';
+                  tbStudent.append(elemento);
+              }
+          }
+      });
+}
+}
 //Cambia CBX MODULO
 function moduleChanged(){
     resetStudentTable();
     resetProjectField();
     resetPersonalFollow();
-    if(this.val!=''){
-        //Carga de Alumnos
-        $.ajax({
-            url: url,
-            type: 'GET',
-            data: {idCourse: cbxCourse.val(), queryId: "students"},
-            dataType: 'json',
-            success: function(info){
-                for(var i=0;i<info.length;i++){
-                    var texto = info[i].fields.name + " " + info[i].fields.surname;
-                    var value = info[i].pk;
-                    var elemento = '<tr class="clickable-row" onclick="selectStudent(event,'+value+')"><td><input type="checkbox"></td><td>'+texto+'</td><td style="text-align:center;">C1</td></tr>';
-                    tbStudent.append(elemento);
-                }
-            }
-        });
+
 
         //Carga de Projectos
         $.ajax({
@@ -138,12 +147,14 @@ function moduleChanged(){
                     var value = info[i].pk;
                     console.log(nameProject+": "+value);
                     cbxProject.append(new Option(nameProject, value));
+                    cbxProjectFW.append(new Option(nameProject, value));
                 }
                 cbxProject.selectpicker('refresh');
+                cbxProjectFW.selectpicker('refresh');
             }
         });
     }
-}
+
 
 function projectChanged(){
     resetActivityField();

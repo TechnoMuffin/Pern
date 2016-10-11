@@ -64,13 +64,15 @@ def pupilFollowing(request):
             else:
                 info= 'ERROR: No hay trabajo para esa actividad'
 
->>>>>>> origin/GL-08
         elif(queryId == "students"):
         #Devuelve todos los alumnos pertenecientes al curso y al modulo
             idC = request.GET.get('idCourse')
+            # idA = request.GET.get('idActivity')
             curso = Course.objects.get(idCourse=int(idC))
             rotation = Rotation.objects.filter(idCourse=curso)
             students = Student.objects.filter(idRotation=rotation)
+            # activity = Activity.objects.filter(idActivity=int(idA))
+            # work = Working.objects.filter(idStudent=students,idActivity=activity)
             info = serializers.serialize('json', students)
 
         elif(queryId == "onlyStudent"):
