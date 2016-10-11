@@ -93,3 +93,8 @@ def pupilFollowing(request):
         pupils = Student.objects.all()
         subjects = Module.objects.all()
         return render_to_response('pupilFollowing.html', {'courses':courses, 'subjects':subjects, 'pupils':pupils},context)
+
+def history(request):
+    context = RequestContext(request)
+    courses = Course.objects.all()
+    return render_to_response('history.html', {'courses':courses}, context)

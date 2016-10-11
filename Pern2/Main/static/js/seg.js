@@ -209,6 +209,5 @@ function selectStudent(evt,valor) {
         }
     });
     personalFollowHTML.removeClass('disabledDIV');
-    cbxActivity[0].selectedIndex = 0;
-    resetActivityData();
+    activityChanged();
 }
