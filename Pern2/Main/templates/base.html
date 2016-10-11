@@ -10,9 +10,13 @@
         <!--<link rel="icon" href="../../favicon.ico">-->
         <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet">
         <link href="{% static 'css/bootstrap-select.css' %}" rel="stylesheet">
+        
         <title>Pern</title>
+
+
         {% block css %}
         {% endblock %}
+
     </head>
     <body style="margin-top:70px">
         <nav class="navbar navbar-default navbar-fixed-top" style="color:white;">
@@ -40,11 +44,8 @@
     </body>
     <script src="{% static 'js/jquery-3.1.0.js' %}"></script>
     <script src="{% static 'js/bootstrap.js' %}"></script>
-    <script>
-        
-    </script>
-    <script type="text/javascript">
-    </script>
+
+
     {% block scripts %}
     {% endblock %}
 </html>

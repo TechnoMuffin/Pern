@@ -1,7 +1,8 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 {% block content %}
-<div class="container">
+
+
     <div class="col-xs-12 col-md-4">
         <!-- Panel "Alumnos" -->
         <div class="col-xs-12 col-md-12">
@@ -19,14 +20,15 @@
                     <select id="cbxModule" class="selectpicker" data-width="100%">
                         <option value=''>Módulo</option>
                     </select>
-                    <div class="input-group col-xs-12">
-                        <span class="input-group-btn">
-                            <button class="btn btn-default" type="button">
-                                <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
-                            </button>
-                        </span>
-                        <input type="text" class="form-control" id="datepicker" name="date" placeholder="Fecha" value="2016-10-09">
+                  <div class="bootstrap-iso">
+                    <div class="form-group col-xs-12">
+                      <form class="form-horizontal">
+              		        <div class="form-group">
+              		            <input class="form-control" name="date" type="text"/>
+              		        </div>
+              		    </form>
                     </div>
+                  </div>
                     <table class="table table-responsive" id="myTable">
                         <thead>
                             <tr>
@@ -165,8 +167,30 @@
 </div>
 {% endblock %}
 {% block scripts %}
+
 <script src="{% static 'js/jquery-3.1.0.js'%}"></script>
 <script src="{% static 'js/bootstrap-select.js'%}"></script>
+<script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
+
+
+
+<script type="text/javascript">
+          // When the document is ready
+            $(document).ready(function(){
+                  var currentDate = new Date();
+                  var date_input=$('input[name="date"]'); //Your date input has the name "date"
+                  var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
+                 date_input.datepicker({
+                   format: 'yyyy-mm-dd',
+                   container: container,
+                   autoclose: true,
+                   todayHighlight: true,
+
+                 })
+                 date_input.datepicker("setDate", currentDate);
+                })
+  </script>
+
 
 <!-- Siempre antes de importar la libreria de Pern se debe agregar el siguiente elemento SCRIPT -->
 <script> var url = '{% url "app_main:seg-al" %}';</script>
