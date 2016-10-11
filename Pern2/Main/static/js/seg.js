@@ -13,8 +13,10 @@ var personalFollowHTML = $("#personalFollow")
 
 var currentStudentSelected; //Necesitaremos guardar en esta variable el alumno seleccionado para algunas funciones
 
-var tableStudents = $('#myTable'); //Table
-var tbStudent = $("#tbAlumnos"); //Body table
+var tableStudents = $('#myTable'); //Table PupilFollowing
+var tbStudent = $("#tbAlumnos"); //Body table PupilFollowing
+var tableHistory = $('#historyTable'); //Table History
+var tbHistory = $('#tbHistory'); //Body Table History
 
 var date = $('#datepicker');
 var nameStudentHTML = $('.nameStudent')
@@ -39,6 +41,10 @@ tableStudents.on('click', '.clickable-row', function(event) {$(this).addClass('a
 //Resetear ComboBox de Alumnos a valores iniciales
 function resetStudentTable(){
     tbStudent.empty();
+}
+
+function resetHistoryTable(){
+    tbHistory.empty();
 }
 
 //Resetear ComboBox de Módulos a valores iniciales
@@ -175,6 +181,30 @@ function activityChanged(){
         data: {idActivity: cbxActivity.val(),
                idStudent: currentStudentSelected,
                queryId: "working"},
+        dataType: 'json',
+        success: function(info){
+            i=info[0].fields;
+            i2=info[1].fields;
+            actName.text(i2.nameActivity);
+            actCode.text(info[1].pk);
+            if(i.hasFinish){
+                actStatus.css('color','green');
+                actStatus.text('Terminado');
+            }else{
+                actStatus.css('color','yellow');
+                actStatus.text('Pendiente');
+            }
+            actClasses.text(i.numberOfClasses);
+            actCalification.text(i.calification);
+        }
+    });
+}
+
+function studentChanged(){
+    $.ajax({
+        url: url,
+        type: 'GET',
+        data: {idCurse: cbxActivity.val(), idStudent: currentStudentSelected, queryId: "working"},
         dataType: 'json',
         success: function(info){
             i=info[0].fields;
