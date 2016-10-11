@@ -120,8 +120,11 @@ function projectWFChanged(){
               for(var i=0;i<info.length;i++){
                   var texto = info[i].fields.name + " " + info[i].fields.surname;
                   var value = info[i].pk;
-                  var elemento = '<tr class="clickable-row" onclick="selectStudent(event,'+value+')"><td><input type="checkbox"></td><td>'+texto+'</td><td style="text-align:center;"></td></tr>';
+                  var elemento = '<tr class="clickable-row" onclick="selectStudent(event,'+value+')"><td><input type="checkbox"></td><td>'+texto+'</td><td style="text-align:center;"><select><option value="">---</option></select></td></tr>';
                   tbStudent.append(elemento);
+                  // <select id="cbxProjectFW" class="selectpicker" data-width="100%">
+                  //     <option value=''>Proyecto</option>
+                  // </select>
               }
           }
       });
