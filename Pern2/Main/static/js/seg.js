@@ -119,7 +119,7 @@ function moduleChanged(){
                 for(var i=0;i<info.length;i++){
                     var texto = info[i].fields.name + " " + info[i].fields.surname;
                     var value = info[i].pk;
-                    var elemento = '<tr class="clickable-row" onclick="selectStudent(event,'+value+')"><td><input type="checkbox"></td><td>'+texto+'</td><td style="text-align:center;">C1</td></tr>';
+                    var elemento = '<tr class="clickable-row" onclick="selectStudent(event,'+value+')"><th scope="row"><input type="checkbox"></th><td>'+texto+'</td><td style="text-align:center;">C1</td></tr>';
                     tbStudent.append(elemento);
                 }
             }
