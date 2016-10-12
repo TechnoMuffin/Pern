@@ -8,6 +8,7 @@ var cbxCourse = $("#cbxCourse");
 var cbxModule = $("#cbxModule");
 var cbxProject = $("#cbxProject");
 var cbxActivity = $("#cbxActivity");
+var cbxStudent = $("#cbxStudent");
 
 var personalFollowHTML = $("#personalFollow")
 
@@ -32,6 +33,7 @@ cbxCourse.on('change', function(){courseChanged()});
 cbxModule.on('change', function(){moduleChanged()});
 cbxProject.on('change', function(){projectChanged()});
 cbxActivity.on('change', function(){activityChanged()});
+cbxStudent.on('change', function(){studentChanged()});
 tableStudents.on('click', '.clickable-row', function(event) {$(this).addClass('active').siblings().removeClass('active');});
 
 /////////////////////////////////
@@ -58,6 +60,13 @@ function resetProjectField(){
     cbxProject.empty();
     cbxProject.append(new Option('Proyectos', ''));
     cbxProject.selectpicker('refresh');
+}
+
+function resetStudentField(){
+    cbxStudent.empty();
+    cbxStudent.append(new Option('Alumno', ''));
+    cbxStudent.selectpicker('refresh');
+    resetHistoryTable();
 }
 
 function resetActivityField(){
@@ -88,6 +97,8 @@ function courseChanged(){
     resetModuleField();
     resetStudentTable();
     resetPersonalFollow();
+    resetHistoryTable();
+    resetStudentField();
     if(this.val!=''){
         $.ajax({
             url: url,
@@ -111,9 +122,11 @@ function courseChanged(){
 
 //Cambia CBX MODULO
 function moduleChanged(){
+    resetStudentField();
     resetStudentTable();
     resetProjectField();
     resetPersonalFollow();
+    resetHistoryTable();
     if(this.val!=''){
         //Carga de Alumnos
         $.ajax({
@@ -127,7 +140,13 @@ function moduleChanged(){
                     var value = info[i].pk;
                     var elemento = '<tr class="clickable-row" onclick="selectStudent(event,'+value+')"><th scope="row"><input type="checkbox"></th><td>'+texto+'</td><td style="text-align:center;">C1</td></tr>';
                     tbStudent.append(elemento);
+                    try{
+                        cbxStudent.append(new Option(texto,value));
+                    }catch(err){console.log(err)}
                 }
+                try{
+                    cbxStudent.selectpicker('refresh');
+                }catch(e){console.log(err)}
             }
         });
 
@@ -201,27 +220,30 @@ function activityChanged(){
 }
 
 function studentChanged(){
-    $.ajax({
-        url: url,
-        type: 'GET',
-        data: {idCurse: cbxActivity.val(), idStudent: currentStudentSelected, queryId: "working"},
-        dataType: 'json',
-        success: function(info){
-            i=info[0].fields;
-            i2=info[1].fields;
-            actName.text(i2.nameActivity);
-            actCode.text(info[1].pk);
-            if(i.hasFinish){
-                actStatus.css('color','green');
-                actStatus.text('Terminado');
-            }else{
-                actStatus.css('color','yellow');
-                actStatus.text('Pendiente');
+    //Cuando el select cbxStudent cambia de valor carga los datos correspondientes del alumno
+    resetHistoryTable();
+    console.log(cbxStudent.val());
+    if(this.val!=''){
+        $.ajax({
+            url: url,
+            type: 'GET',
+            data: {idStudent: cbxStudent.val(), queryId: "history"},
+            dataType: 'json',
+            success: function(info){
+                for(var i=0;i<info.length;i++){
+                    var presencia = info[i].fields.presenceSF;
+                    var fecha = info[i].fields.dateSF;
+                    if(presencia){
+                        presencia='<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>';
+                    }else{
+                        presencia='<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>';
+                    }
+                    var elemento = '<tr class="clickable-row"><th scope="row">'+presencia+'</th><td>'+fecha+'</td><td style="text-align:center;">C1</td></tr>';
+                    tbHistory.append(elemento);
+                }
             }
-            actClasses.text(i.numberOfClasses);
-            actCalification.text(i.calification);
-        }
-    });
+        });
+    }
 }
 
 //ACA PASA LA MAGIA DE LA SELECCION DE ESTUDIANTE

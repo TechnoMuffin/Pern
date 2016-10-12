@@ -68,7 +68,7 @@ def pupilFollowing(request):
             idC = request.GET.get('idCourse')
             curso = Course.objects.get(idCourse=int(idC))
             rotation = Rotation.objects.filter(idCourse=curso)
-            students = Student.objects.filter(idRotation=rotation)
+            students = Student.objects.filter(idRotation=rotation).order_by('surname')
             info = serializers.serialize('json', students)
             
         elif(queryId == "onlyStudent"):
@@ -76,6 +76,13 @@ def pupilFollowing(request):
             idUser = request.GET.get('idStudent')
             student = Student.objects.filter(idUser=int(idUser))
             info = serializers.serialize('json', student)   
+        
+        elif(queryId == "history"):
+        #Devuelve el alumno pedido
+            idUser = request.GET.get('idStudent')
+            student = Student.objects.filter(idUser=int(idUser))
+            studentFollowings = StudentFollowing.objects.filter(idStudent=student).order_by('-dateSF')
+            info = serializers.serialize('json', studentFollowings)
             
         elif(queryId == "getDataStudent"):
         #Devuelve la informacion del alumno seleccionado
