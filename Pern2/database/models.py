@@ -97,7 +97,7 @@ class Rotation(models.Model):
 
 ##################################ALUMNO##################################
 class Student(User):
-    idRotation = models.ForeignKey(Rotation)
+    idRotation = models.ForeignKey(Rotation, blank=True)
     numberOfRegistration = models.IntegerField()
 
     class Meta:
@@ -171,7 +171,7 @@ class StudentFollowing(models.Model):
 ##################################ACTIVIDADES##################################
 class Activity(models.Model):
     nameActivity = models.CharField(max_length=128)
-    idActivity = models.CharField(primary_key=True, max_length=12)
+    idActivity = models.AutoField(primary_key=True)
     idProject = models.ForeignKey(Project)
 
 
@@ -196,4 +196,16 @@ class Working(models.Model):
         verbose_name_plural = 'Trabajos'
     def __str__(self):
         tagName = str(self.idActivity) + " " + str(self.idStudent)
+        return tagName
+
+##################################TRABAJA##################################
+class OnClass(models.Model):
+    idActivity = models.ForeignKey(Activity)
+    idSF     = models.ForeignKey(StudentFollowing)
+
+    class Meta:
+        verbose_name = 'Trabajo en Clase'
+        verbose_name_plural = 'Trabajos en Clase'
+    def __str__(self):
+        tagName = str(self.idActivity.nameActivity) + " - " + str(self.idSF.idStudent.surname) +'['+ str(self.idSF.dateSF)+']'
         return tagName
