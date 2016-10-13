@@ -24,7 +24,7 @@ class User(models.Model):
     email = models.EmailField(max_length=254)
     dni = models.IntegerField()
     idUser = models.AutoField(primary_key=True)
-    
+
     class Meta:
         abstract = True
 
@@ -85,7 +85,7 @@ class Rotation(models.Model):
 class Student(User):
     idRotation = models.ForeignKey(Rotation)
     numberOfRegistration = models.IntegerField()
-    
+
     class Meta:
         verbose_name = 'Alumno'
         verbose_name_plural = 'Alumnos'
@@ -122,20 +122,6 @@ class Document(models.Model):
         tagName = str(self.nameDocument) + "(" + str(self.idModule) + ")"
         return tagName
 
-##################################CUMPLIMIENTOS##################################
-class Fulfillment(models.Model):
-    nameFF = models.CharField(max_length=128)
-    idFF = models.AutoField(primary_key=True)
-    idModule = models.ManyToManyField(Module, blank=True)
-
-
-    class Meta:
-        verbose_name = 'Cumplimiento'
-        verbose_name_plural = 'Cumplimientos'
-    def __str__(self):
-        tagName = str(self.nameFF) + "(" + str(self.idModule) + ")"
-        return tagName
-
 ##################################PROYECTOS##################################
 class Project(models.Model):
     nameProject = models.CharField(max_length=128)
@@ -150,6 +136,21 @@ class Project(models.Model):
     def __str__(self):
         tagName = str(self.nameProject) + "[" + str(self.idModule) + "]" + "(" + str(self.idTeacher) + ")"
         return tagName
+
+##################################CUMPLIMIENTOS##################################
+class Fulfillment(models.Model):
+    nameFF = models.CharField(max_length=128)
+    idFF = models.AutoField(primary_key=True)
+    idProject = models.ManyToManyField(Project, blank=True)
+
+
+    class Meta:
+        verbose_name = 'Cumplimiento'
+        verbose_name_plural = 'Cumplimientos'
+    def __str__(self):
+        tagName = str(self.nameFF) + "(" + str(self.idProject) + ")"
+        return tagName
+
 
 ##################################SEGUIMIENTO DE ALUMNO##################################
 class StudentFollowing(models.Model):

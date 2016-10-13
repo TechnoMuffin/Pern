@@ -21,7 +21,7 @@ def pupilFollowing(request):
 
                 info = "ERROR: No existe el modulo pedido"
 
-        if(queryId == "projects"):
+        elif(queryId == "projects"):
         #Devuelve todos los proyectos correspondientes al modulo
             idModule = request.GET.get('module')
             if(idModule!=''):
@@ -31,7 +31,7 @@ def pupilFollowing(request):
             else:
                 info = "ERROR: No existe el proyecto pedido"
 
-        if(queryId == "activities"):
+        elif(queryId == "activities"):
         #Devuelve todos las actividades correspondientes al proyecto
             idProject = request.GET.get('idProject')
             if(idProject!=''):
@@ -41,7 +41,7 @@ def pupilFollowing(request):
             else:
                 info = "ERROR: No existen actividades para este proyecto"
 
-        if(queryId == "working"):
+        elif(queryId == "working"):
         #Devuelve la informacion del trabajo correspondiente a la actividad seleccionada
             idActivity = request.GET.get('idActivity')
             idStudent = request.GET.get('idStudent')
@@ -89,6 +89,12 @@ def pupilFollowing(request):
                 info = serializers.serialize('json', student)
             else:
                 info="ERROR: ID de Estudiante no encontrado"
+        elif(queryId == "fulfillments"):
+        #Devuelve los cumplimientos del proyecto indicado
+            idP = request.GET.get('idProject')
+            project = Project.objects.get(idProject=idP)
+            fulfillments = Fulfillment.objects.filter(idProject=project)
+            info = serializers.serialize('json', fulfillments)
         print info
         return HttpResponse(info)
     else:
