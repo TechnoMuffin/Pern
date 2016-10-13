@@ -148,9 +148,8 @@ class Fulfillment(models.Model):
         verbose_name = 'Cumplimiento'
         verbose_name_plural = 'Cumplimientos'
     def __str__(self):
-        tagName = str(self.nameFF) + "(" + str(self.idModule) + ")"
+        tagName = str(self.nameFF) + "(" + str(self.idProject) + ")"
         return tagName
-
 ##################################SEGUIMIENTO DE ALUMNO##################################
 class StudentFollowing(models.Model):
     idSF = models.AutoField(primary_key=True)

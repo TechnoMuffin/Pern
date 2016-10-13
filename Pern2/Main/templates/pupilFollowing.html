@@ -10,7 +10,7 @@
                     Alumnos
                 </div>
                 <div class="panel-body">
-                    <div class="form-group col-xs-12">
+                    <div class="form-group col-xs-12 col-md-6">
                         <select id="cbxCourse" class="selectpicker" data-width="100%">
                             <option value=''>Curso</option>
                             {% for i in courses %}
@@ -18,9 +18,14 @@
                             {% endfor %}
                         </select>
                     </div>
-                    <div class="form-group col-xs-12">
+                    <div class="form-group col-xs-12 col-md-6">
                         <select id="cbxModule" class="selectpicker" data-width="100%">
                             <option value=''>Módulo</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-xs-12">
+                        <select id="cbxProjectFW" class="selectpicker" data-width="100%">
+                            <option value=''>Proyecto</option>
                         </select>
                     </div>
                     <div class="form-group col-xs-12">
@@ -64,40 +69,7 @@
                                 <th>Porcentaje</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td><input type="checkbox"></td>
-                                <td>Limas</td>
-                                <td style="color:red;font-weight: bold;text-align:center;">50%</td>
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox"></td>
-                                <td>Guardapolvo</td>
-                                <td style="color:green;font-weight: bold;text-align:center;">100%</td>
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox"></td>
-                                <td>Antiparras</td>
-                                <td style="color:orange;font-weight: bold;text-align:center;">70%</td>
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox"></td>
-                                <td>Guantes</td>
-                                <td style="color:green;font-weight: bold;text-align:center;">90%</td>
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox"></td>
-                                <td>Cepillo Limas</td>
-                                <td style="color:red;font-weight: bold;text-align:center;">20%</td>
-                            </tr><tr>
-                            <td><input type="checkbox"></td>
-                            <td>Cepillo Limas</td>
-                            <td style="color:red;font-weight: bold;text-align:center;">20%</td>
-                            </tr><tr>
-                            <td><input type="checkbox"></td>
-                            <td>Cepillo Limas</td>
-                            <td style="color:red;font-weight: bold;text-align:center;">20%</td>
-                            </tr>
+                        <tbody id="tbFulfillments">
                         </tbody>
                     </table>
                 </div>

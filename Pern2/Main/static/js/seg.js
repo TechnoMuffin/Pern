@@ -8,6 +8,7 @@ var cbxCourse = $("#cbxCourse");
 var cbxModule = $("#cbxModule");
 var cbxProject = $("#cbxProject");
 var cbxActivity = $("#cbxActivity");
+var cbxProjectFW = $("#cbxProjectFW");
 
 var personalFollowHTML = $("#personalFollow")
 
@@ -15,6 +16,7 @@ var currentStudentSelected; //Necesitaremos guardar en esta variable el alumno s
 
 var tableStudents = $('#myTable'); //Table
 var tbStudent = $("#tbAlumnos"); //Body table
+var tbFF = $('#tbFulfillments'); //Tabla de cumplimientos
 
 var date = $('#datepicker');
 var nameStudentHTML = $('.nameStudent')
@@ -26,6 +28,7 @@ var actStatus=$('#actStatus');
 var actClasses=$('#actClasses');
 var actCalification=$('#actCalification');
 
+cbxProjectFW.on('change', function(){projectWFChanged()});
 cbxCourse.on('change', function(){courseChanged()});
 cbxModule.on('change', function(){moduleChanged()});
 cbxProject.on('change', function(){projectChanged()});
@@ -36,9 +39,14 @@ tableStudents.on('click', '.clickable-row', function(event) {$(this).addClass('a
 //Funciones para limpiar campos//
 /////////////////////////////////
 
-//Resetear ComboBox de Alumnos a valores iniciales
+//Vaceiar la tabla de alumnos
 function resetStudentTable(){
     tbStudent.empty();
+}
+
+//Vaciar la tabla de cumplimientos
+function resetFFTable(){
+    tbFF.empty();
 }
 
 //Resetear ComboBox de Módulos a valores iniciales
@@ -94,7 +102,6 @@ function courseChanged(){
                     //El valor de las opciones de los select es el ID de los modulos
                     var text = info[i].fields.nameModule;
                     var value = info[i].pk;
-                    console.log(text+": "+value);
                     cbxModule.append(new Option(text, value));
                 }
                 cbxModule.selectpicker('refresh');
@@ -103,8 +110,7 @@ function courseChanged(){
     }
 }
 
-//Cambia CBX MODULO
-function moduleChanged(){
+function projectWFChanged(){
     resetStudentTable();
     resetProjectField();
     resetPersonalFollow();
@@ -119,31 +125,58 @@ function moduleChanged(){
                 for(var i=0;i<info.length;i++){
                     var texto = info[i].fields.name + " " + info[i].fields.surname;
                     var value = info[i].pk;
-                    var elemento = '<tr class="clickable-row" onclick="selectStudent(event,'+value+')"><td><input type="checkbox"></td><td>'+texto+'</td><td style="text-align:center;">C1</td></tr>';
+                    var elemento = '<tr class="clickable-row" onclick="selectStudent(event,'+value+')"><td><input type="checkbox"></td><td>'+texto+'</td><td style="text-align:center;"><select><option value="">---</option></select></td></tr>';
                     tbStudent.append(elemento);
+                    // <select id="cbxProjectFW" class="selectpicker" data-width="100%">
+                    //     <option value=''>Proyecto</option>
+                    // </select>
                 }
             }
         });
-
-        //Carga de Projectos
         $.ajax({
             url: url,
             type: 'GET',
-            data: {module: cbxModule.val(), queryId: "projects"},
+            data: {idProject: cbxProjectFW.val(), queryId: "fulfillments"},
             dataType: 'json',
             success: function(info){
-                for(var i=0;i<info.length;i++){
-                    //El valor de las opciones de los select es el ID de los proyectos
-                    var nameProject = info[i].fields.nameProject;
-                    var value = info[i].pk;
-                    console.log(nameProject+": "+value);
-                    cbxProject.append(new Option(nameProject, value));
+                resetFFTable();
+                for(var x=0;x<info.length;x++){
+                    nameFF = info[x]['fields']['nameFF'];
+                    idFF = info[x]['pk'];
+                    var elemento = '<tr><td><input type="checkbox"></td><td value =' + idFF +'>' + nameFF +'</td><td>%</td></tr>';
+                    tbFF.append(elemento);
                 }
-                cbxProject.selectpicker('refresh');
             }
         });
     }
 }
+//Cambia CBX MODULO
+function moduleChanged(){
+    resetStudentTable();
+    resetProjectField();
+    resetPersonalFollow();
+
+
+    //Carga de Projectos
+    $.ajax({
+        url: url,
+        type: 'GET',
+        data: {module: cbxModule.val(), queryId: "projects"},
+        dataType: 'json',
+        success: function(info){
+            for(var i=0;i<info.length;i++){
+                //El valor de las opciones de los select es el ID de los proyectos
+                var nameProject = info[i].fields.nameProject;
+                var value = info[i].pk;
+                cbxProject.append(new Option(nameProject, value));
+                cbxProjectFW.append(new Option(nameProject, value));
+            }
+            cbxProject.selectpicker('refresh');
+            cbxProjectFW.selectpicker('refresh');
+        }
+    });
+}
+
 
 function projectChanged(){
     resetActivityField();
@@ -151,64 +184,63 @@ function projectChanged(){
         url: url,
         type: 'GET',
         data: {idCourse: cbxCourse.val(),
-               idProject: cbxProject.val(),
-               queryId: "activities"},
-        dataType: 'json',
-        success: function(info){
-            for(var i=0;i<info.length;i++){
-                //El valor de las opciones de los select es el ID de las Activities
-                var nameActivity = info[i].fields.nameActivity;
-                var value = info[i].pk;
-                console.log(nameActivity+": "+value);
-                cbxActivity.append(new Option(nameActivity, value));
+            idProject: cbxProject.val(),
+            queryId: "activities"},
+            dataType: 'json',
+            success: function(info){
+                for(var i=0;i<info.length;i++){
+                    //El valor de las opciones de los select es el ID de las Activities
+                    var nameActivity = info[i].fields.nameActivity;
+                    var value = info[i].pk;
+                    cbxActivity.append(new Option(nameActivity, value));
+                }
+                cbxActivity.selectpicker('refresh');
             }
-            cbxActivity.selectpicker('refresh');
-        }
-    });
-}
+        });
+    }
 
-function activityChanged(){
-    resetActivityData();
-    $.ajax({
-        url: url,
-        type: 'GET',
-        data: {idActivity: cbxActivity.val(),
-               idStudent: currentStudentSelected,
-               queryId: "working"},
-        dataType: 'json',
-        success: function(info){
-            i=info[0].fields;
-            i2=info[1].fields;
-            actName.text(i2.nameActivity);
-            actCode.text(info[1].pk);
-            if(i.hasFinish){
-                actStatus.css('color','green');
-                actStatus.text('Terminado');
-            }else{
-                actStatus.css('color','yellow');
-                actStatus.text('Pendiente');
+    function activityChanged(){
+        resetActivityData();
+        $.ajax({
+            url: url,
+            type: 'GET',
+            data: {idActivity: cbxActivity.val(),
+                idStudent: currentStudentSelected,
+                queryId: "working"},
+                dataType: 'json',
+                success: function(info){
+                    i=info[0].fields;
+                    i2=info[1].fields;
+                    actName.text(i2.nameActivity);
+                    actCode.text(info[1].pk);
+                    if(i.hasFinish){
+                        actStatus.css('color','green');
+                        actStatus.text('Terminado');
+                    }else{
+                        actStatus.css('color','yellow');
+                        actStatus.text('Pendiente');
+                    }
+                    actClasses.text(i.numberOfClasses);
+                    actCalification.text(i.calification);
+                }
+            });
+        }
+
+        //ACA PASA LA MAGIA DE LA SELECCION DE ESTUDIANTE
+        function selectStudent(evt,valor) {
+            currentStudentSelected=valor;
+            $.ajax({
+                url: url,
+                type: 'GET',
+                data: {idStudent: currentStudentSelected,
+                    queryId: "onlyStudent"},
+                    dataType: 'json',
+                    success: function(info){
+                        nameStudentHTML.text(info[0].fields.name+' '+info[0].fields.surname);
+                    }
+                });
+                personalFollowHTML.removeClass('disabledDIV');
+                cbxActivity[0].selectedIndex = 0;
+                resetActivityData();
             }
-            actClasses.text(i.numberOfClasses);
-            actCalification.text(i.calification);
-        }
-    });
-}
-
-//ACA PASA LA MAGIA DE LA SELECCION DE ESTUDIANTE
-function selectStudent(evt,valor) {
-    console.log(valor);
-    currentStudentSelected=valor;
-    $.ajax({
-        url: url,
-        type: 'GET',
-        data: {idStudent: currentStudentSelected,
-               queryId: "onlyStudent"},
-        dataType: 'json',
-        success: function(info){
-            nameStudentHTML.text(info[0].fields.name+' '+info[0].fields.surname);
-        }
-    });
-    personalFollowHTML.removeClass('disabledDIV');
-    cbxActivity[0].selectedIndex = 0;
-    resetActivityData();
-}
+>>>>>>> GL-06
