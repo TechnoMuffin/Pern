@@ -5,6 +5,7 @@ from django.http import HttpResponse
 from database.models import *
 import json
 from django.core.exceptions import ObjectDoesNotExist
+from itertools import chain
 
 def pupilFollowing(request):
     queryId = request.GET.get('queryId')
@@ -82,7 +83,9 @@ def pupilFollowing(request):
             idUser = request.GET.get('idStudent')
             student = Student.objects.filter(idUser=int(idUser))
             studentFollowings = StudentFollowing.objects.filter(idStudent=student).order_by('-dateSF')
-            info = serializers.serialize('json', studentFollowings)
+            workOn = OnClass.objects.all()
+            coso = list(chain(studentFollowings,workOn))
+            info = serializers.serialize('json', coso)
             
         elif(queryId == "getDataStudent"):
         #Devuelve la informacion del alumno seleccionado
