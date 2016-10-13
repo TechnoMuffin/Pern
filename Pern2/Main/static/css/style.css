@@ -2,3 +2,15 @@
     pointer-events: none;
     opacity: 0.4;
 }
+
+.verde{
+    color:green;
+}
+
+.rojo{
+    color:red;
+}
+
+textarea {
+    max-width: 100%; 
+}

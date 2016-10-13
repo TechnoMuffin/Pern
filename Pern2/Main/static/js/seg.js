@@ -234,9 +234,9 @@ function studentChanged(){
                     var presencia = info[i].fields.presenceSF;
                     var fecha = info[i].fields.dateSF;
                     if(presencia){
-                        presencia='<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>';
+                        presencia='<span class="glyphicon glyphicon-ok verde" aria-hidden="true"></span>';
                     }else{
-                        presencia='<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>';
+                        presencia='<span class="glyphicon glyphicon-remove rojo" aria-hidden="true"></span>';
                     }
                     var elemento = '<tr class="clickable-row"><th scope="row">'+presencia+'</th><td>'+fecha+'</td><td style="text-align:center;">C1</td></tr>';
                     tbHistory.append(elemento);
