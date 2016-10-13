@@ -67,32 +67,6 @@ class Course(models.Model):
         tagName = str(self.courseType) + str(self.courseDivision) + " - " + str(self.cycle)
         return tagName
 
-##################################ROTACIONES##################################
-class Rotation(models.Model):
-    nameRotation = models.CharField(max_length=32)
-    idRotation = models.AutoField(primary_key=True)
-    idCourse = models.ForeignKey(Course)
-
-
-    class Meta:
-        verbose_name = 'Rotacion'
-        verbose_name_plural = 'Rotaciones'
-    def __str__(self):
-        tagName = str(self.nameRotation) + "(" + str(self.idCourse) + ")"
-        return tagName
-
-##################################ALUMNO##################################
-class Student(User):
-    idRotation = models.ForeignKey(Rotation)
-    numberOfRegistration = models.IntegerField()
-
-    class Meta:
-        verbose_name = 'Alumno'
-        verbose_name_plural = 'Alumnos'
-    def __str__(self):
-        tagName = str(self.name)+" "+str(self.surname)+ " [" + str(self.idRotation) + "]"
-        return tagName
-
 ##################################MODULOS##################################
 class Module(models.Model):
     idModule = models.AutoField(primary_key=True)
@@ -105,6 +79,32 @@ class Module(models.Model):
         verbose_name_plural = 'Modulos'
     def __str__(self):
         tagName = str(self.nameModule)
+        return tagName
+
+##################################ROTACIONES##################################
+class Rotation(models.Model):
+    nameRotation = models.CharField(max_length=32)
+    idRotation = models.AutoField(primary_key=True)
+    idModule = models.ForeignKey(Module)
+
+
+    class Meta:
+        verbose_name = 'Rotacion'
+        verbose_name_plural = 'Rotaciones'
+    def __str__(self):
+        tagName = str(self.nameRotation) + "(" + str(self.idModule) + ")"
+        return tagName
+
+##################################ALUMNO##################################
+class Student(User):
+    idRotation = models.ForeignKey(Rotation)
+    numberOfRegistration = models.IntegerField()
+
+    class Meta:
+        verbose_name = 'Alumno'
+        verbose_name_plural = 'Alumnos'
+    def __str__(self):
+        tagName = str(self.name)+" "+str(self.surname)+ " [" + str(self.idRotation) + "]"
         return tagName
 
 ##################################DOCUMENTOS##################################
