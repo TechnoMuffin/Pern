@@ -341,16 +341,20 @@ function projectWFChanged(){
                     tbStudent.append(elemento);
                   }
                   if (informacion=="database.activity"){
+
                     var textoActivity = info[i].fields.nameActivity;
                     var valueActivity = info[i].pk;
+
                     $('.cbxActivityFW').append(new Option(textoActivity, valueActivity));
-                    $('.cbxActivityFW').selectpicker('refresh');
+
                   }
 
                   // <select id="cbxProjectFW" class="selectpicker" data-width="100%">
                   //     <option value=''>Proyecto</option>
                   // </select>
               }
+              $('.cbxActivityFW').selectpicker('refresh');
+
           }
       });
 }
