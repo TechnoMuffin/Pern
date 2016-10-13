@@ -4,6 +4,7 @@ from django.core import serializers
 from django.http import HttpResponse
 from database.models import *
 import json
+from django.core.exceptions import ObjectDoesNotExist
 
 def pupilFollowing(request):
     queryId = request.GET.get('queryId')
@@ -44,19 +45,37 @@ def pupilFollowing(request):
             idActivity = request.GET.get('idActivity')
             idStudent = request.GET.get('idStudent')
             if(idActivity!=''):
-                work = Working.objects.get(idActivity=int(idActivity),idStudent=int(idStudent))
                 activity = Activity.objects.get(idActivity=int(idActivity))
-                info = serializers.serialize('json', [work,activity])
+                student = Student.objects.get(idUser=int(idStudent))
+                try:
+                    work = Working.objects.get(idActivity=activity,idStudent=student)
+                    info = serializers.serialize('json', [work,activity])
+                except ObjectDoesNotExist:
+                    #Si el trabajo no existe, se creara uno nuevo y se enviara
+                    newWork = Working()
+                    newWork.idActivity = activity
+                    newWork.idStudent = student
+                    newWork.numberOfClasses=0
+                    newWork.calification=0
+                    newWork.hasFinish=False
+                    newWork.save()
+                    info = serializers.serialize('json', [newWork,activity])
             else:
                 info= 'ERROR: No hay trabajo para esa actividad'
-                
+        
         elif(queryId == "students"):
         #Devuelve todos los alumnos pertenecientes al curso y al modulo
             idC = request.GET.get('idCourse')
             curso = Course.objects.get(idCourse=int(idC))
             rotation = Rotation.objects.filter(idCourse=curso)
             students = Student.objects.filter(idRotation=rotation)
-            info = serializers.serialize('json', students)   
+            info = serializers.serialize('json', students)
+            
+        elif(queryId == "onlyStudent"):
+        #Devuelve el alumno pedido
+            idUser = request.GET.get('idStudent')
+            student = Student.objects.filter(idUser=int(idUser))
+            info = serializers.serialize('json', student)   
             
         elif(queryId == "getDataStudent"):
         #Devuelve la informacion del alumno seleccionado
