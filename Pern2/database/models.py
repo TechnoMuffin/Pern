@@ -174,7 +174,6 @@ class Activity(models.Model):
     nameActivity = models.CharField(max_length=128)
     idActivity = models.AutoField(primary_key=True)
     idProject = models.ForeignKey(Project)
-    idSF = models.ManyToManyField(StudentFollowing)
 
 
     class Meta:
@@ -198,4 +197,16 @@ class Working(models.Model):
         verbose_name_plural = 'Trabajos'
     def __str__(self):
         tagName = str(self.idActivity) + " " + str(self.idStudent)
+        return tagName
+    
+##################################TRABAJA##################################
+class OnClass(models.Model):
+    idActivity = models.ForeignKey(Activity)
+    idSF     = models.ForeignKey(StudentFollowing)
+
+    class Meta:
+        verbose_name = 'Trabajo en Clase'
+        verbose_name_plural = 'Trabajos en Clase'
+    def __str__(self):
+        tagName = str(self.idActivity.nameActivity) + " - " + str(self.idSF.idStudent.surname) +'['+ str(self.idSF.dateSF)+']'
         return tagName

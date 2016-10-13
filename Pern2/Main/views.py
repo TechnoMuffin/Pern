@@ -6,6 +6,7 @@ from database.models import *
 import json
 from itertools import chain
 from django.core.exceptions import ObjectDoesNotExist
+from itertools import chain
 
 def pupilFollowing(request):
     queryId = request.GET.get('queryId')
@@ -71,9 +72,9 @@ def pupilFollowing(request):
             idPFW = request.GET.get('idProjectFW')
             curso = Course.objects.get(idCourse=int(idC))
             rotation = Rotation.objects.filter(idCourse=curso)
-            students = Student.objects.filter(idRotation=rotation)
+            students = Student.objects.filter(idRotation=rotation).order_by('surname')
             project = Project.objects.filter(idProject=int(idPFW))
-            activity = Activity.objects.filter(idProject=project)
+            activity = Activity.objects.filter(idProject=project).order_by('idActivity')
             combined = list(chain(students, activity))
             info = serializers.serialize('json', combined)
 
@@ -82,6 +83,15 @@ def pupilFollowing(request):
             idUser = request.GET.get('idStudent')
             student = Student.objects.filter(idUser=int(idUser))
             info = serializers.serialize('json', student)
+
+        elif(queryId == "history"):
+        #Devuelve el alumno pedido
+            idUser = request.GET.get('idStudent')
+            student = Student.objects.filter(idUser=int(idUser))
+            studentFollowings = StudentFollowing.objects.filter(idStudent=student).order_by('-dateSF')
+            workOn = OnClass.objects.all()
+            coso = list(chain(studentFollowings,workOn))
+            info = serializers.serialize('json', coso)
 
         elif(queryId == "getDataStudent"):
         #Devuelve la informacion del alumno seleccionado
@@ -99,3 +109,8 @@ def pupilFollowing(request):
         pupils = Student.objects.all()
         subjects = Module.objects.all()
         return render_to_response('pupilFollowing.html', {'courses':courses, 'subjects':subjects, 'pupils':pupils},context)
+
+def history(request):
+    context = RequestContext(request)
+    courses = Course.objects.all()
+    return render_to_response('history.html', {'courses':courses}, context)
