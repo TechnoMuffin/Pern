@@ -88,6 +88,7 @@ function resetPersonalFollow(){
     resetActivityField();
     personalFollowHTML.addClass('disabledDIV');
 }
+
 ///////////////////////
 //Funciones para AJAX//
 ///////////////////////
@@ -231,26 +232,25 @@ function studentChanged(){
             dataType: 'json',
             success: function(info){
                 for(var i=0;i<info.length;i++){
-                    for(var x=0;i<info.length;x++){
-                        if(info[i]['model']=='database.OnClass'){
-                            console.log(info[x]);
-                            if(info[x].fields.idSF==info[i].pk){
-                                var activity = info[x].fields.idActivity;
-                                console.log(activity);
-                                x=info.length;
+                    for(var v=0;v<info.length;v++){
+                        if(info[v].model=='database.onclass'){
+                            if(info[v].fields.idSF==info[i].pk){
+                                var activity = info[v].fields.idActivity[1];
+                                v=info.length;
                             }
                         }
                     }
                     var presencia = info[i].fields.presenceSF;
                     var fecha = info[i].fields.dateSF;
-                    console.log(fecha);
-                    if(presencia){
-                        presencia='<span class="glyphicon glyphicon-ok verde" aria-hidden="true"></span>';
-                    }else{
-                        presencia='<span class="glyphicon glyphicon-remove rojo" aria-hidden="true"></span>';
+                    if(info[i].model=="database.studentfollowing"){
+                        if(presencia){
+                            presencia='<span class="glyphicon glyphicon-ok verde" aria-hidden="true"></span>';
+                        }else{
+                            presencia='<span class="glyphicon glyphicon-remove rojo" aria-hidden="true"></span>';
+                        }
+                        var elemento = '<tr class="clickable-row"><th scope="row">'+presencia+'</th><td>'+fecha+'</td><td>'+activity+'</td><td>Observado</td></tr>';
+                        tbHistory.append(elemento);
                     }
-                    var elemento = '<tr class="clickable-row"><th scope="row">'+presencia+'</th><td>'+fecha+'</td><td style="text-align:center;">'+activity+'</td></tr>';
-                    tbHistory.append(elemento);
                 }
             }
         });

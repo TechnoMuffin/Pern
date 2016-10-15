@@ -175,6 +175,8 @@ class Activity(models.Model):
     idActivity = models.AutoField(primary_key=True)
     idProject = models.ForeignKey(Project)
 
+    def natural_key(self):
+        return (self.idActivity, self.nameActivity)
 
     class Meta:
         verbose_name = 'Actividad'
@@ -202,7 +204,7 @@ class Working(models.Model):
 ##################################TRABAJA##################################
 class OnClass(models.Model):
     idActivity = models.ForeignKey(Activity)
-    idSF     = models.ForeignKey(StudentFollowing)
+    idSF = models.ForeignKey(StudentFollowing)
 
     class Meta:
         verbose_name = 'Trabajo en Clase'

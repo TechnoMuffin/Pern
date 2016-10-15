@@ -85,7 +85,7 @@ def pupilFollowing(request):
             studentFollowings = StudentFollowing.objects.filter(idStudent=student).order_by('-dateSF')
             workOn = OnClass.objects.all()
             coso = list(chain(studentFollowings,workOn))
-            info = serializers.serialize('json', coso)
+            info = serializers.serialize('json', coso, use_natural_foreign_keys=True)
             
         elif(queryId == "getDataStudent"):
         #Devuelve la informacion del alumno seleccionado
