@@ -8,13 +8,18 @@ var cbxCourse = $("#cbxCourse");
 var cbxModule = $("#cbxModule");
 var cbxProject = $("#cbxProject");
 var cbxActivity = $("#cbxActivity");
+var cbxStudent = $("#cbxStudent");
 
 var personalFollowHTML = $("#personalFollow")
 
 var currentStudentSelected; //Necesitaremos guardar en esta variable el alumno seleccionado para algunas funciones
 
-var tableStudents = $('#myTable'); //Table
-var tbStudent = $("#tbAlumnos"); //Body table
+var tableStudents = $('#myTable'); //Table PupilFollowing
+var tbStudent = $("#tbAlumnos"); //Body table PupilFollowing
+var tableHistory = $('#historyTable'); //Table History
+var tbHistory = $('#tbHistory'); //Body Table History
+
+tableHistory.css('max-height', $( window ).height());
 
 var date = $('#datepicker');
 var nameStudentHTML = $('.nameStudent')
@@ -30,6 +35,7 @@ cbxCourse.on('change', function(){courseChanged()});
 cbxModule.on('change', function(){moduleChanged()});
 cbxProject.on('change', function(){projectChanged()});
 cbxActivity.on('change', function(){activityChanged()});
+cbxStudent.on('change', function(){studentChanged()});
 tableStudents.on('click', '.clickable-row', function(event) {$(this).addClass('active').siblings().removeClass('active');});
 
 /////////////////////////////////
@@ -39,6 +45,10 @@ tableStudents.on('click', '.clickable-row', function(event) {$(this).addClass('a
 //Resetear ComboBox de Alumnos a valores iniciales
 function resetStudentTable(){
     tbStudent.empty();
+}
+
+function resetHistoryTable(){
+    tbHistory.empty();
 }
 
 //Resetear ComboBox de Módulos a valores iniciales
@@ -52,6 +62,13 @@ function resetProjectField(){
     cbxProject.empty();
     cbxProject.append(new Option('Proyectos', ''));
     cbxProject.selectpicker('refresh');
+}
+
+function resetStudentField(){
+    cbxStudent.empty();
+    cbxStudent.append(new Option('Alumno', ''));
+    cbxStudent.selectpicker('refresh');
+    resetHistoryTable();
 }
 
 function resetActivityField(){
@@ -73,6 +90,7 @@ function resetPersonalFollow(){
     resetActivityField();
     personalFollowHTML.addClass('disabledDIV');
 }
+
 ///////////////////////
 //Funciones para AJAX//
 ///////////////////////
@@ -82,6 +100,8 @@ function courseChanged(){
     resetModuleField();
     resetStudentTable();
     resetPersonalFollow();
+    resetHistoryTable();
+    resetStudentField();
     if(this.val!=''){
         $.ajax({
             url: url,
@@ -105,9 +125,11 @@ function courseChanged(){
 
 //Cambia CBX MODULO
 function moduleChanged(){
+    resetStudentField();
     resetStudentTable();
     resetProjectField();
     resetPersonalFollow();
+    resetHistoryTable();
     if(this.val!=''){
         //Carga de Alumnos
         $.ajax({
@@ -119,9 +141,15 @@ function moduleChanged(){
                 for(var i=0;i<info.length;i++){
                     var texto = info[i].fields.name + " " + info[i].fields.surname;
                     var value = info[i].pk;
-                    var elemento = '<tr class="clickable-row" onclick="selectStudent(event,'+value+')"><td><input type="checkbox"></td><td>'+texto+'</td><td style="text-align:center;">C1</td></tr>';
+                    var elemento = '<tr class="clickable-row" onclick="selectStudent(event,'+value+')"><th scope="row"><input type="checkbox"></th><td>'+texto+'</td><td style="text-align:center;">C1</td></tr>';
                     tbStudent.append(elemento);
+                    try{
+                        cbxStudent.append(new Option(texto,value));
+                    }catch(err){console.log(err)}
                 }
+                try{
+                    cbxStudent.selectpicker('refresh');
+                }catch(e){console.log(err)}
             }
         });
 
@@ -194,6 +222,50 @@ function activityChanged(){
     });
 }
 
+function studentChanged(){
+    //Cuando el select cbxStudent cambia de valor carga los datos correspondientes del alumno
+    resetHistoryTable();
+    console.log(cbxStudent.val());
+    if(this.val!=''){
+        $.ajax({
+            url: url,
+            type: 'GET',
+            data: {idStudent: cbxStudent.val(), queryId: "history"},
+            dataType: 'json',
+            success: function(info){
+                for(var i=0;i<info.length;i++){
+                    var idSF=info[i].pk;
+                    for(var v=0;v<info.length;v++){
+                        if(info[v].model=='database.onclass'){
+                            if(info[v].fields.idSF==idSF){
+                                var activity = info[v].fields.idActivity[1];
+                                var project = info[v].fields.idActivity[2];
+                                v=info.length;
+                            }
+                        }
+                    }
+                    var presencia = info[i].fields.presenceSF;
+                    var fecha = info[i].fields.dateSF;
+                    var obs = info[i].fields.commentPF;
+                    if(info[i].model=="database.studentfollowing"){
+                        if(presencia){
+                            presencia='<span class="glyphicon glyphicon-ok verde" aria-hidden="true"></span>';
+                        }else{
+                            presencia='<span class="glyphicon glyphicon-remove rojo" aria-hidden="true"></span>';
+                        }
+                        var elemento = '<tr class="clickable-row">'+
+                            '<th scope="row">'+presencia+'</th>'+
+                            '<td>'+fecha+'</td>'+
+                            '<td>'+activity+' de '+project+'</td>'+
+                            '<td>'+createModalObs('modal'+idSF,obs)+'</td></tr>';
+                        tbHistory.append(elemento);
+                    }
+                }
+            }
+        });
+    }
+}
+
 //ACA PASA LA MAGIA DE LA SELECCION DE ESTUDIANTE
 function selectStudent(evt,valor) {
     console.log(valor);
@@ -209,6 +281,21 @@ function selectStudent(evt,valor) {
         }
     });
     personalFollowHTML.removeClass('disabledDIV');
-    cbxActivity[0].selectedIndex = 0;
-    resetActivityData();
+    activityChanged();
+}
+
+//////////////////////////////
+//Funcion de Modal Bootstrap//
+//////////////////////////////
+function createModalObs(idCoso,content){
+    var someHTML = '<button type="button" class="btn btn-warning pull-right" data-toggle="modal" data-target="#'+idCoso+'">'+
+        '<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span></button>'+
+        '<div id="'+idCoso+'" class="modal fade" role="dialog">'+
+        '<div class="modal-dialog"><div class="modal-content"><div class="modal-header">'+
+        '<button type="button" class="close" data-dismiss="modal">&times;</button>'+
+        '<h4 class="modal-title">Observaciones</h4></div><div class="modal-body">'+
+        '<p style="white-space: pre-wrap">'+content+'</p></div><div class="modal-footer">'+
+        '<button type="button" class="btn btn-default" data-dismiss="modal">Ok</button>'+
+        '</div></div></div></div>';
+    return someHTML;
 }
