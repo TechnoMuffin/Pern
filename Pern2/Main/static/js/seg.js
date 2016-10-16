@@ -134,11 +134,6 @@ function courseChanged(){
 }
 
 
-//Cambia CBX MODULO
-function moduleChanged(){
-    resetStudentField();
-}
-
 function projectWFChanged(){
     resetStudentTable();
     resetProjectField();
@@ -183,13 +178,32 @@ function projectWFChanged(){
         });
     }
 }
+
 //Cambia CBX MODULO
 function moduleChanged(){
     resetStudentTable();
     resetProjectField();
     resetPersonalFollow();
-
-
+    //Carga de Alumnos
+        $.ajax({
+            url: url,
+            type: 'GET',
+            data: {idCourse: cbxCourse.val(), queryId: "students"},
+            dataType: 'json',
+            success: function(info){
+                for(var i=0;i<info.length;i++){
+                    var texto = info[i].fields.name + " " + info[i].fields.surname;
+                    var value = info[i].pk;
+                    try{
+                        cbxStudent.append(new Option(texto,value));
+                    }catch(err){console.log(err)}
+                }
+                try{
+                    cbxStudent.selectpicker('refresh');
+                }catch(e){console.log(err)}
+            }
+        });
+    
     //Carga de Projectos
     $.ajax({
         url: url,
