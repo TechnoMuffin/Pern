@@ -232,23 +232,30 @@ function studentChanged(){
             dataType: 'json',
             success: function(info){
                 for(var i=0;i<info.length;i++){
+                    var idSF=info[i].pk;
                     for(var v=0;v<info.length;v++){
                         if(info[v].model=='database.onclass'){
-                            if(info[v].fields.idSF==info[i].pk){
+                            if(info[v].fields.idSF==idSF){
                                 var activity = info[v].fields.idActivity[1];
+                                var project = info[v].fields.idActivity[2];
                                 v=info.length;
                             }
                         }
                     }
                     var presencia = info[i].fields.presenceSF;
                     var fecha = info[i].fields.dateSF;
+                    var obs = info[i].fields.commentPF;
                     if(info[i].model=="database.studentfollowing"){
                         if(presencia){
                             presencia='<span class="glyphicon glyphicon-ok verde" aria-hidden="true"></span>';
                         }else{
                             presencia='<span class="glyphicon glyphicon-remove rojo" aria-hidden="true"></span>';
                         }
-                        var elemento = '<tr class="clickable-row"><th scope="row">'+presencia+'</th><td>'+fecha+'</td><td>'+activity+'</td><td>Observado</td></tr>';
+                        var elemento = '<tr class="clickable-row">'+
+                            '<th scope="row">'+presencia+'</th>'+
+                            '<td>'+fecha+'</td>'+
+                            '<td>'+activity+' de '+project+'</td>'+
+                            '<td>'+createModalObs('modal'+idSF,obs)+'</td></tr>';
                         tbHistory.append(elemento);
                     }
                 }
@@ -273,4 +280,20 @@ function selectStudent(evt,valor) {
     });
     personalFollowHTML.removeClass('disabledDIV');
     activityChanged();
+}
+
+//////////////////////////////
+//Funcion de Modal Bootstrap//
+//////////////////////////////
+function createModalObs(idCoso,content){
+    var someHTML = '<button type="button" class="btn btn-warning pull-right" data-toggle="modal" data-target="#'+idCoso+'">'+
+        '<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span></button>'+
+        '<div id="'+idCoso+'" class="modal fade" role="dialog">'+
+        '<div class="modal-dialog"><div class="modal-content"><div class="modal-header">'+
+        '<button type="button" class="close" data-dismiss="modal">&times;</button>'+
+        '<h4 class="modal-title">Observaciones</h4></div><div class="modal-body">'+
+        '<p style="white-space: pre-wrap">'+content+'</p></div><div class="modal-footer">'+
+        '<button type="button" class="btn btn-default" data-dismiss="modal">Ok</button>'+
+        '</div></div></div></div>';
+    return someHTML;
 }

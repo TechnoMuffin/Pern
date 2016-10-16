@@ -160,13 +160,12 @@ class StudentFollowing(models.Model):
     idStudent = models.ForeignKey(Student)
     idTeacher = models.ManyToManyField(Teacher)
     commentPF = models.TextField(blank=True)
-
-
+        
     class Meta:
         verbose_name = 'Seguimiento de Alumno'
         verbose_name_plural = 'Seguimientos de Alumno'
     def __str__(self):
-        tagName = str(self.idStudent) + "(" + str(self.idModule) + ")"
+        tagName = '['+str(self.dateSF)+"]"+str(self.idStudent) + "(" + str(self.idModule) + ")"
         return tagName
 
 ##################################ACTIVIDADES##################################
@@ -176,7 +175,7 @@ class Activity(models.Model):
     idProject = models.ForeignKey(Project)
 
     def natural_key(self):
-        return (self.idActivity, self.nameActivity)
+        return (self.idActivity, self.nameActivity, self.idProject.nameProject)
 
     class Meta:
         verbose_name = 'Actividad'
