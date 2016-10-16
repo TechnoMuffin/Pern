@@ -10,9 +10,12 @@ var cbxProject = $("#cbxProject");
 var cbxActivity = $("#cbxActivity");
 var cbxStudent = $("#cbxStudent");
 
+var cbxProjectFW = $("#cbxProjectFW");
+
 var personalFollowHTML = $("#personalFollow")
 
 var currentStudentSelected; //Necesitaremos guardar en esta variable el alumno seleccionado para algunas funciones
+
 
 var tableStudents = $('#myTable'); //Table PupilFollowing
 var tbStudent = $("#tbAlumnos"); //Body table PupilFollowing
@@ -20,6 +23,8 @@ var tableHistory = $('#historyTable'); //Table History
 var tbHistory = $('#tbHistory'); //Body Table History
 
 tableHistory.css('max-height', $( window ).height());
+
+var tbFF = $('#tbFulfillments'); //Tabla de cumplimientos
 
 var date = $('#datepicker');
 var nameStudentHTML = $('.nameStudent')
@@ -31,6 +36,7 @@ var actStatus=$('#actStatus');
 var actClasses=$('#actClasses');
 var actCalification=$('#actCalification');
 
+cbxProjectFW.on('change', function(){projectWFChanged()});
 cbxCourse.on('change', function(){courseChanged()});
 cbxModule.on('change', function(){moduleChanged()});
 cbxProject.on('change', function(){projectChanged()});
@@ -42,13 +48,18 @@ tableStudents.on('click', '.clickable-row', function(event) {$(this).addClass('a
 //Funciones para limpiar campos//
 /////////////////////////////////
 
-//Resetear ComboBox de Alumnos a valores iniciales
+//Vaciar la tabla de alumnos
 function resetStudentTable(){
     tbStudent.empty();
 }
 
 function resetHistoryTable(){
     tbHistory.empty();
+}
+
+//Vaciar la tabla de cumplimientos
+function resetFFTable(){
+    tbFF.empty();
 }
 
 //Resetear ComboBox de Módulos a valores iniciales
@@ -114,7 +125,6 @@ function courseChanged(){
                     //El valor de las opciones de los select es el ID de los modulos
                     var text = info[i].fields.nameModule;
                     var value = info[i].pk;
-                    console.log(text+": "+value);
                     cbxModule.append(new Option(text, value));
                 }
                 cbxModule.selectpicker('refresh');
@@ -123,9 +133,13 @@ function courseChanged(){
     }
 }
 
+
 //Cambia CBX MODULO
 function moduleChanged(){
     resetStudentField();
+}
+
+function projectWFChanged(){
     resetStudentTable();
     resetProjectField();
     resetPersonalFollow();
@@ -141,7 +155,7 @@ function moduleChanged(){
                 for(var i=0;i<info.length;i++){
                     var texto = info[i].fields.name + " " + info[i].fields.surname;
                     var value = info[i].pk;
-                    var elemento = '<tr class="clickable-row" onclick="selectStudent(event,'+value+')"><th scope="row"><input type="checkbox"></th><td>'+texto+'</td><td style="text-align:center;">C1</td></tr>';
+                    var elemento = '<tr class="clickable-row" onclick="selectStudent(event,'+value+')"><td><input type="checkbox"></td><td>'+texto+'</td><td style="text-align:center;"><select><option value="">---</option></select></td></tr>';
                     tbStudent.append(elemento);
                     try{
                         cbxStudent.append(new Option(texto,value));
@@ -152,26 +166,50 @@ function moduleChanged(){
                 }catch(e){console.log(err)}
             }
         });
-
-        //Carga de Projectos
         $.ajax({
             url: url,
             type: 'GET',
-            data: {module: cbxModule.val(), queryId: "projects"},
+            data: {idProject: cbxProjectFW.val(), queryId: "fulfillments"},
             dataType: 'json',
             success: function(info){
-                for(var i=0;i<info.length;i++){
-                    //El valor de las opciones de los select es el ID de los proyectos
-                    var nameProject = info[i].fields.nameProject;
-                    var value = info[i].pk;
-                    console.log(nameProject+": "+value);
-                    cbxProject.append(new Option(nameProject, value));
+                resetFFTable();
+                for(var x=0;x<info.length;x++){
+                    nameFF = info[x]['fields']['nameFF'];
+                    idFF = info[x]['pk'];
+                    var elemento = '<tr><td><input type="checkbox"></td><td value =' + idFF +'>' + nameFF +'</td><td>%</td></tr>';
+                    tbFF.append(elemento);
                 }
-                cbxProject.selectpicker('refresh');
             }
         });
     }
 }
+//Cambia CBX MODULO
+function moduleChanged(){
+    resetStudentTable();
+    resetProjectField();
+    resetPersonalFollow();
+
+
+    //Carga de Projectos
+    $.ajax({
+        url: url,
+        type: 'GET',
+        data: {module: cbxModule.val(), queryId: "projects"},
+        dataType: 'json',
+        success: function(info){
+            for(var i=0;i<info.length;i++){
+                //El valor de las opciones de los select es el ID de los proyectos
+                var nameProject = info[i].fields.nameProject;
+                var value = info[i].pk;
+                cbxProject.append(new Option(nameProject, value));
+                cbxProjectFW.append(new Option(nameProject, value));
+            }
+            cbxProject.selectpicker('refresh');
+            cbxProjectFW.selectpicker('refresh');
+        }
+    });
+}
+
 
 function projectChanged(){
     resetActivityField();
@@ -187,7 +225,6 @@ function projectChanged(){
                 //El valor de las opciones de los select es el ID de las Activities
                 var nameActivity = info[i].fields.nameActivity;
                 var value = info[i].pk;
-                console.log(nameActivity+": "+value);
                 cbxActivity.append(new Option(nameActivity, value));
             }
             cbxActivity.selectpicker('refresh');
@@ -195,32 +232,6 @@ function projectChanged(){
     });
 }
 
-function activityChanged(){
-    resetActivityData();
-    $.ajax({
-        url: url,
-        type: 'GET',
-        data: {idActivity: cbxActivity.val(),
-               idStudent: currentStudentSelected,
-               queryId: "working"},
-        dataType: 'json',
-        success: function(info){
-            i=info[0].fields;
-            i2=info[1].fields;
-            actName.text(i2.nameActivity);
-            actCode.text(info[1].pk);
-            if(i.hasFinish){
-                actStatus.css('color','green');
-                actStatus.text('Terminado');
-            }else{
-                actStatus.css('color','yellow');
-                actStatus.text('Pendiente');
-            }
-            actClasses.text(i.numberOfClasses);
-            actCalification.text(i.calification);
-        }
-    });
-}
 
 function studentChanged(){
     //Cuando el select cbxStudent cambia de valor carga los datos correspondientes del alumno
@@ -298,4 +309,49 @@ function createModalObs(idCoso,content){
         '<button type="button" class="btn btn-default" data-dismiss="modal">Ok</button>'+
         '</div></div></div></div>';
     return someHTML;
+}
+
+function activityChanged(){
+    resetActivityData();
+    $.ajax({
+        url: url,
+        type: 'GET',
+        data: {idActivity: cbxActivity.val(),
+               idStudent: currentStudentSelected,
+               queryId: "working"},
+        dataType: 'json',
+        success: function(info){
+            i=info[0].fields;
+            i2=info[1].fields;
+            actName.text(i2.nameActivity);
+            actCode.text(info[1].pk);
+            if(i.hasFinish){
+                actStatus.css('color','green');
+                actStatus.text('Terminado');
+            }else{
+                actStatus.css('color','yellow');
+                actStatus.text('Pendiente');
+            }
+            actClasses.text(i.numberOfClasses);
+            actCalification.text(i.calification);
+        }
+    });
+}
+
+//ACA PASA LA MAGIA DE LA SELECCION DE ESTUDIANTE
+function selectStudent(evt,valor) {
+    currentStudentSelected=valor;
+    $.ajax({
+        url: url,
+        type: 'GET',
+        data: {idStudent: currentStudentSelected,
+               queryId: "onlyStudent"},
+        dataType: 'json',
+        success: function(info){
+            nameStudentHTML.text(info[0].fields.name+' '+info[0].fields.surname);
+        }
+    });
+    personalFollowHTML.removeClass('disabledDIV');
+    cbxActivity[0].selectedIndex = 0;
+    resetActivityData();
 }

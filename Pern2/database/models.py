@@ -24,7 +24,7 @@ class User(models.Model):
     email = models.EmailField(max_length=254)
     dni = models.IntegerField()
     idUser = models.AutoField(primary_key=True)
-    
+
     class Meta:
         abstract = True
 
@@ -67,32 +67,6 @@ class Course(models.Model):
         tagName = str(self.courseType) + str(self.courseDivision) + " - " + str(self.cycle)
         return tagName
 
-##################################ROTACIONES##################################
-class Rotation(models.Model):
-    nameRotation = models.CharField(max_length=32)
-    idRotation = models.AutoField(primary_key=True)
-    idCourse = models.ForeignKey(Course)
-
-
-    class Meta:
-        verbose_name = 'Rotacion'
-        verbose_name_plural = 'Rotaciones'
-    def __str__(self):
-        tagName = str(self.nameRotation) + "(" + str(self.idCourse) + ")"
-        return tagName
-
-##################################ALUMNO##################################
-class Student(User):
-    idRotation = models.ForeignKey(Rotation)
-    numberOfRegistration = models.IntegerField()
-    
-    class Meta:
-        verbose_name = 'Alumno'
-        verbose_name_plural = 'Alumnos'
-    def __str__(self):
-        tagName = str(self.name)+" "+str(self.surname)+ " [" + str(self.idRotation) + "]"
-        return tagName
-
 ##################################MODULOS##################################
 class Module(models.Model):
     idModule = models.AutoField(primary_key=True)
@@ -105,6 +79,32 @@ class Module(models.Model):
         verbose_name_plural = 'Modulos'
     def __str__(self):
         tagName = str(self.nameModule)
+        return tagName
+
+##################################ROTACIONES##################################
+class Rotation(models.Model):
+    nameRotation = models.CharField(max_length=32)
+    idRotation = models.AutoField(primary_key=True)
+    idModule = models.ForeignKey(Module)
+
+
+    class Meta:
+        verbose_name = 'Rotacion'
+        verbose_name_plural = 'Rotaciones'
+    def __str__(self):
+        tagName = str(self.nameRotation) + "(" + str(self.idModule) + ")"
+        return tagName
+
+##################################ALUMNO##################################
+class Student(User):
+    idRotation = models.ForeignKey(Rotation, blank=True)
+    numberOfRegistration = models.IntegerField()
+
+    class Meta:
+        verbose_name = 'Alumno'
+        verbose_name_plural = 'Alumnos'
+    def __str__(self):
+        tagName = str(self.name)+" "+str(self.surname)+ " [" + str(self.idRotation) + "]"
         return tagName
 
 ##################################DOCUMENTOS##################################
@@ -122,20 +122,6 @@ class Document(models.Model):
         tagName = str(self.nameDocument) + "(" + str(self.idModule) + ")"
         return tagName
 
-##################################CUMPLIMIENTOS##################################
-class Fulfillment(models.Model):
-    nameFF = models.CharField(max_length=128)
-    idFF = models.AutoField(primary_key=True)
-    idModule = models.ManyToManyField(Module, blank=True)
-
-
-    class Meta:
-        verbose_name = 'Cumplimiento'
-        verbose_name_plural = 'Cumplimientos'
-    def __str__(self):
-        tagName = str(self.nameFF) + "(" + str(self.idModule) + ")"
-        return tagName
-
 ##################################PROYECTOS##################################
 class Project(models.Model):
     nameProject = models.CharField(max_length=128)
@@ -151,6 +137,19 @@ class Project(models.Model):
         tagName = str(self.nameProject) + "[" + str(self.idModule) + "]" + "(" + str(self.idTeacher) + ")"
         return tagName
 
+##################################CUMPLIMIENTOS##################################
+class Fulfillment(models.Model):
+    nameFF = models.CharField(max_length=128)
+    idFF = models.AutoField(primary_key=True)
+    idProject = models.ManyToManyField(Project, blank=True)
+
+
+    class Meta:
+        verbose_name = 'Cumplimiento'
+        verbose_name_plural = 'Cumplimientos'
+    def __str__(self):
+        tagName = str(self.nameFF) + "(" + str(self.idProject) + ")"
+        return tagName
 ##################################SEGUIMIENTO DE ALUMNO##################################
 class StudentFollowing(models.Model):
     idSF = models.AutoField(primary_key=True)
@@ -204,7 +203,7 @@ class Working(models.Model):
 class OnClass(models.Model):
     idActivity = models.ForeignKey(Activity)
     idSF = models.ForeignKey(StudentFollowing)
-
+    
     class Meta:
         verbose_name = 'Trabajo en Clase'
         verbose_name_plural = 'Trabajos en Clase'
