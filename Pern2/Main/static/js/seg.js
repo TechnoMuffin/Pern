@@ -19,6 +19,8 @@ var tbStudent = $("#tbAlumnos"); //Body table PupilFollowing
 var tableHistory = $('#historyTable'); //Table History
 var tbHistory = $('#tbHistory'); //Body Table History
 
+tableHistory.css('max-height', $( window ).height());
+
 var date = $('#datepicker');
 var nameStudentHTML = $('.nameStudent')
 
