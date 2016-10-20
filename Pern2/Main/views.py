@@ -87,8 +87,8 @@ def pupilFollowing(request):
         #Devuelve el alumno pedido
             idUser = request.GET.get('idStudent')
             student = Student.objects.filter(idUser=int(idUser))
-            info = serializers.serialize('json', student)   
-        
+            info = serializers.serialize('json', student)
+
         elif(queryId == "history"):
         #Devuelve el alumno pedido
             idUser = request.GET.get('idStudent')
@@ -121,8 +121,12 @@ def pupilFollowing(request):
         pupils = Student.objects.all()
         subjects = Module.objects.all()
         return render_to_response('pupilFollowing.html', {'courses':courses, 'subjects':subjects, 'pupils':pupils},context)
-    
+
 def history(request):
     context = RequestContext(request)
     courses = Course.objects.all()
-    return render_to_response('history.html', {'courses':courses}, context) 
+    return render_to_response('history.html', {'courses':courses}, context)
+
+def rotacionFollowing(request):
+    context = RequestContext(request)
+    return render_to_response('rotacionAlumno.html',context)
