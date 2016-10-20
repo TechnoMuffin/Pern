@@ -4,7 +4,7 @@
 class='active'
 {% endblock %}
 {% block content %}
-<div class="container">
+<div class="container col-xs-12">
     <div class="col-xs-12 col-md-12">
         <!-- Panel "Alumnos" -->
         <div class="col-xs-12 col-md-12">
@@ -31,18 +31,20 @@ class='active'
                             <option value=''>Alumno</option>
                         </select>
                     </div>
-                    <table class="table table-responsive" id="historyTable">
-                        <thead>
-                            <tr>
-                                <th class='col-xs-1'>Presente</th>
-                                <th class='col-xs-3'>Fecha</th>
-                                <th class='col-xs-6'>Tarea</th>
-                                <th class='col-xs-1'></th>
-                            </tr>
-                        </thead>
-                        <tbody id="tbHistory">
-                        </tbody>
-                    </table>
+                    <div class="table table-responsive">
+                        <table class="table table-responsive" id="historyTable">
+                            <thead>
+                                <tr>
+                                    <th class='col-xs-1'>Presente</th>
+                                    <th class='col-xs-3'>Fecha</th>
+                                    <th class='col-xs-6'>Tarea</th>
+                                    <th class='col-xs-1'></th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbHistory">
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>

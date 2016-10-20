@@ -186,25 +186,25 @@ function moduleChanged(){
     resetProjectField();
     resetPersonalFollow();
     //Carga de Alumnos
-        $.ajax({
-            url: url,
-            type: 'GET',
-            data: {idCourse: cbxCourse.val(), queryId: "students"},
-            dataType: 'json',
-            success: function(info){
-                for(var i=0;i<info.length;i++){
-                    var texto = info[i].fields.name + " " + info[i].fields.surname;
-                    var value = info[i].pk;
-                    try{
-                        cbxStudent.append(new Option(texto,value));
-                    }catch(err){console.log(err)}
-                }
+    $.ajax({
+        url: url,
+        type: 'GET',
+        data: {idCourse: cbxCourse.val(), queryId: "students"},
+        dataType: 'json',
+        success: function(info){
+            for(var i=0;i<info.length;i++){
+                var texto = info[i].fields.name + " " + info[i].fields.surname;
+                var value = info[i].pk;
                 try{
-                    cbxStudent.selectpicker('refresh');
-                }catch(e){console.log(err)}
+                    cbxStudent.append(new Option(texto,value));
+                }catch(err){console.log(err)}
             }
-        });
-    
+            try{
+                cbxStudent.selectpicker('refresh');
+            }catch(e){console.log(err)}
+        }
+    });
+
     //Carga de Projectos
     $.ajax({
         url: url,
@@ -273,17 +273,29 @@ function studentChanged(){
                     var presencia = info[i].fields.presenceSF;
                     var fecha = info[i].fields.dateSF;
                     var obs = info[i].fields.commentPF;
+                    sinObs='<td><button type="button" class="btn btn-warning pull-right disabledDIV">'+
+                        '<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>'+
+                        '</button></td>';
                     if(info[i].model=="database.studentfollowing"){
                         if(presencia){
                             presencia='<span class="glyphicon glyphicon-ok verde" aria-hidden="true"></span>';
+                            var elemento = '<tr class="clickable-row">'+
+                                '<th scope="row">'+presencia+'</th>'+
+                                '<td>'+fecha+'</td>'+
+                                '<td>'+activity+' de '+project+'</td>';
+                            if(obs!=''){
+                                elemento=elemento+'<td>'+createModalObs('modal'+idSF,obs)+'</td></tr>';
+                            }else{
+                                elemento=elemento+sinObs;
+                            }
                         }else{
                             presencia='<span class="glyphicon glyphicon-remove rojo" aria-hidden="true"></span>';
+                            var elemento = '<tr class="clickable-row">'+
+                                '<th scope="row">'+presencia+'</th>'+
+                                '<td>'+fecha+'</td>'+
+                                '<td>Alumno Ausente</td>';
+                            elemento=elemento+sinObs;
                         }
-                        var elemento = '<tr class="clickable-row">'+
-                            '<th scope="row">'+presencia+'</th>'+
-                            '<td>'+fecha+'</td>'+
-                            '<td>'+activity+' de '+project+'</td>'+
-                            '<td>'+createModalObs('modal'+idSF,obs)+'</td></tr>';
                         tbHistory.append(elemento);
                     }
                 }
