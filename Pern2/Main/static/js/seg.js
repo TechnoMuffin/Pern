@@ -181,6 +181,7 @@ function projectWFChanged(){
 
 //Cambia CBX MODULO
 function moduleChanged(){
+    resetStudentField();
     resetStudentTable();
     resetProjectField();
     resetPersonalFollow();
