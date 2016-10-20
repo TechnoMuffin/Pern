@@ -130,3 +130,7 @@ def history(request):
 def rotacionFollowing(request):
     context = RequestContext(request)
     return render_to_response('rotacionAlumno.html',context)
+
+def proyectosFollowing(request):
+    context = RequestContext(request)
+    return render_to_response('proyectos.html',context)
