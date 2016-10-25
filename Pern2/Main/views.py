@@ -131,3 +131,8 @@ def rotation(request):
     context = RequestContext(request)
     courses = Course.objects.all()
     return render_to_response('rotacionAlumno.html', {'courses':courses}, context) 
+
+def projectFollowing(request):
+    context = RequestContext(request)
+    courses = Course.objects.all()
+    return render_to_response('proyectos.html', {'courses':courses}, context) 

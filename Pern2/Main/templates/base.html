@@ -30,7 +30,7 @@
                 <div id="navbar" class="collapse navbar-collapse">
                     <ul class="nav navbar-nav">
                         <li {% block link1 %}{% endblock %}><a class="navbar-a" href="{% url 'app_main:seg-al' %}" style="color:white;">Seguimiento Diario</a></li>
-                        <li {% block link2 %}{% endblock %}><a class="navbar-a" href="#projects" style="color:white;">Proyectos</a></li>
+                        <li {% block link2 %}{% endblock %}><a class="navbar-a" href="{% url 'app_main:projects' %}" style="color:white;">Proyectos</a></li>
                         <li {% block link3 %}{% endblock %}><a class="navbar-a" href="#pupils" style="color:white;">Alumnos</a></li>
                         <li {% block link4 %}{% endblock %}><a class="navbar-a" href="{% url 'app_main:history' %}" style="color:white;">Historial</a></li>
                         <li {% block link5 %}{% endblock %}><a class="navbar-a" href="{% url 'app_main:rot-al' %}" style="color:white;">Rotaciones</a></li>

@@ -1,0 +1,145 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block link2 %}
+class='active'
+{% endblock %}
+{% block content %}
+
+<div class="container">
+    <div class="col-xs-12 col-md-4">
+        <div class="col-xs-12 col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Alumnos
+                </div>
+                <div class="panel-body">
+                    <div class="form-group col-xs-12 col-md-6">
+                        <select id="cbxCourse" class="selectpicker" data-width="100%">
+                            <option value=''>Curso</option>
+                            {% for i in courses %}
+                            <option value={{i.idCourse}}>{{i.courseType}}º año "{{i.courseDivision}}"</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group col-xs-12 col-md-6">
+                        <select id="cbxModule" class="selectpicker" data-width="100%">
+                            <option value=''>Módulo</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-xs-12">
+                        <select id="cbxProjectFW" class="selectpicker" data-width="100%">
+                            <option value=''>Proyecto</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-xs-12">
+                        <div class="input-group col-xs-12">
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" type="button">
+                                    <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+                                </button>
+                            </span>
+                            <input type="text" class="form-control" id="datepicker" name="date" placeholder="Fecha" value="2016-10-09">
+                        </div>
+                    </div>
+                    <div>
+                        <table class="table table-responsive" id="myTable">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Alumno</th>
+                                    <th>Actividad</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbAlumnos">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-12 col-md-8 ">
+        <div class="col-xs-12">
+            <div class="panel panel-default">
+
+                <div class="panel-heading">Panel heading</div>
+                <!-- Table -->
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Etapa</th>
+                            <th>Calificacion</th>
+                            <th>Estrellas</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Etapa 1</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>Etapa 2</td>
+                            <td></td>
+                            <td></td>
+
+                        </tr>
+                        <tr>
+                            <td>Etapa 3</td>
+                            <td></td>
+                            <td></td>
+
+                        </tr>
+                        <tr>
+                            <td>Etapa 4</td>
+                            <td></td>
+                            <td></td>
+
+                        </tr>
+                        <tr>
+                            <td>Etapa 5</td>
+                            <td></td>
+                            <td></td>
+
+                        </tr><tr>
+                        <td>Etapa 6</td>
+                        <td></td>
+                        <td></td>
+
+                        </tr><tr>
+                        <td>Etapa 7</td>
+                        <td></td>
+                        <td></td>
+
+                        </tr><tr>
+                        <td>Etapa 8</td>
+                        <td></td>
+                        <td></td>
+
+                        </tr><tr>
+                        <td>Etapa 9</td>
+                        <td></td>
+                        <td></td>
+
+                        </tr><tr>
+                        <td>Etapa 10</td>
+                        <td></td>
+                        <td></td>
+
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xs-12 col-md-5 hidden-xs" style="width:54%; margin-left:886px;"><button style="width:36%;" type="button" class="btn btn-default">Terminado <span class="glyphicon glyphicon-ok" aria-hidden="true"></button></div>
+        <div class="col-xs-12 col-md-5 visible-xs"><button style="width:93%; margin-left: 15px;" type="button" class="btn btn-default"></span>Terminado <span class="glyphicon glyphicon-ok" aria-hidden="true"></button></div>
+
+        {% endblock %}
+
+
+        {% block scripts %}
+
+        {% endblock %}
