@@ -126,3 +126,8 @@ def history(request):
     context = RequestContext(request)
     courses = Course.objects.all()
     return render_to_response('history.html', {'courses':courses}, context) 
+
+def rotation(request):
+    context = RequestContext(request)
+    courses = Course.objects.all()
+    return render_to_response('rotacionAlumno.html', {'courses':courses}, context) 
