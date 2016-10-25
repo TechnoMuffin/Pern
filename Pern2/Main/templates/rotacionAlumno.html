@@ -7,7 +7,7 @@ class='active'
 
 <div align="center" class="container">
     <div>
-        <select id="seleccionar-curso" style="width: 50%; margin-bottom: 14px;">
+        <select id="cbxCourse" class="selectpicker" data-width="100%">
             <option>Seleccionar Curso</option>
             <option>1A</option>
             <option>1B</option>
@@ -188,15 +188,9 @@ class='active'
     <div>
         <button type="button" style="width:50%" class="btn btn-default" id="guardar-rotacion"><span class="glyphicon glyphicon-save" aria-hidden="true"></span>Guardar</button>
     </div>
-
-
-
-
-
-
-
 </div>
-
+<script src="{% static 'js/jquery-3.1.0.js'%}"></script>
+<!--<script src="{% static 'js/bootstrap-select.js'%}"></script>-->
 {% endblock %}
 
 
