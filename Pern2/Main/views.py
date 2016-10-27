@@ -87,6 +87,12 @@ def pupilFollowing(request):
         #Devuelve el alumno pedido
             idUser = request.GET.get('idStudent')
             student = Student.objects.filter(idUser=int(idUser))
+            info = serializers.serialize('json', student)
+            
+        elif(queryId == "rotations"):
+        #Devuelve las rotaciones
+            course = request.GET.get('idCourse')
+            student = Student.objects.filter(idUser=int(idUser))
             info = serializers.serialize('json', student)   
         
         elif(queryId == "history"):

@@ -5,6 +5,9 @@
 Y usamos variables universalessss, mas info aqueeh: http://librosweb.es/libro/javascript/capitulo_4/ambito_de_las_variables.html*/
 
 var cbxCourse = $("#cbxCourse");
+var cbxCourseRotation = $("#cbxCourseRotation");
+var cbxRotationA = $("#cbxRotation-A");
+var cbxRotationB = $("#cbxRotation-B");
 var cbxModule = $("#cbxModule");
 var cbxProject = $("#cbxProject");
 var cbxActivity = $("#cbxActivity");
@@ -21,6 +24,8 @@ var tableStudents = $('#myTable'); //Table PupilFollowing
 var tbStudent = $("#tbAlumnos"); //Body table PupilFollowing
 var tableHistory = $('#historyTable'); //Table History
 var tbHistory = $('#tbHistory'); //Body Table History
+
+var selecterDiv = $('#selectionerDiv');
 
 tableHistory.css('max-height', $( window ).height());
 
@@ -42,6 +47,7 @@ cbxModule.on('change', function(){moduleChanged()});
 cbxProject.on('change', function(){projectChanged()});
 cbxActivity.on('change', function(){activityChanged()});
 cbxStudent.on('change', function(){studentChanged()});
+cbxCourseRotation.on('change', function(){courseRotationChanged()});
 tableStudents.on('click', '.clickable-row', function(event) {$(this).addClass('active').siblings().removeClass('active');});
 
 /////////////////////////////////
@@ -133,6 +139,25 @@ function courseChanged(){
     }
 }
 
+function courseRotationChanged(){
+    if(this.val!=''){
+        $.ajax({
+            url: url,
+            type: 'GET',
+            data: {idCourse: cbxCourseRotation.val(), queryId: "rotations"},
+            dataType: 'json',
+            success: function(info){
+                for(var i=0;i<info.length;i++){
+                    var text = info[i].fields.nameModule;
+                    var value = info[i].pk;
+                    cbxRotationA.append(new Option(text, value));
+                    cbxRotationB.append(new Option(text, value));
+                }
+                cbxCourseRotation.selectpicker('refresh');
+            }
+        });
+    }
+}
 
 function projectWFChanged(){
     resetStudentTable();

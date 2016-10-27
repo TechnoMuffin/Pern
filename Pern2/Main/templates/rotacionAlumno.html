@@ -5,195 +5,214 @@ class='active'
 {% endblock %}
 {% block content %}
 
-<div align="center" class="container">
-    <div>
-        <select id="cbxCourse" class="selectpicker" data-width="100%">
-            <option>Seleccionar Curso</option>
-            <option>1A</option>
-            <option>1B</option>
-            <option>1C</option>
-            <option>2A</option>
-        </select>
-    </div>
-
-
-    <div class="col-xs-12 col-md-5">
-        <div>
-            <select id="seleccion-especialidad-1" style="width: 70%; margin-bottom: 14px;">
-                <option>Ajuste</option>
-                <option>Carpinteria</option>
-                <option>Electricidad</option>
-                <option>Libres</option>
-            </select>
-            <button type="button" class="btn btn-default" id="vaciar-select-1"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
-        </div>
-        <div>
+<div class="container">
+    <div class="col-xs-12 col-md-12">
+        <div class="panel-group" id="accordion">
             <div class="panel panel-default">
-                <div class="panel-body">
-                    <table class="table table-responsive">
-                        <thead>
-                            <tr>
-                                <th>Seleccionar</th>
-                                <th>Alumno</th>
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">Asignación de Alumnos a Rotaciones</a>
+                    </h4>
+                </div>
+                <div id="collapse1" class="panel-collapse collapse in">
+                    <div class="panel-body">
+                        <select id="cbxCourseRotation" class="selectpicker" data-width="100%">
+                            <option value=''>Curso</option>
+                            {% for i in courses %}
+                            <option value={{i.idCourse}}>{{i.courseType}}º año "{{i.courseDivision}}"</option>
+                            {% endfor %}
+                        </select>
+                        <hr>
+                        <div id="selectionerDiv" class="disabledDIV">
+                            <!--Comienza coso-->
+                            <div class="col-xs-12 col-md-5">
+                                <div class="panel panel-default">
+                                    <div class="panel-body">
+                                        <div class="col-xs-12" style="padding-bottom:15px">
+                                            <div class="input-group">
+                                                <select id="cbxRotation-A" class="selectpicker" data-width="100%">
+                                                    <option>Ajuste</option>
+                                                    <option>Carpinteria</option>
+                                                    <option>Electricidad</option>
+                                                    <option>Libres</option>
+                                                </select>
+                                                <span class="input-group-btn">
+                                                    <button type="button" class="btn btn-default" id="vaciar-select-1"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                                                    </button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="panel-body">
+                                            <select id="select-1" multiple="multiple" style="width:100%;min-height:200px">
+                                                <option value="1">Sr.Adriel</option>
+                                                <option value="2">Sr.Oveja</option>
+                                                <option value="3">Sr.Chucho</option>
+                                                <option value="4">Sr.Santiga</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><input type="checkbox"></td>
-                                <td>Franco Heredia</td>
+                            <!--Botones para ordenadores y dispositvos medianos-->
+                            <div class="col-xs-12 col-md-2 hidden-xs" style="text-align:center">
+                                <div class="btn-group-vertical" role="group" aria-label="...">
+                                    <button type="button" class="btn btn-default" id="pasar-derecha"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></button>
+                                    <button type="button" class="btn btn-default" id="pasar-izquierda"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></button>
+                                    <button type="button" class="btn btn-default" id="pasar-todo-derecha"><span class="glyphicon glyphicon-forward" aria-hidden="true"></span></button>
+                                    <button type="button" class="btn btn-default" id="pasar-todo-izquierda"><span class="glyphicon glyphicon-backward" aria-hidden="true"></span></button>
+                                </div>
+                            </div>
+                            <!--Botones para smartphones y dispositivos pequeños-->
+                            <div class="col-xs-12 col-md-1 visible-xs" style="margin-bottom:19px;">
+                                <div class="btn-group btn-group-lgl" role="group">
+                                    <button type="button" class="btn btn-default" id="pasar-arriba"><span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span></button>
+                                    <button type="button" class="btn btn-default" id="pasar-abajo"><span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span></button>
+                                    <button type="button" class="btn btn-default" id="pasar-todo-arriba"><span class="glyphicon glyphicon-triangle-top" aria-hidden="true"></span></button>
+                                    <button type="button" class="btn btn-default" id="pasar-todo-abajo"><span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span></button>
+                                </div>
+                            </div>
 
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox"></td>
-                                <td>Matias Ferreyra</td>
-
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox"></td>
-                                <td>Adriel Chagay</td>
-
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox"></td>
-                                <td>Santiago Garcia</td>
-
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox"></td>
-                                <td>Fabrizio Cuassolo</td>
-
-                            </tr><tr>
-                            <td><input type="checkbox"></td>
-                            <td>Fabrizio Cuassolo</td>
-
-                            </tr><tr>
-                            <td><input type="checkbox"></td>
-                            <td>Fabrizio Cuassolo</td>
-
-                            </tr><tr>
-                            <td><input type="checkbox"></td>
-                            <td>Fabrizio Cuassolo</td>
-
-                            </tr><tr>
-                            <td><input type="checkbox"></td>
-                            <td>Fabrizio Cuassolo</td>
-
-                            </tr><tr>
-                            <td><input type="checkbox"></td>
-                            <td>Fabrizio Cuassolo</td>
-
-                            </tr>
-                        </tbody>
-                    </table>
-
+                            <div class="col-xs-12 col-md-5">
+                                <div class="panel panel-default">
+                                    <div class="panel-body">
+                                        <div class="col-xs-12" style="padding-bottom:15px">
+                                            <div class="input-group">
+                                                <select id="cbxRotation-B" class="selectpicker" data-width="100%">
+                                                    <option>Ajuste</option>
+                                                    <option>Carpinteria</option>
+                                                    <option>Electricidad</option>
+                                                    <option>Libres</option>
+                                                </select>
+                                                <span class="input-group-btn">
+                                                    <button type="button" class="btn btn-default" id="vaciar-select-1"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                                                    </button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="panel-body">
+                                            <select multiple="multiple" style="width:100%;min-height:200px">
+                                                <option value="6">Adriel</option>
+                                                <option value="7">Ovej4</option>
+                                                <option value="8">MatiIlRojo</option>
+                                                <option value="9">PutoElQueLee</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">Collapsible Group 2</a>
+                    </h4>
+                </div>
+                <div id="collapse2" class="panel-collapse collapse">
+                    <div class="panel-body">Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+                        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</div>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse3">Collapsible Group 3</a>
+                    </h4>
+                </div>
+                <div id="collapse3" class="panel-collapse collapse">
+                    <div class="panel-body">Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+                        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</div>
                 </div>
             </div>
         </div>
-    </div>
-
-    <!--Botones para ordenadores y dispositvos medianos-->
-    <div class="col-xs-12 col-md-1 hidden-xs" style="margin-top:255px;">
-        <div class="btn-group-vertical" role="group" aria-label="...">
-            <button type="button" class="btn btn-default" id="pasar-derecha"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></button>
-            <button type="button" class="btn btn-default" id="pasar-izquierda"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></button>
-            <button type="button" class="btn btn-default" id="pasar-todo-derecha"><span class="glyphicon glyphicon-forward" aria-hidden="true"></span></button>
-            <button type="button" class="btn btn-default" id="pasar-todo-izquierda"><span class="glyphicon glyphicon-backward" aria-hidden="true"></span></button>
-        </div>
-    </div>
-    <!--Botones para smartphones y dispositivos pequeños-->
-    <div class="col-xs-12 col-md-1 visible-xs" style="margin-bottom:19px;">
-        <div class="btn-group btn-group-lgl" role="group" aria-label="...">
-            <button type="button" class="btn btn-default" id="pasar-arriba"><span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span></button>
-            <button type="button" class="btn btn-default" id="pasar-abajo"><span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span></button>
-            <button type="button" class="btn btn-default" id="pasar-todo-arriba"><span class="glyphicon glyphicon-triangle-top" aria-hidden="true"></span></button>
-            <button type="button" class="btn btn-default" id="pasar-todo-abajo"><span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span></button>
-        </div>
-    </div>
-
-    <div class="col-xs-12 col-md-5">
-        <div >
-            <select id="seleccion-especialidad-2" style="width: 70%; margin-bottom: 14px;">
-                <option>Ajuste</option>
-                <option>Carpinteria</option>
-                <option>Electricidad</option>
-                <option>Libres</option>
-            </select>
-            <button type="button" class="btn btn-default" id="vaciar-select-2"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
-        </div>
-        <div >
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    <table class="table table-responsive">
-                        <thead>
-                            <tr>
-                                <th>Seleccionar</th>
-                                <th>Alumno</th>
-
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><input type="checkbox"></td>
-                                <td>Franco Heredia</td>
-
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox"></td>
-                                <td>Matias Ferreyra</td>
-
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox"></td>
-                                <td>Adriel Chagay</td>
-
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox"></td>
-                                <td>Santiago Garcia</td>
-
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox"></td>
-                                <td>Fabrizio Cuassolo</td>
-
-                            </tr><tr>
-                            <td><input type="checkbox"></td>
-                            <td>Fabrizio Cuassolo</td>
-
-                            </tr><tr>
-                            <td><input type="checkbox"></td>
-                            <td>Fabrizio Cuassolo</td>
-
-                            </tr><tr>
-                            <td><input type="checkbox"></td>
-                            <td>Fabrizio Cuassolo</td>
-
-                            </tr><tr>
-                            <td><input type="checkbox"></td>
-                            <td>Fabrizio Cuassolo</td>
-
-                            </tr><tr>
-                            <td><input type="checkbox"></td>
-                            <td>Fabrizio Cuassolo</td>
-
-                            </tr>
-                        </tbody>
-                    </table>
-
-                </div>
-            </div>
-        </div>
-    </div>
-    <div>
-        <button type="button" style="width:50%" class="btn btn-default" id="guardar-rotacion"><span class="glyphicon glyphicon-save" aria-hidden="true"></span>Guardar</button>
     </div>
 </div>
 <script src="{% static 'js/jquery-3.1.0.js'%}"></script>
+<script> var url = '{% url "app_main:seg-al" %}';</script>
+<script src="{% static 'js/seg.js'%}"></script>
 <!--<script src="{% static 'js/bootstrap-select.js'%}"></script>-->
+<script>    
+    var result = new Array();
+
+    $("#select-1 option:selected").each(function(){
+        result.push($(this).val());
+    });
+
+    console.log(result);
+    var output = result.join(", ");
+    console.log(output);
+
+    $('.add').click(function(){
+        var items = $("#list1 input:checked:not('.all')");
+        var n = items.length;
+        if (n > 0) {
+            items.each(function(idx,item){
+                var choice = $(item);
+                choice.prop("checked",false);
+                choice.parent().appendTo("#list2");
+            });
+        }
+        else {
+            alert("Choose an item from list 1");
+        }
+    });
+
+    $('.remove').click(function(){
+        $('.all').prop("checked",false);
+        var items = $("#list2 input:checked:not('.all')");
+        items.each(function(idx,item){
+            var choice = $(item);
+            choice.prop("checked",false);
+            choice.parent().appendTo("#list1");
+        });
+    });
+
+    /* toggle all checkboxes in group */
+    $('.all').click(function(e){
+        e.stopPropagation();
+        var $this = $(this);
+        if($this.is(":checked")) {
+            $this.parents('.list-group').find("[type=checkbox]").prop("checked",true);
+        }
+        else {
+            $this.parents('.list-group').find("[type=checkbox]").prop("checked",false);
+            $this.prop("checked",false);
+        }
+    });
+
+    $('[type=checkbox]').click(function(e){
+        e.stopPropagation();
+    });
+
+    /* toggle checkbox when list group item is clicked */
+    $('.list-group a').click(function(e){
+
+        e.stopPropagation();
+
+        var $this = $(this);
+        console.log($this.val());
+        var $this = $(this).find("[type=checkbox]");
+        if($this.is(":checked")) {
+            $this.prop("checked",false);
+        }
+        else {
+            $this.prop("checked",true);
+        }
+
+        if ($this.hasClass("all")) {
+            $this.trigger('click');
+        }
+    });
+</script>
 {% endblock %}
 
 
 {% block scripts %}
 
 {% endblock %}
+</div>
