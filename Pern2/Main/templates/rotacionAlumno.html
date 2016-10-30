@@ -49,7 +49,7 @@ class='active'
 
                             <!--Botones para ordenadores y dispositvos medianos-->
                             <div class="col-xs-12 col-md-2 hidden-xs" style="text-align:center">
-                                <div class="btn-group-vertical" role="group" aria-label="...">
+                                <div class="btn-group-vertical" style="margin-top:73px;" role="group" aria-label="...">
                                     <button type="button" class="btn btn-default" id="pasar-derecha"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></button>
                                     <button type="button" class="btn btn-default" id="pasar-izquierda"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></button>
                                     <button type="button" class="btn btn-default" id="pasar-todo-derecha"><span class="glyphicon glyphicon-forward" aria-hidden="true"></span></button>
@@ -57,7 +57,7 @@ class='active'
                                 </div>
                             </div>
                             <!--Botones para smartphones y dispositivos pequeños-->
-                            <div class="col-xs-12 col-md-1 visible-xs" style="margin-bottom:19px;">
+                            <div class="col-xs-12 col-md-1 visible-xs" style="margin-left: 94px; margin-top: 20px; margin-bottom: 20px;">
                                 <div class="btn-group btn-group-lgl" role="group">
                                     <button type="button" class="btn btn-default" id="pasar-arriba"><span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span></button>
                                     <button type="button" class="btn btn-default" id="pasar-abajo"><span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span></button>
@@ -123,14 +123,15 @@ class='active'
     </div>
 </div>
 <script src="{% static 'js/jquery-3.1.0.js'%}"></script>
+<script src="{% static 'js/bootstrap-select.js'%}"></script>
 <script> var url = '{% url "app_main:seg-al" %}';</script>
 <script src="{% static 'js/seg.js'%}"></script>
-<script src="{% static 'js/bootstrap-select.js'%}"></script>
-<script>
-</script>
+
+
 {% endblock %}
 
 
 {% block scripts %}
+
 
 {% endblock %}
