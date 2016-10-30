@@ -6,12 +6,18 @@ Y usamos variables universalessss, mas info aqueeh: http://librosweb.es/libro/ja
 
 var cbxCourse = $("#cbxCourse");
 var cbxCourseRotation = $("#cbxCourseRotation");
-var cbxRotationA = $("#cbxRotation-A");
-var cbxRotationB = $("#cbxRotation-B");
+var cbxRotationA = $("#cbxRotationA");
+var cbxRotationB = $("#cbxRotationB");
+var studentSelectA = $("#studentSelectA");
+var studentSelectB = $("#studentSelectB");
 var cbxModule = $("#cbxModule");
 var cbxProject = $("#cbxProject");
 var cbxActivity = $("#cbxActivity");
 var cbxStudent = $("#cbxStudent");
+var cbxRotationA=$('#cbxRotationA');
+var cbxRotationB=$('#cbxRotationB');
+
+
 
 var cbxProjectFW = $("#cbxProjectFW");
 
@@ -49,6 +55,8 @@ cbxActivity.on('change', function(){activityChanged()});
 cbxStudent.on('change', function(){studentChanged()});
 cbxCourseRotation.on('change', function(){courseRotationChanged()});
 tableStudents.on('click', '.clickable-row', function(event) {$(this).addClass('active').siblings().removeClass('active');});
+cbxRotationA.on('change', function(){cbxRotationAchanged()});
+cbxRotationB.on('change', function(){cbxRotationBchanged()});
 
 /////////////////////////////////
 //Funciones para limpiar campos//
@@ -73,6 +81,28 @@ function resetModuleField(){
     cbxModule.empty();
     cbxModule.append(new Option('Módulo', ''));
     cbxModule.selectpicker('refresh');
+}
+
+function resetRotationAField(){
+    cbxRotationA.empty();
+    cbxRotationA.append(new Option('Alumnos sin Rotación', ''));
+    cbxRotationA.selectpicker('refresh');
+}
+
+function resetRotationBField(){
+    cbxRotationB.empty();
+    cbxRotationB.append(new Option('Alumnos sin Rotación', ''));
+    cbxRotationB.selectpicker('refresh');
+}
+
+function resetStudentSelectB(){
+    studentSelectB.empty();
+    studentSelectB.change();
+}
+
+function resetStudentSelectA(){
+    studentSelectA.empty();
+    studentSelectA.change();
 }
 
 function resetProjectField(){
@@ -140,7 +170,12 @@ function courseChanged(){
 }
 
 function courseRotationChanged(){
-    if(this.val!=''){
+    resetRotationAField();
+    resetRotationBField();
+    resetStudentSelectA();
+    resetStudentSelectB();
+    if($(this).val!=''){
+        selecterDiv.removeClass('disabledDIV');
         $.ajax({
             url: url,
             type: 'GET',
@@ -148,15 +183,62 @@ function courseRotationChanged(){
             dataType: 'json',
             success: function(info){
                 for(var i=0;i<info.length;i++){
-                    var text = info[i].fields.nameModule;
+                    var text = info[i].fields.nameRotation;
                     var value = info[i].pk;
                     cbxRotationA.append(new Option(text, value));
                     cbxRotationB.append(new Option(text, value));
                 }
-                cbxCourseRotation.selectpicker('refresh');
+                cbxRotationB.val($('#cbxRotationB option:selected').next().val());
+                cbxRotationA.selectpicker('refresh');
+                cbxRotationB.selectpicker('refresh');
             }
         });
+    }else{
+        selecterDiv.addClass('disabledDIV');
     }
+}
+
+function cbxRotationAchanged(){
+    resetStudentSelectA();
+    $('#cbxRotationB option').each(function(){
+        $(this).removeClass('disabledDIV');
+    });
+    $('#cbxRotationB option').each(function(){
+        $(this).removeClass('disabledDIV');
+        if($(this).val()==cbxRotationA.val()){
+            console.log(cbxRotationA.val());
+            $(this).addClass('disabledDIV');
+        }
+    });
+    cbxRotationB.selectpicker('refresh');
+    $.ajax({
+        url: url,
+        type: 'GET',
+        data: {idRotation: cbxRotationA.val(), queryId: "studentsByRotation"},
+        dataType: 'json',
+        success: function(info){
+            for(var i=0;i<info.length;i++){
+                var texto = info[i].fields.surname + ", " + info[i].fields.name;
+                var value = info[i].pk;
+                studentSelectA.append(new Option(texto, value));
+            }
+        }
+    });
+}
+
+function cbxRotationBchanged(){
+    resetStudentSelectB();
+    $('#cbxRotationA option').each(function(){
+        $(this).removeClass('disabledDIV');
+    });
+    $('#cbxRotationA option').each(function(){
+        $(this).removeClass('disabledDIV');
+        if($(this).val()==cbxRotationB.val()){
+            console.log(cbxRotationA.val());
+            $(this).addClass('disabledDIV');
+        }
+    });
+    cbxRotationA.selectpicker('refresh');
 }
 
 function projectWFChanged(){
@@ -175,7 +257,7 @@ function projectWFChanged(){
                 for(var i=0;i<info.length;i++){
                     var texto = info[i].fields.name + " " + info[i].fields.surname;
                     var value = info[i].pk;
-                    var elemento = '<tr class="clickable-row" onclick="selectStudent(event,'+value+')"><td><input type="checkbox"></td><td>'+texto+'</td><td style="text-align:center;"><select><option value="">---</option></select></td></tr>';
+                    var elemento = '<tr claMóduloss="clickable-row" onclick="selectStudent(event,'+value+')"><td><input type="checkbox"></td><td>'+texto+'</td><td style="text-align:center;"><select><option value="">---</option></select></td></tr>';
                     tbStudent.append(elemento);
                     try{
                         cbxStudent.append(new Option(texto,value));

@@ -30,11 +30,8 @@ class='active'
                                     <div class="panel-body">
                                         <div class="col-xs-12" style="padding-bottom:15px">
                                             <div class="input-group">
-                                                <select id="cbxRotation-A" class="selectpicker" data-width="100%">
-                                                    <option>Ajuste</option>
-                                                    <option>Carpinteria</option>
-                                                    <option>Electricidad</option>
-                                                    <option>Libres</option>
+                                                <select id="cbxRotationA" class="selectpicker" data-width="100%">
+                                                    <option value="">Alumnos sin asignar</option>
                                                 </select>
                                                 <span class="input-group-btn">
                                                     <button type="button" class="btn btn-default" id="vaciar-select-1"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
@@ -43,11 +40,7 @@ class='active'
                                             </div>
                                         </div>
                                         <div class="panel-body">
-                                            <select id="select-1" multiple="multiple" style="width:100%;min-height:200px">
-                                                <option value="1">Sr.Adriel</option>
-                                                <option value="2">Sr.Oveja</option>
-                                                <option value="3">Sr.Chucho</option>
-                                                <option value="4">Sr.Santiga</option>
+                                            <select id="studentSelectA" multiple="multiple" style="width:100%;min-height:200px">
                                             </select>
                                         </div>
                                     </div>
@@ -78,11 +71,8 @@ class='active'
                                     <div class="panel-body">
                                         <div class="col-xs-12" style="padding-bottom:15px">
                                             <div class="input-group">
-                                                <select id="cbxRotation-B" class="selectpicker" data-width="100%">
-                                                    <option>Ajuste</option>
-                                                    <option>Carpinteria</option>
-                                                    <option>Electricidad</option>
-                                                    <option>Libres</option>
+                                                <select id="cbxRotationB" class="selectpicker" data-width="100%">
+                                                    <option value="">Alumnos sin asignar</option>
                                                 </select>
                                                 <span class="input-group-btn">
                                                     <button type="button" class="btn btn-default" id="vaciar-select-1"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
@@ -91,7 +81,7 @@ class='active'
                                             </div>
                                         </div>
                                         <div class="panel-body">
-                                            <select multiple="multiple" style="width:100%;min-height:200px">
+                                            <select id="studentSelectA" multiple="multiple" style="width:100%;min-height:200px">
                                                 <option value="6">Adriel</option>
                                                 <option value="7">Ovej4</option>
                                                 <option value="8">MatiIlRojo</option>
@@ -135,79 +125,8 @@ class='active'
 <script src="{% static 'js/jquery-3.1.0.js'%}"></script>
 <script> var url = '{% url "app_main:seg-al" %}';</script>
 <script src="{% static 'js/seg.js'%}"></script>
-<!--<script src="{% static 'js/bootstrap-select.js'%}"></script>-->
-<script>    
-    var result = new Array();
-
-    $("#select-1 option:selected").each(function(){
-        result.push($(this).val());
-    });
-
-    console.log(result);
-    var output = result.join(", ");
-    console.log(output);
-
-    $('.add').click(function(){
-        var items = $("#list1 input:checked:not('.all')");
-        var n = items.length;
-        if (n > 0) {
-            items.each(function(idx,item){
-                var choice = $(item);
-                choice.prop("checked",false);
-                choice.parent().appendTo("#list2");
-            });
-        }
-        else {
-            alert("Choose an item from list 1");
-        }
-    });
-
-    $('.remove').click(function(){
-        $('.all').prop("checked",false);
-        var items = $("#list2 input:checked:not('.all')");
-        items.each(function(idx,item){
-            var choice = $(item);
-            choice.prop("checked",false);
-            choice.parent().appendTo("#list1");
-        });
-    });
-
-    /* toggle all checkboxes in group */
-    $('.all').click(function(e){
-        e.stopPropagation();
-        var $this = $(this);
-        if($this.is(":checked")) {
-            $this.parents('.list-group').find("[type=checkbox]").prop("checked",true);
-        }
-        else {
-            $this.parents('.list-group').find("[type=checkbox]").prop("checked",false);
-            $this.prop("checked",false);
-        }
-    });
-
-    $('[type=checkbox]').click(function(e){
-        e.stopPropagation();
-    });
-
-    /* toggle checkbox when list group item is clicked */
-    $('.list-group a').click(function(e){
-
-        e.stopPropagation();
-
-        var $this = $(this);
-        console.log($this.val());
-        var $this = $(this).find("[type=checkbox]");
-        if($this.is(":checked")) {
-            $this.prop("checked",false);
-        }
-        else {
-            $this.prop("checked",true);
-        }
-
-        if ($this.hasClass("all")) {
-            $this.trigger('click');
-        }
-    });
+<script src="{% static 'js/bootstrap-select.js'%}"></script>
+<script>
 </script>
 {% endblock %}
 
@@ -215,4 +134,3 @@ class='active'
 {% block scripts %}
 
 {% endblock %}
-</div>

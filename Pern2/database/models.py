@@ -86,7 +86,7 @@ class Rotation(models.Model):
     nameRotation = models.CharField(max_length=32)
     idRotation = models.AutoField(primary_key=True)
     idModule = models.ForeignKey(Module)
-
+    idCourse = models.ForeignKey(Course)
 
     class Meta:
         verbose_name = 'Rotacion'
