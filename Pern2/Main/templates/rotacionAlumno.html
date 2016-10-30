@@ -11,10 +11,39 @@ class='active'
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">Crear nuevas Rotaciones</a>
+                    </h4>
+                </div>
+                <div id="collapse2" class="panel-collapse collapse in">
+                    <div class="panel-body">
+                        <div class="form-group col-xs-12 col-md-4">
+                            <input type="text" class="form-control" placeholder="Nombre" aria-describedby="basic-addon1">
+                        </div>
+                        <div class="form-group col-xs-12 col-md-4">
+                            <select id="cbxCourse" class="selectpicker" data-width="100%">
+                                <option value=''>Curso</option>
+                                {% for x in courses %}
+                                <option value={{x.idCourse}}>{{x.courseType}}º año "{{x.courseDivision}}"</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group col-xs-12 col-md-4">
+                            <select id="cbxModule" class="selectpicker" data-width="100%">
+                            </select>
+                        </div>
+                        <div class="form-group col-xs-12 col-md-12">
+                        <button id="createRotation" type="button" class="btn btn-warning col-xs-12">Crear Rotación</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
                         <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">Asignación de Alumnos a Rotaciones</a>
                     </h4>
                 </div>
-                <div id="collapse1" class="panel-collapse collapse in">
+                <div id="collapse1" class="panel-collapse collapse  in">
                     <div class="panel-body">
                         <select id="cbxCourseRotation" class="selectpicker" data-width="100%">
                             <option value=''>Curso</option>
@@ -50,19 +79,19 @@ class='active'
                             <!--Botones para ordenadores y dispositvos medianos-->
                             <div class="col-xs-12 col-md-2 hidden-xs" style="text-align:center">
                                 <div class="btn-group-vertical" style="margin-top:73px;" role="group" aria-label="...">
-                                    <button type="button" class="btn btn-default" id="pasar-derecha"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></button>
-                                    <button type="button" class="btn btn-default" id="pasar-izquierda"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></button>
-                                    <button type="button" class="btn btn-default" id="pasar-todo-derecha"><span class="glyphicon glyphicon-forward" aria-hidden="true"></span></button>
-                                    <button type="button" class="btn btn-default" id="pasar-todo-izquierda"><span class="glyphicon glyphicon-backward" aria-hidden="true"></span></button>
+                                    <button type="button" class="btn btn-default" id="toSelectB"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></button>
+                                    <button type="button" class="btn btn-default" id="toSelectA"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></button>
+                                    <button type="button" class="btn btn-default" id="allToSelectB"><span class="glyphicon glyphicon-forward" aria-hidden="true"></span></button>
+                                    <button type="button" class="btn btn-default" id="allToSelectA"><span class="glyphicon glyphicon-backward" aria-hidden="true"></span></button>
                                 </div>
                             </div>
                             <!--Botones para smartphones y dispositivos pequeños-->
                             <div class="col-xs-12 col-md-1 visible-xs" style="margin-left: 94px; margin-top: 20px; margin-bottom: 20px;">
                                 <div class="btn-group btn-group-lgl" role="group">
-                                    <button type="button" class="btn btn-default" id="pasar-arriba"><span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span></button>
-                                    <button type="button" class="btn btn-default" id="pasar-abajo"><span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span></button>
-                                    <button type="button" class="btn btn-default" id="pasar-todo-arriba"><span class="glyphicon glyphicon-triangle-top" aria-hidden="true"></span></button>
-                                    <button type="button" class="btn btn-default" id="pasar-todo-abajo"><span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span></button>
+                                    <button type="button" class="btn btn-default" id="toSelectB1"><span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span></button>
+                                    <button type="button" class="btn btn-default" id="toSelectA1"><span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span></button>
+                                    <button type="button" class="btn btn-default" id="allToSelectB1"><span class="glyphicon glyphicon-triangle-top" aria-hidden="true"></span></button>
+                                    <button type="button" class="btn btn-default" id="allToSelectA1"><span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span></button>
                                 </div>
                             </div>
 
@@ -81,11 +110,7 @@ class='active'
                                             </div>
                                         </div>
                                         <div class="panel-body">
-                                            <select id="studentSelectA" multiple="multiple" style="width:100%;min-height:200px">
-                                                <option value="6">Adriel</option>
-                                                <option value="7">Ovej4</option>
-                                                <option value="8">MatiIlRojo</option>
-                                                <option value="9">PutoElQueLee</option>
+                                            <select id="studentSelectB" multiple="multiple" style="width:100%;min-height:200px">
                                             </select>
                                         </div>
                                     </div>
@@ -93,18 +118,6 @@ class='active'
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h4 class="panel-title">
-                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">Collapsible Group 2</a>
-                    </h4>
-                </div>
-                <div id="collapse2" class="panel-collapse collapse">
-                    <div class="panel-body">Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-                        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</div>
                 </div>
             </div>
             <div class="panel panel-default">
@@ -126,12 +139,6 @@ class='active'
 <script src="{% static 'js/bootstrap-select.js'%}"></script>
 <script> var url = '{% url "app_main:seg-al" %}';</script>
 <script src="{% static 'js/seg.js'%}"></script>
-
-
 {% endblock %}
-
-
 {% block scripts %}
-
-
 {% endblock %}

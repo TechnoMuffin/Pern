@@ -4,49 +4,51 @@
 /*Aqui se conecta Javascript con FRONTEND, betch!
 Y usamos variables universalessss, mas info aqueeh: http://librosweb.es/libro/javascript/capitulo_4/ambito_de_las_variables.html*/
 
+//Variables de /pupilFollowing
 var cbxCourse = $("#cbxCourse");
-var cbxCourseRotation = $("#cbxCourseRotation");
-var cbxRotationA = $("#cbxRotationA");
-var cbxRotationB = $("#cbxRotationB");
-var studentSelectA = $("#studentSelectA");
-var studentSelectB = $("#studentSelectB");
 var cbxModule = $("#cbxModule");
 var cbxProject = $("#cbxProject");
 var cbxActivity = $("#cbxActivity");
 var cbxStudent = $("#cbxStudent");
-var cbxRotationA=$('#cbxRotationA');
-var cbxRotationB=$('#cbxRotationB');
-
-
-
-var cbxProjectFW = $("#cbxProjectFW");
-
-var personalFollowHTML = $("#personalFollow")
-
 var currentStudentSelected; //Necesitaremos guardar en esta variable el alumno seleccionado para algunas funciones
-
-
+var cbxProjectFW = $("#cbxProjectFW");
+var personalFollowHTML = $("#personalFollow")
 var tableStudents = $('#myTable'); //Table PupilFollowing
 var tbStudent = $("#tbAlumnos"); //Body table PupilFollowing
-var tableHistory = $('#historyTable'); //Table History
-var tbHistory = $('#tbHistory'); //Body Table History
-
-var selecterDiv = $('#selectionerDiv');
-
-tableHistory.css('max-height', $( window ).height());
-
-var tbFF = $('#tbFulfillments'); //Tabla de cumplimientos
-
 var date = $('#datepicker');
 var nameStudentHTML = $('.nameStudent')
-
 //Activity fields
 var actName=$('#actName');
 var actCode=$('#actCode');
 var actStatus=$('#actStatus');
 var actClasses=$('#actClasses');
 var actCalification=$('#actCalification');
+var tbFF = $('#tbFulfillments'); //Tabla de cumplimientos
 
+//Variables de /rotacionAlumno
+var cbxCourseRotation = $("#cbxCourseRotation");
+var cbxRotationA = $("#cbxRotationA");
+var cbxRotationB = $("#cbxRotationB");
+var toSelectB = $("#toSelectB");
+var toSelectA = $("#toSelectA");
+var toSelectB1 = $("#toSelectB1");
+var toSelectA1 = $("#toSelectA1");
+var allToSelectB = $("#allToSelectB");
+var allToSelectA = $("#allToSelectA");
+var studentSelectA = $("#studentSelectA");
+var studentSelectB = $("#studentSelectB");
+var selecterDiv = $('#selectionerDiv');
+var btnCreateRotation = $('#createRotation');
+
+//Variables de /historial
+var tableHistory = $('#historyTable'); //Table History
+var tbHistory = $('#tbHistory'); //Body Table History
+
+
+tableHistory.css('max-height', $( window ).height());
+
+
+//Asignacion de Funciones a elementos HTML
 cbxProjectFW.on('change', function(){projectWFChanged()});
 cbxCourse.on('change', function(){courseChanged()});
 cbxModule.on('change', function(){moduleChanged()});
@@ -57,6 +59,12 @@ cbxCourseRotation.on('change', function(){courseRotationChanged()});
 tableStudents.on('click', '.clickable-row', function(event) {$(this).addClass('active').siblings().removeClass('active');});
 cbxRotationA.on('change', function(){cbxRotationAchanged()});
 cbxRotationB.on('change', function(){cbxRotationBchanged()});
+toSelectB.on('click', function(){toSelectMulB()});
+toSelectA.on('click', function(){toSelectMulA()});
+toSelectA.on('click', function(){toSelectMulA()});
+allToSelectB.on('click', function(){allToSelectMulB()});
+allToSelectA.on('click', function(){allToSelectMulA()});
+btnCreateRotation.on('click', function(){createRotation()});
 
 /////////////////////////////////
 //Funciones para limpiar campos//
@@ -211,16 +219,21 @@ function cbxRotationAchanged(){
         }
     });
     cbxRotationB.selectpicker('refresh');
+    ajaxForGetStudentRotation(cbxRotationA, studentSelectA);
+}
+
+function ajaxForGetStudentRotation(fromCbx, elemento){
     $.ajax({
         url: url,
         type: 'GET',
-        data: {idRotation: cbxRotationA.val(), queryId: "studentsByRotation"},
+        data: {idRotation: fromCbx.val(), queryId: "studentsByRotation"},
         dataType: 'json',
         success: function(info){
             for(var i=0;i<info.length;i++){
                 var texto = info[i].fields.surname + ", " + info[i].fields.name;
                 var value = info[i].pk;
-                studentSelectA.append(new Option(texto, value));
+                elemento.append(new Option(texto, value));
+                elemento.change();
             }
         }
     });
@@ -239,6 +252,58 @@ function cbxRotationBchanged(){
         }
     });
     cbxRotationA.selectpicker('refresh');
+    ajaxForGetStudentRotation(cbxRotationB, studentSelectB);
+}
+
+function toSelectMulB(){
+    var items = [];
+    $('#studentSelectA option:selected').each(function(){
+        items.push($(this).val());
+        var element = $(this).detach();
+        studentSelectB.append(element);
+    });
+    ajaxForSetStudentsRotations(cbxRotationB,items);
+}
+
+function ajaxForSetStudentsRotations(newRotation,StudentsIDS){
+    $.ajax({
+        url: url,
+        type: 'GET',
+        data: {'studentsIds[]':StudentsIDS, newIdRotation: newRotation.val(), queryId: "changeStudentsRotation"},
+        dataType: 'json',
+        success: function(info){
+            console.log('Saved');
+        }
+    });
+}
+function toSelectMulA(){
+    var items = [];
+    $('#studentSelectB option:selected').each(function(){
+        items.push($(this).val());
+        var element = $(this).detach();
+        studentSelectA.append(element);
+    });
+    ajaxForSetStudentsRotations(cbxRotationA,items);
+}
+
+function allToSelectMulB(){
+    var items = [];
+    $('#studentSelectA option').each(function(){
+        items.push($(this).val());
+        var element = $(this).detach();
+        studentSelectB.append(element);
+    });
+    ajaxForSetStudentsRotations(cbxRotationB,items);
+}
+
+function allToSelectMulA(){
+    var items = [];
+    $('#studentSelectB option').each(function(){
+        items.push($(this).val());
+        var element = $(this).detach();
+        studentSelectA.append(element);
+    });
+    ajaxForSetStudentsRotations(cbxRotationA,items);
 }
 
 function projectWFChanged(){
