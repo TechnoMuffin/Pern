@@ -16,10 +16,10 @@ class='active'
                 </div>
                 <div id="collapse2" class="panel-collapse collapse in">
                     <div class="panel-body">
-                        <div class="form-group col-xs-12 col-md-4">
+                        <div class="form-group col-xs-12 col-md-3">
                             <input id='txtRotationName' type="text" class="form-control" placeholder="Nombre" aria-describedby="basic-addon1">
                         </div>
-                        <div class="form-group col-xs-12 col-md-4">
+                        <div class="form-group col-xs-12 col-md-3">
                             <select id="cbxCourse" class="selectpicker" data-width="100%">
                                 <option value=''>Curso</option>
                                 {% for x in courses %}
@@ -27,11 +27,12 @@ class='active'
                                 {% endfor %}
                             </select>
                         </div>
-                        <div class="form-group col-xs-12 col-md-4">
+                        <div class="form-group col-xs-12 col-md-3">
                             <select id="cbxModule" class="selectpicker" data-width="100%">
+                                <option value=''>Módulo</option>
                             </select>
                         </div>
-                        <div class="form-group col-xs-12 col-md-12">
+                        <div class="form-group col-xs-12 col-md-3">
                             <button id="createRotation" type="button" class="btn btn-warning col-xs-12">Crear Rotación</button>
                         </div>
                     </div>
@@ -58,6 +59,18 @@ class='active'
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse3">Editar Rotaciones</a>
+                    </h4>
+                </div>
+                <div id="collapse3" class="panel-collapse collapse in">
+                    <div class="panel-body">
+                        PRONTO
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
                         <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">Asignación de Alumnos a Rotaciones</a>
                     </h4>
                 </div>
@@ -78,7 +91,7 @@ class='active'
                                         <div class="col-xs-12" style="padding-bottom:15px">
                                             <div class="input-group">
                                                 <select id="cbxRotationA" class="selectpicker" data-width="100%">
-                                                    <option value="">Alumnos sin asignar</option>
+                                                    <option value="0">Alumnos sin asignar</option>
                                                 </select>
                                                 <span class="input-group-btn">
                                                     <button type="button" class="btn btn-default" id="vaciar-select-1"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
@@ -119,7 +132,7 @@ class='active'
                                         <div class="col-xs-12" style="padding-bottom:15px">
                                             <div class="input-group">
                                                 <select id="cbxRotationB" class="selectpicker" data-width="100%">
-                                                    <option value="">Alumnos sin asignar</option>
+                                                    <option value="0">Alumnos sin asignar</option>
                                                 </select>
                                                 <span class="input-group-btn">
                                                     <button type="button" class="btn btn-default" id="vaciar-select-1"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
@@ -136,18 +149,6 @@ class='active'
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h4 class="panel-title">
-                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse3">Collapsible Group 3</a>
-                    </h4>
-                </div>
-                <div id="collapse3" class="panel-collapse collapse">
-                    <div class="panel-body">Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-                        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</div>
                 </div>
             </div>
         </div>

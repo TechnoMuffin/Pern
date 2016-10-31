@@ -42,7 +42,7 @@ var txtRotationName = $('#txtRotationName');
 var btnCreateRotation = $('#createRotation');
 var modalTitle = $('#modal-title');
 var modalText = $('#modal-text');
-var modal = $('#modal');
+var modalito = $('#modal');
 
 //Variables de /historial
 var tableHistory = $('#historyTable'); //Table History
@@ -97,13 +97,13 @@ function resetModuleField(){
 
 function resetRotationAField(){
     cbxRotationA.empty();
-    cbxRotationA.append(new Option('Alumnos sin Rotación', ''));
+    cbxRotationA.append(new Option('Alumnos sin Rotación', '0'));
     cbxRotationA.selectpicker('refresh');
 }
 
 function resetRotationBField(){
     cbxRotationB.empty();
-    cbxRotationB.append(new Option('Alumnos sin Rotación', ''));
+    cbxRotationB.append(new Option('Alumnos sin Rotación', '0'));
     cbxRotationB.selectpicker('refresh');
 }
 
@@ -201,8 +201,12 @@ function courseRotationChanged(){
                     cbxRotationB.append(new Option(text, value));
                 }
                 cbxRotationB.val($('#cbxRotationB option:selected').next().val());
+                $('#cbxRotationA option:selected').next().addClass('disabledDIV');
+                $('#cbxRotationB option:selected').prev().addClass('disabledDIV');
                 cbxRotationA.selectpicker('refresh');
                 cbxRotationB.selectpicker('refresh');
+                ajaxForGetStudentRotation(cbxRotationA, studentSelectA);
+                ajaxForGetStudentRotation(cbxRotationB, studentSelectB);
             }
         });
     }else{
@@ -313,9 +317,9 @@ function allToSelectMulA(){
 
 function createRotation(){
     if(txtRotationName.val()=='' || cbxCourse.val()=='' || cbxModule.val()==''){
-        modalText.text('Error');
-        modalTitle.text('Por favor, rellene los campos correctamente.');
-        modal.modal('toggle');
+        modalTitle.text('Error');
+        modalText.text('Por favor, rellene los campos correctamente.');
+        $('#modal').modal('toggle');
     }else{   
         $.ajax({
             url: url,
@@ -325,9 +329,9 @@ function createRotation(){
             success: function(){
             }
         });
-        modalText.text('Éxito!');
-        modalTitle.text('Se ha creado la rotación '+txtRotationName.val()+' correctamente.');
-        modal.modal('toggle');
+        modalText.text('Se ha creado la rotación '+txtRotationName.val()+' correctamente.');
+        modalTitle.text('Éxito!');
+        $('#modal').modal('toggle');
         txtRotationName.val('');
         cbxCourse.val('');
         resetModuleField();

@@ -102,22 +102,29 @@ def pupilFollowing(request):
         elif(queryId == "studentsByRotation"):
         #Devuelve los alumnos filtrados por rotacion
             rotation = request.GET.get('idRotation')
-            if(rotation!=''):
+            if(rotation!='0'):
                 rotation= Rotation.objects.get(idRotation=int(rotation))
                 students = Student.objects.filter(idRotation=rotation).order_by('surname')
                 info = serializers.serialize('json', students)   
             else:
-                info = "Rotacion Invalida"
+                students = Student.objects.filter(idRotation=None).order_by('surname')
+                info = serializers.serialize('json', students)   
                 
         elif(queryId == "changeStudentsRotation"):
-        #Acuta
+        #Cambia la rotacion de los alumnos seleccionados
             studentsIds = request.GET.getlist('studentsIds[]')
             newRotation = request.GET.get('newIdRotation')
-            newRotation= Rotation.objects.get(idRotation=int(newRotation))
-            for x in studentsIds:
-                student = Student.objects.filter(idUser=int(x))
-                student.update(idRotation=newRotation)
-            info = 'Done'
+            if(newRotation!='0'):
+                newRotation= Rotation.objects.get(idRotation=int(newRotation))
+                for x in studentsIds:
+                    student = Student.objects.filter(idUser=int(x))
+                    student.update(idRotation=newRotation)
+                info = 'Done'
+            else:
+                for x in studentsIds:
+                    student = Student.objects.filter(idUser=int(x))
+                    student.update(idRotation=None)
+                
             
         elif(queryId == "createRotation"):
         #Crea una nueva rotacion
