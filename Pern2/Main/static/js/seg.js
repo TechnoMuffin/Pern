@@ -38,7 +38,11 @@ var allToSelectA = $("#allToSelectA");
 var studentSelectA = $("#studentSelectA");
 var studentSelectB = $("#studentSelectB");
 var selecterDiv = $('#selectionerDiv');
+var txtRotationName = $('#txtRotationName');
 var btnCreateRotation = $('#createRotation');
+var modalTitle = $('#modal-title');
+var modalText = $('#modal-text');
+var modal = $('#modal');
 
 //Variables de /historial
 var tableHistory = $('#historyTable'); //Table History
@@ -276,6 +280,7 @@ function ajaxForSetStudentsRotations(newRotation,StudentsIDS){
         }
     });
 }
+
 function toSelectMulA(){
     var items = [];
     $('#studentSelectB option:selected').each(function(){
@@ -304,6 +309,33 @@ function allToSelectMulA(){
         studentSelectA.append(element);
     });
     ajaxForSetStudentsRotations(cbxRotationA,items);
+}
+
+function createRotation(){
+    if(txtRotationName.val()=='' || cbxCourse.val()=='' || cbxModule.val()==''){
+        modalText.text('Error');
+        modalTitle.text('Por favor, rellene los campos correctamente.');
+        modal.modal('toggle');
+    }else{   
+        $.ajax({
+            url: url,
+            type: 'GET',
+            data: {nameRotation: txtRotationName.val(), idCourse: cbxCourse.val(), idModule: cbxModule.val(), queryId: "createRotation"},
+            dataType: 'json',
+            success: function(){
+            }
+        });
+        modalText.text('Éxito!');
+        modalTitle.text('Se ha creado la rotación '+txtRotationName.val()+' correctamente.');
+        modal.modal('toggle');
+        txtRotationName.val('');
+        cbxCourse.val('');
+        resetModuleField();
+        resetRotationAField();
+        resetRotationBField();
+        resetStudentSelectA();
+        resetStudentSelectB();
+    }
 }
 
 function projectWFChanged(){

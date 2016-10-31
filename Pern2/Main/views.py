@@ -118,6 +118,22 @@ def pupilFollowing(request):
                 student = Student.objects.filter(idUser=int(x))
                 student.update(idRotation=newRotation)
             info = 'Done'
+            
+        elif(queryId == "createRotation"):
+        #Crea una nueva rotacion
+            nameRotation = request.GET.get('nameRotation')
+            course = request.GET.get('idCourse')
+            module = request.GET.get('idModule')
+            print course
+            print module
+            course = Course.objects.get(idCourse=course)
+            module = Module.objects.get(idModule=module)
+            newRotation = Rotation()
+            newRotation.nameRotation=nameRotation
+            newRotation.idCourse=course
+            newRotation.idModule=module
+            newRotation.save()
+            info = 'Done'
         
         elif(queryId == "history"):
         #Devuelve el alumno pedido
