@@ -87,8 +87,8 @@ def pupilFollowing(request):
         #Devuelve el alumno pedido
             idUser = request.GET.get('idStudent')
             student = Student.objects.filter(idUser=int(idUser))
-            info = serializers.serialize('json', student)   
-        
+            info = serializers.serialize('json', student)
+
         elif(queryId == "history"):
         #Devuelve el alumno pedido
             idUser = request.GET.get('idStudent')
@@ -121,18 +121,36 @@ def pupilFollowing(request):
         pupils = Student.objects.all()
         subjects = Module.objects.all()
         return render_to_response('pupilFollowing.html', {'courses':courses, 'subjects':subjects, 'pupils':pupils},context)
-    
+
 def history(request):
     context = RequestContext(request)
     courses = Course.objects.all()
-    return render_to_response('history.html', {'courses':courses}, context) 
+    return render_to_response('history.html', {'courses':courses}, context)
 
 def rotation(request):
     context = RequestContext(request)
     courses = Course.objects.all()
-    return render_to_response('rotacionAlumno.html', {'courses':courses}, context) 
+    return render_to_response('rotacionAlumno.html', {'courses':courses}, context)
 
 def projectFollowing(request):
-    context = RequestContext(request)
-    courses = Course.objects.all()
-    return render_to_response('proyectos.html', {'courses':courses}, context) 
+    queryId = request.GET.get('queryId')
+    info='...'
+    if request.is_ajax():
+        if(queryId == "newProject"):
+            nameProject= request.GET.get('nameProject')
+            idModule = request.GET.get('idModule')
+            newProjecto=Project()
+            newProjecto.nameProject = nameProject
+            modulo = Module.objects.get(idModule=int(idModule))
+            newProjecto.idModule = modulo
+            newProjecto.save()
+            info = "Se ha creado correctamente"
+        elif(queryId == "delProject"):
+            idProject= request.GET.get('idProject')
+            proj=Project.objects.get(idProject=int(idProject))
+            proj.delete()
+        return HttpResponse(info)
+    else:
+        context = RequestContext(request)
+        courses = Course.objects.all()
+        return render_to_response('proyectos.html', {'courses':courses}, context)

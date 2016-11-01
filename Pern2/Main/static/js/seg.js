@@ -19,6 +19,7 @@ var currentStudentSelected; //Necesitaremos guardar en esta variable el alumno s
 
 var tableStudents = $('#myTable'); //Table PupilFollowing
 var tbStudent = $("#tbAlumnos"); //Body table PupilFollowing
+var tbProjectStudent = $("#tbProjectStudent");
 var tableHistory = $('#historyTable'); //Table History
 var tbHistory = $('#tbHistory'); //Body Table History
 
@@ -51,6 +52,7 @@ tableStudents.on('click', '.clickable-row', function(event) {$(this).addClass('a
 //Vaciar la tabla de alumnos
 function resetStudentTable(){
     tbStudent.empty();
+    tbProjectStudent.empty();
 }
 
 function resetHistoryTable(){
@@ -73,6 +75,11 @@ function resetProjectField(){
     cbxProject.empty();
     cbxProject.append(new Option('Proyectos', ''));
     cbxProject.selectpicker('refresh');
+}
+function resetProjectFWField(){
+    cbxProjectFW.empty();
+    cbxProjectFW.append(new Option('Proyectos', ''));
+    cbxProjectFW.selectpicker('refresh');
 }
 
 function resetStudentField(){
@@ -151,7 +158,9 @@ function projectWFChanged(){
                     var texto = info[i].fields.name + " " + info[i].fields.surname;
                     var value = info[i].pk;
                     var elemento = '<tr class="clickable-row" onclick="selectStudent(event,'+value+')"><td><input type="checkbox"></td><td>'+texto+'</td><td style="text-align:center;"><select><option value="">---</option></select></td></tr>';
+                    var asd = '<tr><td>'+texto+'</td><td>no anda</td></tr>';
                     tbStudent.append(elemento);
+                    tbProjectStudent.append(asd);
                     try{
                         cbxStudent.append(new Option(texto,value));
                     }catch(err){console.log(err)}
@@ -184,6 +193,7 @@ function moduleChanged(){
     resetStudentField();
     resetStudentTable();
     resetProjectField();
+    resetProjectFWField();
     resetPersonalFollow();
     //Carga de Alumnos
     $.ajax({
@@ -382,3 +392,36 @@ function selectStudent(evt,valor) {
     cbxActivity[0].selectedIndex = 0;
     resetActivityData();
 }
+//Proyecto.html
+$("#projectSender").click(
+    function(){
+        if($('#projectName').val()!=""){
+            $.ajax({
+                url: url2,
+                type: 'GET',
+                data: {nameProject: $('#projectName').val(),idModule: $('#cbxModule').val(), queryId: "newProject"},
+                success: function(){
+                    moduleChanged();
+                    $('#cbxProject').val($('#projectName').val());
+                    $('#projectName').val("");
+                }
+            });
+        }else{
+            alert("Debe completar el campo.");
+        }
+    });
+$("#projectDeleter").click(
+    function(){
+        if($('#cbxProjectFW').val()!=""){
+            $.ajax({
+                url: url2,
+                type: 'GET',
+                data: {idProject: $('#cbxProjectFW').val(), queryId: "delProject"},
+                success: function(info){
+                    moduleChanged();
+                    $('#delProjectModalSuccess').modal('show');
+                    $('#delProjectResult').text(info);
+                }
+            });
+        }
+    });
