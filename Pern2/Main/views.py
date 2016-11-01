@@ -82,6 +82,21 @@ def pupilFollowing(request):
             else:
                 #...te serializo los estudiantes solos
                 info = serializers.serialize('json', students)
+                
+        elif(queryId == "rotationsByModule"):
+        #Devuelve todas las rotaciones que actualmente estan trabajando en el modulo pedido
+            module = request.GET.get('idModule')
+            module = Module.objects.get(idModule=module)
+            rotations = Rotation.objects.filter(idModule=module)
+            info = serializers.serialize('json', rotations)
+            
+        elif(queryId == "studentsByRotation"):
+        #Devuelve todos los alumnos pertenecientes a la rotacion
+            rotation = request.GET.get('idRotation')
+            print("ID: " + str(rotation))
+            rotation = Rotation.objects.get(idRotation=rotation)
+            students = Student.objects.filter(idRotation=rotation).order_by('surname')
+            info = serializers.serialize('json', students)
 
         elif(queryId == "onlyStudent"):
         #Devuelve el alumno pedido
@@ -166,7 +181,7 @@ def pupilFollowing(request):
             project = Project.objects.get(idProject=idP)
             fulfillments = Fulfillment.objects.filter(idProject=project)
             info = serializers.serialize('json', fulfillments)
-        print info
+        print "\n" + queryId + ": \n \t" +info
         return HttpResponse(info)
     else:
         context = RequestContext(request)
