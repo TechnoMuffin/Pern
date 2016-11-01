@@ -98,7 +98,7 @@ class Rotation(models.Model):
 ##################################ALUMNO##################################
 class Student(User):
     idCourse = models.ForeignKey(Course)
-    idRotation = models.ForeignKey(Rotation,  blank=True, null=True)
+    idRotation = models.ForeignKey(Rotation, blank=True, null=True)
     numberOfRegistration = models.IntegerField()
 
     class Meta:

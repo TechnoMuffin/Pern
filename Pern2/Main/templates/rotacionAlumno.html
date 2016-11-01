@@ -94,9 +94,28 @@ class='active'
                                                     <option value="0">Alumnos sin asignar</option>
                                                 </select>
                                                 <span class="input-group-btn">
-                                                    <button type="button" class="btn btn-default" id="vaciar-select-1"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                                                    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modalDeleteA"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
                                                     </button>
                                                 </span>
+                                            </div>
+                                            <!-- Modal -->
+                                            <div id="modalDeleteA" class="modal fade" role="dialog">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                            <h4 id='modal-title' class="modal-title">Borrar</h4>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <p id='modal-text'>Esta seguro que desea borrar esta Rotación?</p>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                                                            <button id='deleteSelectA' type="button" class="btn btn-warning" data-dismiss="modal">Si</button>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="panel-body">
@@ -135,9 +154,27 @@ class='active'
                                                     <option value="0">Alumnos sin asignar</option>
                                                 </select>
                                                 <span class="input-group-btn">
-                                                    <button type="button" class="btn btn-default" id="vaciar-select-1"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                                                    <button type="button" class="btn btn-default"  data-toggle="modal" data-target="#modalDeleteB"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
                                                     </button>
                                                 </span>
+                                            </div>
+                                            <!-- Modal -->
+                                            <div id="modalDeleteB" class="modal fade" role="dialog">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                            <h4 id='modal-title' class="modal-title">Borrar</h4>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <p id='modal-text'>Esta seguro que desea borrar esta Rotación?</p>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                                                            <button id='deleteSelectB' type="button" class="btn btn-warning" data-dismiss="modal">Si</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="panel-body">

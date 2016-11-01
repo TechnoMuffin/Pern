@@ -113,6 +113,18 @@ def pupilFollowing(request):
                 info = serializers.serialize('json', rotations)   
             else:
                 info = "Curso Invalido"
+        
+        elif(queryId == "deleteRotation"):
+        #Devuelve las rotaciones
+            rotation = request.GET.get('idRotation')
+            if(rotation!='0'):
+                rotation= Rotation.objects.get(idRotation=int(rotation))
+                students = Student.objects.filter(idRotation=rotation)
+                students.update(idRotation=None)
+                rotation.delete()
+                info='Rotacion eliminada'
+            else:
+                info = "Rotacion Invalida"
                 
         elif(queryId == "studentsByRotation"):
         #Devuelve los alumnos filtrados por rotacion

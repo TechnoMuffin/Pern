@@ -34,12 +34,16 @@ var toSelectA = $("#toSelectA");
 var toSelectB1 = $("#toSelectB1");
 var toSelectA1 = $("#toSelectA1");
 var allToSelectB = $("#allToSelectB");
+var allToSelectB1 = $("#allToSelectB1");
 var allToSelectA = $("#allToSelectA");
+var allToSelectA1 = $("#allToSelectA1");
 var studentSelectA = $("#studentSelectA");
 var studentSelectB = $("#studentSelectB");
 var selecterDiv = $('#selectionerDiv');
 var txtRotationName = $('#txtRotationName');
 var btnCreateRotation = $('#createRotation');
+var deleteSelectA = $('#deleteSelectA');
+var deleteSelectB = $('#deleteSelectB');
 var modalTitle = $('#modal-title');
 var modalText = $('#modal-text');
 var modalito = $('#modal');
@@ -64,11 +68,28 @@ tableStudents.on('click', '.clickable-row', function(event) {$(this).addClass('a
 cbxRotationA.on('change', function(){cbxRotationAchanged()});
 cbxRotationB.on('change', function(){cbxRotationBchanged()});
 toSelectB.on('click', function(){toSelectMulB()});
+toSelectB1.on('click', function(){toSelectMulB()});
 toSelectA.on('click', function(){toSelectMulA()});
-toSelectA.on('click', function(){toSelectMulA()});
+toSelectA1.on('click', function(){toSelectMulA()});
 allToSelectB.on('click', function(){allToSelectMulB()});
+allToSelectB1.on('click', function(){allToSelectMulB()});
 allToSelectA.on('click', function(){allToSelectMulA()});
+allToSelectA1.on('click', function(){allToSelectMulA()});
 btnCreateRotation.on('click', function(){createRotation()});
+deleteSelectA.on('click', function(){deleteRotation(cbxRotationA)});
+deleteSelectB.on('click', function(){deleteRotation(cbxRotationB)});
+
+function deleteRotation(idRotacion){
+    if(idRotacion!=''){
+        $.ajax({
+            url: url,
+            type: 'GET',
+            data: {idRotation: idRotacion.val(), queryId: "deleteRotation"},
+            dataType: 'json'
+        });
+        courseRotationChanged();
+    }
+}
 
 /////////////////////////////////
 //Funciones para limpiar campos//
@@ -334,6 +355,10 @@ function createRotation(){
         $('#modal').modal('toggle');
         txtRotationName.val('');
         cbxCourse.val('');
+        cbxCourse.selectpicker('refresh');
+        cbxCourseRotation.val('');
+        cbxCourseRotation.selectpicker('refresh');
+        selecterDiv.addClass('disabledDIV');
         resetModuleField();
         resetRotationAField();
         resetRotationBField();
