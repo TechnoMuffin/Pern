@@ -111,6 +111,18 @@ def pupilFollowing(request):
             else:
                 info = "Rotacion Invalida"
                 
+        elif(queryId == "updateRotation"):
+        #Devuelve las rotaciones
+            module = request.GET.get('idModule')
+            rotation = request.GET.get('idRotation')
+            if(rotation!=''):
+                rotation= Rotation.objects.get(idRotation=int(rotation))
+                module= Module.objects.get(idModule=int(module))
+                rotation.update(idModule=module)
+                info='Rotacion cambiada'
+            else:
+                info = "Error"
+                
         elif(queryId == "studentsByRotation"):
         #Devuelve los alumnos filtrados por rotacion
             rotation = request.GET.get('idRotation')
@@ -120,7 +132,7 @@ def pupilFollowing(request):
                 info = serializers.serialize('json', students)   
             else:
                 students = Student.objects.filter(idRotation=None).order_by('surname')
-                info = serializers.serialize('json', students)   
+                info = serializers.serialize('json', students)
                 
         elif(queryId == "changeStudentsRotation"):
         #Cambia la rotacion de los alumnos seleccionados

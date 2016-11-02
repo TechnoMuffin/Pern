@@ -59,12 +59,58 @@ class='active'
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h4 class="panel-title">
-                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse3">Editar Rotaciones</a>
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse3">Gestionar Rotaciones</a>
                     </h4>
                 </div>
                 <div id="collapse3" class="panel-collapse collapse in">
                     <div class="panel-body">
-                        PRONTO
+                        <div class="form-group col-xs-12 col-md-6">
+                            <select id="cbxCourseG" class="selectpicker" data-width="100%">
+                                <option value=''>Curso</option>
+                                {% for y in courses %}
+                                <option value={{y.idCourse}}>{{y.courseType}}º año "{{y.courseDivision}}"</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group col-xs-12 col-md-6">
+                            <select id="cbxModuleG" class="selectpicker" data-width="100%">
+                                <option value=''>Módulo</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-xs-12 col-md-6">
+                            <select id="cbxRotationG" class="selectpicker" data-width="100%">
+                                <option value=''>Rotación</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-xs-12 col-md-6">
+                            <div class="input-group">
+                                <span class="input-group-addon" id="basic-addon1"><span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span></span>
+                                <select id="cbxNewModuleG" class="selectpicker" data-width="100%">
+                                    <option value=''>Nuevo Módulo</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group col-xs-12 col-md-12">
+                            <button id="updateRotation" type="button" class="btn btn-warning col-xs-12">Cambiar a Nuevo Módulo</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Modal -->
+                <div id="modal" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 id='modal-title' class="modal-title">Error</h4>
+                            </div>
+                            <div class="modal-body">
+                                <p id='modal-text'>Por favor, rellene los campos correctamente</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Ok</button>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -76,7 +122,10 @@ class='active'
                 </div>
                 <div id="collapse1" class="panel-collapse collapse  in">
                     <div class="panel-body">
-                        <select id="cbxCourseRotation" class="selectpicker" data-width="100%">
+                        <select id="cbxCourseRotation" class="selectpicker" data-width="100%"><span class="input-group-btn">
+                            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modalDeleteA"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                            </button>
+                            </span>
                             <option value=''>Curso</option>
                             {% for i in courses %}
                             <option value={{i.idCourse}}>{{i.courseType}}º año "{{i.courseDivision}}"</option>
@@ -140,8 +189,8 @@ class='active'
                                 <div class="btn-group btn-group-lgl" role="group">
                                     <button type="button" class="btn btn-default" id="toSelectB1"><span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span></button>
                                     <button type="button" class="btn btn-default" id="toSelectA1"><span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span></button>
-                                    <button type="button" class="btn btn-default" id="allToSelectB1"><span class="glyphicon glyphicon-triangle-top" aria-hidden="true"></span></button>
-                                    <button type="button" class="btn btn-default" id="allToSelectA1"><span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span></button>
+                                    <button type="button" class="btn btn-default" id="allToSelectB1"><span class="gl-yphicon glyphicon-triangle-top" aria-hidden="true"></span></button>
+                                    <button type="button" class="btn btn-default" id="allToSelectA1"><span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span></button>-
                                 </div>
                             </div>
 
@@ -188,7 +237,7 @@ class='active'
                     </div>
                 </div>
             </div>
-        </div>
+        </div>-
     </div>
 </div>
 <script src="{% static 'js/jquery-3.1.0.js'%}"></script>

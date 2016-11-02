@@ -47,6 +47,11 @@ var deleteSelectB = $('#deleteSelectB');
 var modalTitle = $('#modal-title');
 var modalText = $('#modal-text');
 var modalito = $('#modal');
+var cbxCourseG = $('#cbxCourseG');
+var cbxRotationG = $('#cbxRotationG');
+var cbxModuleG = $('#cbxModuleG');
+var cbxNewModuleG = $('#cbxNewModuleG');
+var btnUpdateRotation = $('#updateRotation');
 
 //Variables de /historial
 var tableHistory = $('#historyTable'); //Table History
@@ -78,85 +83,41 @@ allToSelectA1.on('click', function(){allToSelectMulA()});
 btnCreateRotation.on('click', function(){createRotation()});
 deleteSelectA.on('click', function(){deleteRotation(cbxRotationA)});
 deleteSelectB.on('click', function(){deleteRotation(cbxRotationB)});
+cbxCourseG.on('change', function(){courseGChanged()});
+cbxModuleG.on('change', function(){moduleGChanged()});
+btnUpdateRotation.on('change', function(){updateRotation()});
 
-function deleteRotation(idRotacion){
-    if(idRotacion!=''){
-        $.ajax({
-            url: url,
-            type: 'GET',
-            data: {idRotation: idRotacion.val(), queryId: "deleteRotation"},
-            dataType: 'json'
-        });
-        courseRotationChanged();
-    }
+function updateRotation(){
+    $.ajax({
+        url: url,
+        type: 'GET',
+        data: {idRotation: cbxRotationG.val(), idModule: cbxNewModuleG.val(), queryId: "updateRotation"},
+        dataType: 'json',
+        success: function(){
+            console.log('pinpanpummm');
+        }
+    });
 }
 
 /////////////////////////////////
 //Funciones para limpiar campos//
 /////////////////////////////////
 
-//Vaciar la tabla de alumnos
-function resetStudentTable(){
-    tbStudent.empty();
+function resetTable(tabla){
+    tabla.empty();
 }
 
-function resetHistoryTable(){
-    tbHistory.empty();
+function resetCbx(cbx,defoul, value=''){
+    cbx.empty();
+    cbx.append(new Option(defoul, value));
+    cbx.selectpicker('refresh');
 }
 
-//Vaciar la tabla de cumplimientos
-function resetFFTable(){
-    tbFF.empty();
+function resetMultiSelect(slct){
+    slct.empty();
+    slct.change();
 }
 
-//Resetear ComboBox de Módulos a valores iniciales
-function resetModuleField(){
-    cbxModule.empty();
-    cbxModule.append(new Option('Módulo', ''));
-    cbxModule.selectpicker('refresh');
-}
-
-function resetRotationAField(){
-    cbxRotationA.empty();
-    cbxRotationA.append(new Option('Alumnos sin Rotación', '0'));
-    cbxRotationA.selectpicker('refresh');
-}
-
-function resetRotationBField(){
-    cbxRotationB.empty();
-    cbxRotationB.append(new Option('Alumnos sin Rotación', '0'));
-    cbxRotationB.selectpicker('refresh');
-}
-
-function resetStudentSelectB(){
-    studentSelectB.empty();
-    studentSelectB.change();
-}
-
-function resetStudentSelectA(){
-    studentSelectA.empty();
-    studentSelectA.change();
-}
-
-function resetProjectField(){
-    cbxProject.empty();
-    cbxProject.append(new Option('Proyectos', ''));
-    cbxProject.selectpicker('refresh');
-}
-
-function resetStudentField(){
-    cbxStudent.empty();
-    cbxStudent.append(new Option('Alumno', ''));
-    cbxStudent.selectpicker('refresh');
-    resetHistoryTable();
-}
-
-function resetActivityField(){
-    cbxActivity.empty();
-    cbxActivity.append(new Option('Actividad', ''));
-    cbxActivity.selectpicker('refresh');
-    resetActivityData();
-}
 function resetActivityData(){
     actName.text('---');
     actCode.text('---');
@@ -166,8 +127,8 @@ function resetActivityData(){
 }
 
 function resetPersonalFollow(){
-    resetProjectField();
-    resetActivityField();
+    resetCbx(cbxProjectField,'Proyectos');
+    resetCbx(cbxActivity,'Actividad');resetActivityData();;
     personalFollowHTML.addClass('disabledDIV');
 }
 
@@ -177,11 +138,11 @@ function resetPersonalFollow(){
 
 //Esta funcion hace algo
 function courseChanged(){
-    resetModuleField();
-    resetStudentTable();
+    resetCbx(cbxModule,'Módulo');
+    resetTable(tbStudent);
     resetPersonalFollow();
-    resetHistoryTable();
-    resetStudentField();
+    resetTable(tbHistory);
+    resetCbx(cbxStudent,'Alumno');resetTable(tbHistory);;
     if(this.val!=''){
         $.ajax({
             url: url,
@@ -189,7 +150,7 @@ function courseChanged(){
             data: {idCourse: cbxCourse.val(), queryId: "subjects"},
             dataType: 'json',
             success: function(info){
-                resetModuleField();
+                resetCbx(cbxModule,'Módulo');
                 for(var i=0;i<info.length;i++){
                     //El valor de las opciones de los select es el ID de los modulos
                     var text = info[i].fields.nameModule;
@@ -203,10 +164,10 @@ function courseChanged(){
 }
 
 function courseRotationChanged(){
-    resetRotationAField();
-    resetRotationBField();
-    resetStudentSelectA();
-    resetStudentSelectB();
+    resetCbx(cbxRotationA,'Alumnos sin Rotación','0');
+    resetCbx(cbxRotationB,'Alumnos sin Rotación','0');
+    resetMultiSelect(studentSelectA);
+    resetMultiSelect(studentSelectB);
     if($(this).val!=''){
         selecterDiv.removeClass('disabledDIV');
         $.ajax({
@@ -236,7 +197,7 @@ function courseRotationChanged(){
 }
 
 function cbxRotationAchanged(){
-    resetStudentSelectA();
+    resetMultiSelect(studentSelectA);
     $('#cbxRotationB option').each(function(){
         $(this).removeClass('disabledDIV');
     });
@@ -269,7 +230,7 @@ function ajaxForGetStudentRotation(fromCbx, elemento){
 }
 
 function cbxRotationBchanged(){
-    resetStudentSelectB();
+    resetMultiSelect(studentSelectB);
     $('#cbxRotationA option').each(function(){
         $(this).removeClass('disabledDIV');
     });
@@ -359,19 +320,76 @@ function createRotation(){
         cbxCourseRotation.val('');
         cbxCourseRotation.selectpicker('refresh');
         selecterDiv.addClass('disabledDIV');
-        resetModuleField();
-        resetRotationAField();
-        resetRotationBField();
-        resetStudentSelectA();
-        resetStudentSelectB();
+        resetCbx(cbxModule,'Módulo');
+        resetCbx(cbxRotationA,'Alumnos sin Rotación','0');
+        resetCbx(cbxRotationB,'Alumnos sin Rotación','0');
+        resetMultiSelect(studentSelectA);
+        resetMultiSelect(studentSelectB);
+    }
+}
+
+function deleteRotation(idRotacion){
+    if(idRotacion!=''){
+        $.ajax({
+            url: url,
+            type: 'GET',
+            data: {idRotation: idRotacion.val(), queryId: "deleteRotation"},
+            dataType: 'json'
+        });
+        courseRotationChanged();
+    }
+}
+
+function courseGChanged(){
+    resetRotationGField()
+    resetCbx(cbxModuleG,'Módulo');resetCbx(cbxNewModuleG,'Nuevo Módulo');
+    if(this.val!=''){
+        $.ajax({
+            url: url,
+            type: 'GET',
+            data: {idCourse: cbxCourseG.val(), queryId: "subjects"},
+            dataType: 'json',
+            success: function(info){
+                resetCbx(cbxModule,'Módulo');
+                for(var i=0;i<info.length;i++){
+                    //El valor de las opciones de los select es el ID de los modulos
+                    var text = info[i].fields.nameModule;
+                    var value = info[i].pk;
+                    cbxModuleG.append(new Option(text, value));
+                    cbxNewModuleG.append(new Option(text, value));
+                }
+                cbxModuleG.selectpicker('refresh');
+                cbxNewModuleG.selectpicker('refresh');
+            }
+        });
+    }
+}
+
+function moduleGChanged(){
+    resetCbx(cbxRotationG,'Rotación');
+    if($(this).val!=''){
+        $.ajax({
+            url: url,
+            type: 'GET',
+            data: {idCourse: cbxCourseG.val(), queryId: "rotations"},
+            dataType: 'json',
+            success: function(info){
+                for(var i=0;i<info.length;i++){
+                    var text = info[i].fields.nameRotation;
+                    var value = info[i].pk;
+                    cbxRotationG.append(new Option(text, value));
+                }
+                cbxRotationG.selectpicker('refresh');
+            }
+        });
     }
 }
 
 function projectWFChanged(){
-    resetStudentTable();
-    resetProjectField();
+    resetTable(tbStudent);
+    resetCbx(cbxProjectField,'Proyectos');
     resetPersonalFollow();
-    resetHistoryTable();
+    resetTable(tbHistory);
     if(this.val!=''){
         //Carga de Alumnos
         $.ajax({
@@ -400,7 +418,7 @@ function projectWFChanged(){
             data: {idProject: cbxProjectFW.val(), queryId: "fulfillments"},
             dataType: 'json',
             success: function(info){
-                resetFFTable();
+                resetTable(tbFF);
                 for(var x=0;x<info.length;x++){
                     nameFF = info[x]['fields']['nameFF'];
                     idFF = info[x]['pk'];
@@ -412,11 +430,12 @@ function projectWFChanged(){
     }
 }
 
+
 //Cambia CBX MODULO
 function moduleChanged(){
-    resetStudentField();
-    resetStudentTable();
-    resetProjectField();
+    resetCbx(cbxStudent,'Alumno');resetTable(tbHistory);;
+    resetTable(tbStudent);
+    resetCbx(cbxProjectField,'Proyectos');
     resetPersonalFollow();
     //Carga de Alumnos
     $.ajax({
@@ -460,7 +479,7 @@ function moduleChanged(){
 
 
 function projectChanged(){
-    resetActivityField();
+    resetCbx(cbxActivity,'Actividad');resetActivityData();;
     $.ajax({
         url: url,
         type: 'GET',
@@ -483,7 +502,7 @@ function projectChanged(){
 
 function studentChanged(){
     //Cuando el select cbxStudent cambia de valor carga los datos correspondientes del alumno
-    resetHistoryTable();
+    resetTable(tbHistory);
     console.log(cbxStudent.val());
     if(this.val!=''){
         $.ajax({
