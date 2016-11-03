@@ -160,25 +160,35 @@ function projectWFChanged(){
     resetPersonalFollow();
     resetTable(tbHistory);
     if(this.val!=''){
-        //Carga de Alumnos
+        //CARGA ALUMNOS
         $.ajax({
             url: url,
             type: 'GET',
-            data: {idCourse: cbxCourse.val(), queryId: "students"},
+            data: {idModule: cbxModule.val(), queryId: "rotationsByModule"},
             dataType: 'json',
-            success: function(info){
-                for(var i=0;i<info.length;i++){
-                    var texto = info[i].fields.name + " " + info[i].fields.surname;
-                    var value = info[i].pk;
-                    var elemento = '<tr claMóduloss="clickable-row" onclick="selectStudent(event,'+value+')"><td><input type="checkbox"></td><td>'+texto+'</td><td style="text-align:center;"><select><option value="">---</option></select></td></tr>';
-                    tbStudent.append(elemento);
-                    try{
-                        cbxStudent.append(new Option(texto,value));
-                    }catch(err){console.log(err)}
+            success: function(rotationInfo){
+                for (u=0;u<rotationInfo.length;u++){
+                    $.ajax({
+                        url: url,
+                        type: 'GET',
+                        data: {idRotation: rotationInfo[u].pk, queryId: "studentsByRotation"},
+                        dataType: 'json',
+                        success: function(info){
+                            for(var i=0;i<info.length;i++){
+                                var texto = info[i].fields.name + " " + info[i].fields.surname;
+                                var value = info[i].pk;
+                                var elemento = '<tr claMóduloss="clickable-row" onclick="selectStudent(event,'+value+')"><td><input type="checkbox"></td><td>'+texto+'</td><td style="text-align:center;"><select><option value="">---</option></select></td></tr>';
+                                tbStudent.append(elemento);
+                                try{
+                                    cbxStudent.append(new Option(texto,value));
+                                }catch(err){console.log(err)}
+                            }
+                            try{
+                                cbxStudent.selectpicker('refresh');
+                            }catch(e){console.log(err)}
+                        }
+                    });
                 }
-                try{
-                    cbxStudent.selectpicker('refresh');
-                }catch(e){console.log(err)}
             }
         });
         $.ajax({
@@ -210,19 +220,29 @@ function moduleChanged(){
     $.ajax({
         url: url,
         type: 'GET',
-        data: {idCourse: cbxCourse.val(), queryId: "students"},
+        data: {idModule: cbxModule.val(), queryId: "rotationsByModule"},
         dataType: 'json',
-        success: function(info){
-            for(var i=0;i<info.length;i++){
-                var texto = info[i].fields.name + " " + info[i].fields.surname;
-                var value = info[i].pk;
-                try{
-                    cbxStudent.append(new Option(texto,value));
-                }catch(err){console.log(err)}
+        success: function(rotationInfo){
+            for (u=0;u<rotationInfo.length;u++){
+                $.ajax({
+                    url: url,
+                    type: 'GET',
+                    data: {idRotation: rotationInfo[u].pk, queryId: "studentsByRotation"},
+                    dataType: 'json',
+                    success: function(info){
+                        for(var i=0;i<info.length;i++){
+                            var texto = info[i].fields.name + " " + info[i].fields.surname;
+                            var value = info[i].pk;
+                            try{
+                                cbxStudent.append(new Option(texto,value));
+                            }catch(err){console.log(err)}
+                        }
+                        try{
+                            cbxStudent.selectpicker('refresh');
+                        }catch(e){console.log(err)}
+                    }
+                });
             }
-            try{
-                cbxStudent.selectpicker('refresh');
-            }catch(e){console.log(err)}
         }
     });
 
