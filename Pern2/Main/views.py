@@ -158,6 +158,14 @@ def projectFollowing(request):
             )
             proj.save()
             info = "Se ha modificado correctamente"
+        elif(queryId == "getActivities"):
+            idProject= request.GET.get('idProject')
+            idStudent= request.GET.get('idStudent')
+            idStudent=Student.objects.filter(idUser=int(idStudent))
+            idProject=Project.objects.filter(idProject=int(idProject))
+            work=Working.objects.filter(idStudent=idStudent, idActivity__idProject=idProject)
+            info = serializers.serialize('json',work)
+            print info
         return HttpResponse(info)
     else:
         context = RequestContext(request)

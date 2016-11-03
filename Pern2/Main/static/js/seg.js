@@ -44,6 +44,7 @@ cbxProject.on('change', function(){projectChanged()});
 cbxActivity.on('change', function(){activityChanged()});
 cbxStudent.on('change', function(){studentChanged()});
 tableStudents.on('click', '.clickable-row', function(event) {$(this).addClass('active').siblings().removeClass('active');});
+tbProjectStudent.on('click', '.clickable-row', function(event) {$(this).addClass('active').siblings().removeClass('active');});
 
 /////////////////////////////////
 //Funciones para limpiar campos//
@@ -159,9 +160,9 @@ function projectWFChanged(){
                     var texto = info[i].fields.name + " " + info[i].fields.surname;
                     var value = info[i].pk;
                     var elemento = '<tr class="clickable-row" onclick="selectStudent(event,'+value+')"><td><input type="checkbox"></td><td>'+texto+'</td><td style="text-align:center;"><select><option value="">---</option></select></td></tr>';
-                    var asd = '<tr><td>'+texto+'</td><td>no anda</td></tr>';
+                    var elemento2 = '<tr class="clickable-row" onclick="selectStudentWorking(event,'+value+')"><td>'+texto+'</td><td>PRONTO</td></tr>';
                     tbStudent.append(elemento);
-                    tbProjectStudent.append(asd);
+                    tbProjectStudent.append(elemento2);
                     try{
                         cbxStudent.append(new Option(texto,value));
                     }catch(err){console.log(err)}
@@ -443,3 +444,25 @@ $("#projectModificator").click(
       $('#cbxProject').val($('#projectName').val());
       $('#editProjectName').val("");
 });
+function selectStudentWorking(evt,valor) {
+    currentStudentSelected=valor;
+    console.log(currentStudentSelected);
+    $.ajax({
+        url: url2,
+        type: 'GET',
+        data: {idStudent: currentStudentSelected, idProject: cbxProjectFW.val(),queryId: "getActivities"},
+        dataType: 'json',
+        success: function(info){
+            for(var i=0;i<info.length;i++){
+                var texto = info[i].fields.nameActivity;
+                var value = info[i].pk;
+                var table = '<tr><td>'+texto+'</td><td>5</td><td>2</td></tr>';
+                $('#tableActivities').append(table);
+            }
+
+        }
+    });
+}
+function cleanTableActivities(){
+    $('#tableActivities').empty();
+}
