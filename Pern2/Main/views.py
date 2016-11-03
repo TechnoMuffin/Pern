@@ -94,9 +94,13 @@ def pupilFollowing(request):
         #Devuelve todos los alumnos pertenecientes a la rotacion
             rotation = request.GET.get('idRotation')
             print("ID: " + str(rotation))
-            rotation = Rotation.objects.get(idRotation=rotation)
-            students = Student.objects.filter(idRotation=rotation).order_by('surname')
-            info = serializers.serialize('json', students)
+            if(rotation!='0'):
+                rotation = Rotation.objects.get(idRotation=int(rotation))
+                students = Student.objects.filter(idRotation=rotation).order_by('surname')
+                info = serializers.serialize('json', students)
+            else:
+                students = Student.objects.filter(idRotation=None).order_by('surname')
+                info = serializers.serialize('json', students)   
 
         elif(queryId == "onlyStudent"):
         #Devuelve el alumno pedido
