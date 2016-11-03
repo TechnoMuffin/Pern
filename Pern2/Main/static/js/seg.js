@@ -430,3 +430,16 @@ $("#projectDeleter").click(
             });
         }
     });
+$("#projectModificator").click(
+    function(){
+      if($('#cbxProjectFW').val()!=""){
+        $.ajax({
+            url: url2,
+            type: 'GET',
+            data: {idProject: $('#cbxProjectFW').val(), nameProject: $('#editProjectName').val(), queryId: "modProject"},
+        });
+      }
+      moduleChanged();
+      $('#cbxProject').val($('#projectName').val());
+      $('#editProjectName').val("");
+});

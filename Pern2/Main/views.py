@@ -149,6 +149,15 @@ def projectFollowing(request):
             idProject= request.GET.get('idProject')
             proj=Project.objects.get(idProject=int(idProject))
             proj.delete()
+        elif(queryId == "modProject"):
+            idProject= request.GET.get('idProject')
+            nameProject= request.GET.get('nameProject')
+            proj=Project.objects.filter(idProject=int(idProject))
+            proj.update(
+                nameProject=nameProject
+            )
+            proj.save()
+            info = "Se ha modificado correctamente"
         return HttpResponse(info)
     else:
         context = RequestContext(request)
