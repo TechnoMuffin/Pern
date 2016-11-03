@@ -95,7 +95,7 @@ def pupilFollowing(request):
             if(course!=''):
                 course= Course.objects.get(idCourse=course)
                 rotations = Rotation.objects.filter(idCourse=course)
-                info = serializers.serialize('json', rotations)   
+                info = serializers.serialize('json', rotations, use_natural_foreign_keys=True)   
             else:
                 info = "Curso Invalido"
         
@@ -116,9 +116,8 @@ def pupilFollowing(request):
             module = request.GET.get('idModule')
             rotation = request.GET.get('idRotation')
             if(rotation!=''):
-                rotation= Rotation.objects.get(idRotation=int(rotation))
                 module= Module.objects.get(idModule=int(module))
-                rotation.update(idModule=module)
+                Rotation.objects.filter(idRotation=int(rotation)).update(idModule=module)
                 info='Rotacion cambiada'
             else:
                 info = "Error"

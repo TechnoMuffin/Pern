@@ -49,9 +49,9 @@ var modalText = $('#modal-text');
 var modalito = $('#modal');
 var cbxCourseG = $('#cbxCourseG');
 var cbxRotationG = $('#cbxRotationG');
-var cbxModuleG = $('#cbxModuleG');
 var cbxNewModuleG = $('#cbxNewModuleG');
-var btnUpdateRotation = $('#updateRotation');
+var btnUpdateRotation = $('#btnUpdateRotation');
+var actualModule = $('#actualModule');
 
 //Variables de /historial
 var tableHistory = $('#historyTable'); //Table History
@@ -70,6 +70,8 @@ cbxActivity.on('change', function(){activityChanged()});
 cbxStudent.on('change', function(){studentChanged()});
 cbxCourseRotation.on('change', function(){courseRotationChanged()});
 tableStudents.on('click', '.clickable-row', function(event) {$(this).addClass('active').siblings().removeClass('active');});
+
+///Template rotacionAlumno
 cbxRotationA.on('change', function(){cbxRotationAchanged()});
 cbxRotationB.on('change', function(){cbxRotationBchanged()});
 toSelectB.on('click', function(){toSelectMulB()});
@@ -84,20 +86,9 @@ btnCreateRotation.on('click', function(){createRotation()});
 deleteSelectA.on('click', function(){deleteRotation(cbxRotationA)});
 deleteSelectB.on('click', function(){deleteRotation(cbxRotationB)});
 cbxCourseG.on('change', function(){courseGChanged()});
-cbxModuleG.on('change', function(){moduleGChanged()});
-btnUpdateRotation.on('change', function(){updateRotation()});
+cbxRotationG.on('change', function(){rotationGChanged()});
+btnUpdateRotation.on('click', function(){updateRotation()});
 
-function updateRotation(){
-    $.ajax({
-        url: url,
-        type: 'GET',
-        data: {idRotation: cbxRotationG.val(), idModule: cbxNewModuleG.val(), queryId: "updateRotation"},
-        dataType: 'json',
-        success: function(){
-            console.log('pinpanpummm');
-        }
-    });
-}
 
 /////////////////////////////////
 //Funciones para limpiar campos//
@@ -127,7 +118,7 @@ function resetActivityData(){
 }
 
 function resetPersonalFollow(){
-    resetCbx(cbxProjectField,'Proyectos');
+    resetCbx(cbxProject,'Proyectos');
     resetCbx(cbxActivity,'Actividad');resetActivityData();;
     personalFollowHTML.addClass('disabledDIV');
 }
@@ -158,228 +149,6 @@ function courseChanged(){
                     cbxModule.append(new Option(text, value));
                 }
                 cbxModule.selectpicker('refresh');
-            }
-        });
-    }
-}
-
-function courseRotationChanged(){
-    resetCbx(cbxRotationA,'Alumnos sin Rotación','0');
-    resetCbx(cbxRotationB,'Alumnos sin Rotación','0');
-    resetMultiSelect(studentSelectA);
-    resetMultiSelect(studentSelectB);
-    if($(this).val!=''){
-        selecterDiv.removeClass('disabledDIV');
-        $.ajax({
-            url: url,
-            type: 'GET',
-            data: {idCourse: cbxCourseRotation.val(), queryId: "rotations"},
-            dataType: 'json',
-            success: function(info){
-                for(var i=0;i<info.length;i++){
-                    var text = info[i].fields.nameRotation;
-                    var value = info[i].pk;
-                    cbxRotationA.append(new Option(text, value));
-                    cbxRotationB.append(new Option(text, value));
-                }
-                cbxRotationB.val($('#cbxRotationB option:selected').next().val());
-                $('#cbxRotationA option:selected').next().addClass('disabledDIV');
-                $('#cbxRotationB option:selected').prev().addClass('disabledDIV');
-                cbxRotationA.selectpicker('refresh');
-                cbxRotationB.selectpicker('refresh');
-                ajaxForGetStudentRotation(cbxRotationA, studentSelectA);
-                ajaxForGetStudentRotation(cbxRotationB, studentSelectB);
-            }
-        });
-    }else{
-        selecterDiv.addClass('disabledDIV');
-    }
-}
-
-function cbxRotationAchanged(){
-    resetMultiSelect(studentSelectA);
-    $('#cbxRotationB option').each(function(){
-        $(this).removeClass('disabledDIV');
-    });
-    $('#cbxRotationB option').each(function(){
-        $(this).removeClass('disabledDIV');
-        if($(this).val()==cbxRotationA.val()){
-            console.log(cbxRotationA.val());
-            $(this).addClass('disabledDIV');
-        }
-    });
-    cbxRotationB.selectpicker('refresh');
-    ajaxForGetStudentRotation(cbxRotationA, studentSelectA);
-}
-
-function ajaxForGetStudentRotation(fromCbx, elemento){
-    $.ajax({
-        url: url,
-        type: 'GET',
-        data: {idRotation: fromCbx.val(), queryId: "studentsByRotation"},
-        dataType: 'json',
-        success: function(info){
-            for(var i=0;i<info.length;i++){
-                var texto = info[i].fields.surname + ", " + info[i].fields.name;
-                var value = info[i].pk;
-                elemento.append(new Option(texto, value));
-                elemento.change();
-            }
-        }
-    });
-}
-
-function cbxRotationBchanged(){
-    resetMultiSelect(studentSelectB);
-    $('#cbxRotationA option').each(function(){
-        $(this).removeClass('disabledDIV');
-    });
-    $('#cbxRotationA option').each(function(){
-        $(this).removeClass('disabledDIV');
-        if($(this).val()==cbxRotationB.val()){
-            console.log(cbxRotationA.val());
-            $(this).addClass('disabledDIV');
-        }
-    });
-    cbxRotationA.selectpicker('refresh');
-    ajaxForGetStudentRotation(cbxRotationB, studentSelectB);
-}
-
-function toSelectMulB(){
-    var items = [];
-    $('#studentSelectA option:selected').each(function(){
-        items.push($(this).val());
-        var element = $(this).detach();
-        studentSelectB.append(element);
-    });
-    ajaxForSetStudentsRotations(cbxRotationB,items);
-}
-
-function ajaxForSetStudentsRotations(newRotation,StudentsIDS){
-    $.ajax({
-        url: url,
-        type: 'GET',
-        data: {'studentsIds[]':StudentsIDS, newIdRotation: newRotation.val(), queryId: "changeStudentsRotation"},
-        dataType: 'json',
-        success: function(info){
-            console.log('Saved');
-        }
-    });
-}
-
-function toSelectMulA(){
-    var items = [];
-    $('#studentSelectB option:selected').each(function(){
-        items.push($(this).val());
-        var element = $(this).detach();
-        studentSelectA.append(element);
-    });
-    ajaxForSetStudentsRotations(cbxRotationA,items);
-}
-
-function allToSelectMulB(){
-    var items = [];
-    $('#studentSelectA option').each(function(){
-        items.push($(this).val());
-        var element = $(this).detach();
-        studentSelectB.append(element);
-    });
-    ajaxForSetStudentsRotations(cbxRotationB,items);
-}
-
-function allToSelectMulA(){
-    var items = [];
-    $('#studentSelectB option').each(function(){
-        items.push($(this).val());
-        var element = $(this).detach();
-        studentSelectA.append(element);
-    });
-    ajaxForSetStudentsRotations(cbxRotationA,items);
-}
-
-function createRotation(){
-    if(txtRotationName.val()=='' || cbxCourse.val()=='' || cbxModule.val()==''){
-        modalTitle.text('Error');
-        modalText.text('Por favor, rellene los campos correctamente.');
-        $('#modal').modal('toggle');
-    }else{   
-        $.ajax({
-            url: url,
-            type: 'GET',
-            data: {nameRotation: txtRotationName.val(), idCourse: cbxCourse.val(), idModule: cbxModule.val(), queryId: "createRotation"},
-            dataType: 'json',
-            success: function(){
-            }
-        });
-        modalText.text('Se ha creado la rotación '+txtRotationName.val()+' correctamente.');
-        modalTitle.text('Éxito!');
-        $('#modal').modal('toggle');
-        txtRotationName.val('');
-        cbxCourse.val('');
-        cbxCourse.selectpicker('refresh');
-        cbxCourseRotation.val('');
-        cbxCourseRotation.selectpicker('refresh');
-        selecterDiv.addClass('disabledDIV');
-        resetCbx(cbxModule,'Módulo');
-        resetCbx(cbxRotationA,'Alumnos sin Rotación','0');
-        resetCbx(cbxRotationB,'Alumnos sin Rotación','0');
-        resetMultiSelect(studentSelectA);
-        resetMultiSelect(studentSelectB);
-    }
-}
-
-function deleteRotation(idRotacion){
-    if(idRotacion!=''){
-        $.ajax({
-            url: url,
-            type: 'GET',
-            data: {idRotation: idRotacion.val(), queryId: "deleteRotation"},
-            dataType: 'json'
-        });
-        courseRotationChanged();
-    }
-}
-
-function courseGChanged(){
-    resetRotationGField()
-    resetCbx(cbxModuleG,'Módulo');resetCbx(cbxNewModuleG,'Nuevo Módulo');
-    if(this.val!=''){
-        $.ajax({
-            url: url,
-            type: 'GET',
-            data: {idCourse: cbxCourseG.val(), queryId: "subjects"},
-            dataType: 'json',
-            success: function(info){
-                resetCbx(cbxModule,'Módulo');
-                for(var i=0;i<info.length;i++){
-                    //El valor de las opciones de los select es el ID de los modulos
-                    var text = info[i].fields.nameModule;
-                    var value = info[i].pk;
-                    cbxModuleG.append(new Option(text, value));
-                    cbxNewModuleG.append(new Option(text, value));
-                }
-                cbxModuleG.selectpicker('refresh');
-                cbxNewModuleG.selectpicker('refresh');
-            }
-        });
-    }
-}
-
-function moduleGChanged(){
-    resetCbx(cbxRotationG,'Rotación');
-    if($(this).val!=''){
-        $.ajax({
-            url: url,
-            type: 'GET',
-            data: {idCourse: cbxCourseG.val(), queryId: "rotations"},
-            dataType: 'json',
-            success: function(info){
-                for(var i=0;i<info.length;i++){
-                    var text = info[i].fields.nameRotation;
-                    var value = info[i].pk;
-                    cbxRotationG.append(new Option(text, value));
-                }
-                cbxRotationG.selectpicker('refresh');
             }
         });
     }
@@ -435,7 +204,7 @@ function projectWFChanged(){
 function moduleChanged(){
     resetCbx(cbxStudent,'Alumno');resetTable(tbHistory);;
     resetTable(tbStudent);
-    resetCbx(cbxProjectField,'Proyectos');
+    resetCbx(cbxProject,'Proyectos');
     resetPersonalFollow();
     //Carga de Alumnos
     $.ajax({
@@ -556,39 +325,6 @@ function studentChanged(){
     }
 }
 
-//ACA PASA LA MAGIA DE LA SELECCION DE ESTUDIANTE
-function selectStudent(evt,valor) {
-    console.log(valor);
-    currentStudentSelected=valor;
-    $.ajax({
-        url: url,
-        type: 'GET',
-        data: {idStudent: currentStudentSelected,
-               queryId: "onlyStudent"},
-        dataType: 'json',
-        success: function(info){
-            nameStudentHTML.text(info[0].fields.name+' '+info[0].fields.surname);
-        }
-    });
-    personalFollowHTML.removeClass('disabledDIV');
-    activityChanged();
-}
-
-//////////////////////////////
-//Funcion de Modal Bootstrap//
-//////////////////////////////
-function createModalObs(idCoso,content){
-    var someHTML = '<button type="button" class="btn btn-warning pull-right" data-toggle="modal" data-target="#'+idCoso+'">'+
-        '<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span></button>'+
-        '<div id="'+idCoso+'" class="modal fade" role="dialog">'+
-        '<div class="modal-dialog"><div class="modal-content"><div class="modal-header">'+
-        '<button type="button" class="close" data-dismiss="modal">&times;</button>'+
-        '<h4 class="modal-title">Observaciones</h4></div><div class="modal-body">'+
-        '<p style="white-space: pre-wrap">'+content+'</p></div><div class="modal-footer">'+
-        '<button type="button" class="btn btn-default" data-dismiss="modal">Ok</button>'+
-        '</div></div></div></div>';
-    return someHTML;
-}
 
 function activityChanged(){
     resetActivityData();
@@ -615,6 +351,297 @@ function activityChanged(){
             actCalification.text(i.calification);
         }
     });
+}
+
+//ACA PASA LA MAGIA DE LA SELECCION DE ESTUDIANTE
+function selectStudent(evt,valor) {
+    console.log(valor);
+    currentStudentSelected=valor;
+    $.ajax({
+        url: url,
+        type: 'GET',
+        data: {idStudent: currentStudentSelected,
+               queryId: "onlyStudent"},
+        dataType: 'json',
+        success: function(info){
+            nameStudentHTML.text(info[0].fields.name+' '+info[0].fields.surname);
+        }
+    });
+    personalFollowHTML.removeClass('disabledDIV');
+    activityChanged();
+}
+
+
+///////Template 'rotacionAlumno'////////
+
+function courseRotationChanged(){
+    resetCbx(cbxRotationA,'Alumnos sin Rotación','0');
+    resetCbx(cbxRotationB,'Alumnos sin Rotación','0');
+    resetMultiSelect(studentSelectA);
+    resetMultiSelect(studentSelectB);
+    if($(this).val!=''){
+        selecterDiv.removeClass('disabledDIV');
+        $.ajax({
+            url: url,
+            type: 'GET',
+            data: {idCourse: cbxCourseRotation.val(), queryId: "rotations"},
+            dataType: 'json',
+            success: function(info){
+                for(var i=0;i<info.length;i++){
+                    var text = info[i].fields.nameRotation;
+                    var value = info[i].pk;
+                    cbxRotationA.append(new Option(text, value));
+                    cbxRotationB.append(new Option(text, value));
+                }
+                cbxRotationB.val($('#cbxRotationB option:selected').next().val());
+                $('#cbxRotationA option:selected').next().addClass('disabledDIV');
+                $('#cbxRotationB option:selected').prev().addClass('disabledDIV');
+                cbxRotationA.selectpicker('refresh');
+                cbxRotationB.selectpicker('refresh');
+                ajaxForGetStudentRotation(cbxRotationA, studentSelectA);
+                ajaxForGetStudentRotation(cbxRotationB, studentSelectB);
+            }
+        });
+    }else{
+        selecterDiv.addClass('disabledDIV');
+    }
+}
+
+function ajaxForGetStudentRotation(fromCbx, elemento){
+    $.ajax({
+        url: url,
+        type: 'GET',
+        data: {idRotation: fromCbx.val(), queryId: "studentsByRotation"},
+        dataType: 'json',
+        success: function(info){
+            for(var i=0;i<info.length;i++){
+                var texto = info[i].fields.surname + ", " + info[i].fields.name;
+                var value = info[i].pk;
+                elemento.append(new Option(texto, value));
+                elemento.change();
+            }
+        }
+    });
+}
+
+function cbxRotationAchanged(){
+    resetMultiSelect(studentSelectA);
+    $('#cbxRotationB option').each(function(){
+        $(this).removeClass('disabledDIV');
+    });
+    $('#cbxRotationB option').each(function(){
+        $(this).removeClass('disabledDIV');
+        if($(this).val()==cbxRotationA.val()){
+            console.log(cbxRotationA.val());
+            $(this).addClass('disabledDIV');
+        }
+    });
+    cbxRotationB.selectpicker('refresh');
+    ajaxForGetStudentRotation(cbxRotationA, studentSelectA);
+}
+
+function cbxRotationBchanged(){
+    resetMultiSelect(studentSelectB);
+    $('#cbxRotationA option').each(function(){
+        $(this).removeClass('disabledDIV');
+    });
+    $('#cbxRotationA option').each(function(){
+        $(this).removeClass('disabledDIV');
+        if($(this).val()==cbxRotationB.val()){
+            console.log(cbxRotationA.val());
+            $(this).addClass('disabledDIV');
+        }
+    });
+    cbxRotationA.selectpicker('refresh');
+    ajaxForGetStudentRotation(cbxRotationB, studentSelectB);
+}
+
+function ajaxForSetStudentsRotations(newRotation,StudentsIDS){
+    $.ajax({
+        url: url,
+        type: 'GET',
+        data: {'studentsIds[]':StudentsIDS, newIdRotation: newRotation.val(), queryId: "changeStudentsRotation"},
+        dataType: 'json',
+        success: function(info){
+            console.log('Saved');
+        }
+    });
+}
+
+function toSelectMulB(){
+    var items = [];
+    $('#studentSelectA option:selected').each(function(){
+        items.push($(this).val());
+        var element = $(this).detach();
+        studentSelectB.append(element);
+    });
+    ajaxForSetStudentsRotations(cbxRotationB,items);
+}
+
+
+function toSelectMulA(){
+    var items = [];
+    $('#studentSelectB option:selected').each(function(){
+        items.push($(this).val());
+        var element = $(this).detach();
+        studentSelectA.append(element);
+    });
+    ajaxForSetStudentsRotations(cbxRotationA,items);
+}
+
+function allToSelectMulB(){
+    var items = [];
+    $('#studentSelectA option').each(function(){
+        items.push($(this).val());
+        var element = $(this).detach();
+        studentSelectB.append(element);
+    });
+    ajaxForSetStudentsRotations(cbxRotationB,items);
+}
+
+function allToSelectMulA(){
+    var items = [];
+    $('#studentSelectB option').each(function(){
+        items.push($(this).val());
+        var element = $(this).detach();
+        studentSelectA.append(element);
+    });
+    ajaxForSetStudentsRotations(cbxRotationA,items);
+}
+
+function createRotation(){
+    if(txtRotationName.val()=='' || cbxCourse.val()=='' || cbxModule.val()==''){
+        modalTitle.text('Error');
+        modalText.text('Por favor, rellene los campos correctamente.');
+        $('#modal').modal('toggle');
+    }else{   
+        $.ajax({
+            url: url,
+            type: 'GET',
+            data: {nameRotation: txtRotationName.val(), idCourse: cbxCourse.val(), idModule: cbxModule.val(), queryId: "createRotation"},
+            dataType: 'json',
+            success: function(){
+            }
+        });
+        modalText.text('Se ha creado la rotación '+txtRotationName.val()+' correctamente.');
+        modalTitle.text('Éxito!');
+        $('#modal').modal('toggle');
+        txtRotationName.val('');
+        cbxCourse.val('');
+        cbxCourse.selectpicker('refresh');
+        cbxCourseRotation.val('');
+        cbxCourseRotation.selectpicker('refresh');
+        selecterDiv.addClass('disabledDIV');
+        resetCbx(cbxModule,'Módulo');
+        resetCbx(cbxRotationA,'Alumnos sin Rotación','0');
+        resetCbx(cbxRotationB,'Alumnos sin Rotación','0');
+        resetMultiSelect(studentSelectA);
+        resetMultiSelect(studentSelectB);
+        courseGChanged();
+    }
+}
+
+function deleteRotation(idRotacion){
+    if(idRotacion!=''){
+        $.ajax({
+            url: url,
+            type: 'GET',
+            data: {idRotation: idRotacion.val(), queryId: "deleteRotation"},
+            dataType: 'json'
+        });
+        courseRotationChanged();
+    }
+}
+
+function courseGChanged(){
+    actualModule.text('');
+    resetCbx(cbxRotationG,'Rotación');
+    resetCbx(cbxNewModuleG,'Nuevo Módulo');
+    if(this.val!=''){
+        $.ajax({
+            url: url,
+            type: 'GET',
+            data: {idCourse: cbxCourseG.val(), queryId: "subjects"},
+            dataType: 'json',
+            success: function(info){
+                resetCbx(cbxModule,'Módulo');
+                for(var i=0;i<info.length;i++){
+                    //El valor de las opciones de los select es el ID de los modulos
+                    var text = info[i].fields.nameModule;
+                    var value = info[i].pk;
+                    cbxNewModuleG.append(new Option(text, value));
+                }
+                cbxNewModuleG.selectpicker('refresh');
+            }
+        });
+        $.ajax({
+            url: url,
+            type: 'GET',
+            data: {idCourse: cbxCourseG.val(), queryId: "rotations"},
+            dataType: 'json',
+            success: function(info){
+                for(var i=0;i<info.length;i++){
+                    var text = info[i].fields.nameRotation;
+                    var value = info[i].pk;
+                    cbxRotationG.append(new Option(text, value));
+                }
+                cbxRotationG.selectpicker('refresh');
+            }
+        });
+    }
+}
+
+function rotationGChanged(){
+    var esto=cbxRotationG.val();
+    if(esto!=''){
+        $.ajax({
+            url: url,
+            type: 'GET',
+            data: {idCourse: cbxCourseG.val(), queryId: "rotations"},
+            dataType: 'json',
+            success: function(info){
+                for(var i=0;i<info.length;i++){
+                    var value = info[i].pk;
+                    if(esto==value){
+                        actualModule.text(info[i].fields.idModule[1]);
+                        i=info.length;
+                    }
+                }
+            }
+        });
+    }else{
+        actualModule.text('');
+    }
+}
+
+function updateRotation(){
+    $.ajax({
+        url: url,
+        type: 'GET',
+        data: {idRotation: cbxRotationG.val(), idModule: cbxNewModuleG.val(), queryId: "updateRotation"},
+        dataType: 'json',
+        success: function(){
+            console.log('pinpanpummm');
+        }
+    });
+    actualModule.text('');
+    rotationGChanged();
+}
+
+//////////////////////////////
+//Funcion de Modal Bootstrap//
+//////////////////////////////
+function createModalObs(idCoso,content){
+    var someHTML = '<button type="button" class="btn btn-warning pull-right" data-toggle="modal" data-target="#'+idCoso+'">'+
+        '<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span></button>'+
+        '<div id="'+idCoso+'" class="modal fade" role="dialog">'+
+        '<div class="modal-dialog"><div class="modal-content"><div class="modal-header">'+
+        '<button type="button" class="close" data-dismiss="modal">&times;</button>'+
+        '<h4 class="modal-title">Observaciones</h4></div><div class="modal-body">'+
+        '<p style="white-space: pre-wrap">'+content+'</p></div><div class="modal-footer">'+
+        '<button type="button" class="btn btn-default" data-dismiss="modal">Ok</button>'+
+        '</div></div></div></div>';
+    return someHTML;
 }
 
 //ACA PASA LA MAGIA DE LA SELECCION DE ESTUDIANTE

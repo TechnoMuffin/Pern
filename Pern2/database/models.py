@@ -57,8 +57,7 @@ class Course(models.Model):
     )
     courseType = models.CharField(max_length=128, choices=COURSE_OPTIONS)
     courseDivision = models.CharField(max_length=128, choices=DIVISION_OPTIONS)
-
-
+    
     class Meta:
         verbose_name = 'Curso'
         verbose_name_plural = 'Cursos'
@@ -72,7 +71,9 @@ class Module(models.Model):
     idModule = models.AutoField(primary_key=True)
     nameModule = models.CharField(max_length=128)
     idCourse = models.ForeignKey(Course, blank=True)
-
+    
+    def natural_key(self):
+        return (self.idModule, self.nameModule)
 
     class Meta:
         verbose_name = 'Modulo'
@@ -87,7 +88,7 @@ class Rotation(models.Model):
     idRotation = models.AutoField(primary_key=True)
     idModule = models.ForeignKey(Module)
     idCourse = models.ForeignKey(Course)
-
+    
     class Meta:
         verbose_name = 'Rotacion'
         verbose_name_plural = 'Rotaciones'
