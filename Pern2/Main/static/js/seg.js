@@ -116,6 +116,7 @@ function resetPersonalFollow(){
 //Esta funcion hace algo
 function courseChanged(){
     resetModuleField();
+    resetProjectFWField();
     resetStudentTable();
     resetPersonalFollow();
     resetHistoryTable();
@@ -185,7 +186,11 @@ function projectWFChanged(){
                 }
             }
         });
+        $('#buttonCreateProject').removeClass('disabledDIV');
+        $('#buttonDeleteProject').removeClass('disabledDIV');
+        $('#buttonEditProject').removeClass('disabledDIV');
     }
+  $('#titleEditNameProject').text('Modificar ' + $('#cbxProjectFW option:selected').text());
 }
 
 //Cambia CBX MODULO
