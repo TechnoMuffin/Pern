@@ -82,14 +82,14 @@ def pupilFollowing(request):
             else:
                 #...te serializo los estudiantes solos
                 info = serializers.serialize('json', students)
-                
+
         elif(queryId == "rotationsByModule"):
         #Devuelve todas las rotaciones que actualmente estan trabajando en el modulo pedido
             module = request.GET.get('idModule')
             module = Module.objects.get(idModule=module)
             rotations = Rotation.objects.filter(idModule=module)
             info = serializers.serialize('json', rotations)
-            
+
         elif(queryId == "studentsByRotation"):
         #Devuelve todos los alumnos pertenecientes a la rotacion
             rotation = request.GET.get('idRotation')
@@ -100,24 +100,24 @@ def pupilFollowing(request):
                 info = serializers.serialize('json', students)
             else:
                 students = Student.objects.filter(idRotation=None).order_by('surname')
-                info = serializers.serialize('json', students)   
+                info = serializers.serialize('json', students)
 
         elif(queryId == "onlyStudent"):
         #Devuelve el alumno pedido
             idUser = request.GET.get('idStudent')
             student = Student.objects.filter(idUser=int(idUser))
             info = serializers.serialize('json', student)
-            
+
         elif(queryId == "rotations"):
         #Devuelve las rotaciones
             course = request.GET.get('idCourse')
             if(course!=''):
                 course= Course.objects.get(idCourse=course)
                 rotations = Rotation.objects.filter(idCourse=course)
-                info = serializers.serialize('json', rotations, use_natural_foreign_keys=True)   
+                info = serializers.serialize('json', rotations, use_natural_foreign_keys=True)
             else:
                 info = "Curso Invalido"
-        
+
         elif(queryId == "deleteRotation"):
         #Devuelve las rotaciones
             rotation = request.GET.get('idRotation')
@@ -129,7 +129,7 @@ def pupilFollowing(request):
                 info='Rotacion eliminada'
             else:
                 info = "Rotacion Invalida"
-                
+
         elif(queryId == "updateRotation"):
         #Devuelve las rotaciones
             module = request.GET.get('idModule')
@@ -140,18 +140,18 @@ def pupilFollowing(request):
                 info='Rotacion cambiada'
             else:
                 info = "Error"
-                
+
         elif(queryId == "studentsByRotation"):
         #Devuelve los alumnos filtrados por rotacion
             rotation = request.GET.get('idRotation')
             if(rotation!='0'):
                 rotation= Rotation.objects.get(idRotation=int(rotation))
                 students = Student.objects.filter(idRotation=rotation).order_by('surname')
-                info = serializers.serialize('json', students)   
+                info = serializers.serialize('json', students)
             else:
                 students = Student.objects.filter(idRotation=None).order_by('surname')
                 info = serializers.serialize('json', students)
-                
+
         elif(queryId == "changeStudentsRotation"):
         #Cambia la rotacion de los alumnos seleccionados
             studentsIds = request.GET.getlist('studentsIds[]')
@@ -166,8 +166,8 @@ def pupilFollowing(request):
                 for x in studentsIds:
                     student = Student.objects.filter(idUser=int(x))
                     student.update(idRotation=None)
-                
-            
+
+
         elif(queryId == "createRotation"):
         #Crea una nueva rotacion
             nameRotation = request.GET.get('nameRotation')
@@ -183,7 +183,7 @@ def pupilFollowing(request):
             newRotation.idModule=module
             newRotation.save()
             info = 'Done'
-        
+
         elif(queryId == "history"):
         #Devuelve el alumno pedido
             idUser = request.GET.get('idStudent')
@@ -216,18 +216,23 @@ def pupilFollowing(request):
         pupils = Student.objects.all()
         subjects = Module.objects.all()
         return render_to_response('pupilFollowing.html', {'courses':courses, 'subjects':subjects, 'pupils':pupils},context)
-    
+
 def history(request):
     context = RequestContext(request)
     courses = Course.objects.all()
-    return render_to_response('history.html', {'courses':courses}, context) 
+    return render_to_response('history.html', {'courses':courses}, context)
 
 def rotation(request):
     context = RequestContext(request)
     courses = Course.objects.all()
-    return render_to_response('rotacionAlumno.html', {'courses':courses}, context) 
+    return render_to_response('rotacionAlumno.html', {'courses':courses}, context)
 
 def projectFollowing(request):
     context = RequestContext(request)
     courses = Course.objects.all()
-    return render_to_response('proyectos.html', {'courses':courses}, context) 
+    return render_to_response('proyectos.html', {'courses':courses}, context)
+
+def modulFollowing(request):
+    context = RequestContext(request)
+    courses = Course.objects.all()
+    return render_to_response('modulos.html', {'courses':courses}, context)
