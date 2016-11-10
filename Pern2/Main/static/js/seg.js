@@ -53,6 +53,7 @@ tbProjectStudent.on('click', '.clickable-row', function(event) {$(this).addClass
 //Vaciar la tabla de alumnos
 function resetStudentTable(){
     tbStudent.empty();
+    console.log('xd');
     tbProjectStudent.empty();
 }
 
@@ -116,6 +117,7 @@ function resetPersonalFollow(){
 
 //Esta funcion hace algo
 function courseChanged(){
+    cleanTableActivities();
     resetModuleField();
     resetProjectFWField();
     resetStudentTable();
@@ -144,6 +146,7 @@ function courseChanged(){
 
 
 function projectWFChanged(){
+    cleanTableActivities();
     resetStudentTable();
     resetProjectField();
     resetPersonalFollow();
@@ -187,15 +190,19 @@ function projectWFChanged(){
                 }
             }
         });
-        $('#buttonCreateProject').removeClass('disabledDIV');
         $('#buttonDeleteProject').removeClass('disabledDIV');
         $('#buttonEditProject').removeClass('disabledDIV');
+    }
+    else{
+    // $('#cbxProjectFW').val('');
+    resetStudentTable();
     }
   $('#titleEditNameProject').text('Modificar ' + $('#cbxProjectFW option:selected').text());
 }
 
 //Cambia CBX MODULO
 function moduleChanged(){
+    cleanTableActivities();
     resetStudentField();
     resetStudentTable();
     resetProjectField();
@@ -239,6 +246,8 @@ function moduleChanged(){
             cbxProjectFW.selectpicker('refresh');
         }
     });
+    $('#buttonCreateProject').removeClass('disabledDIV');
+
 }
 
 
@@ -453,8 +462,9 @@ function selectStudentWorking(evt,valor) {
         data: {idStudent: currentStudentSelected, idProject: cbxProjectFW.val(),queryId: "getActivities"},
         dataType: 'json',
         success: function(info){
+            cleanTableActivities();
             for(var i=0;i<info.length;i++){
-                var texto = info[i].fields.nameActivity;
+                var texto = info[i].fields.idActivity[1];
                 var value = info[i].pk;
                 var table = '<tr><td>'+texto+'</td><td>5</td><td>2</td></tr>';
                 $('#tableActivities').append(table);

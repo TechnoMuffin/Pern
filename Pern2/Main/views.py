@@ -161,10 +161,35 @@ def projectFollowing(request):
         elif(queryId == "getActivities"):
             idProject= request.GET.get('idProject')
             idStudent= request.GET.get('idStudent')
-            idStudent=Student.objects.filter(idUser=int(idStudent))
+            idStudent=Student.objects.get(idUser=int(idStudent))
             idProject=Project.objects.filter(idProject=int(idProject))
+            actividadesAlumno=Working.objects.filter(idStudent=idStudent, idActivity__idProject=idProject)
+            actividadesProyecto = Activity.objects.filter(idProject=idProject)
+            aCrear = []
+            for a in actividadesProyecto:
+                current = a.idActivity
+                aCrear.append(current)
+                print("Actividad del Proyecto: \n" + str(current))
+                print("Actividades del Alumno:")
+                for b in actividadesAlumno:
+                    trabajado = b.idActivity.pk
+                    print(trabajado)
+                    if current == trabajado:
+                        print("\t Son iguales, eliminamos...")
+                        aCrear.remove(current)
+                        break
+            print("Actividades que tenemos que crear " + str(aCrear))
+            for c in aCrear:
+                newWorking=Working()
+                newWorking.idStudent = idStudent
+                newWorking.idActivity = Activity.objects.get(idActivity=c)
+                newWorking.numberOfClasses = 0
+                newWorking.calification = 0
+                newWorking.hasFinish = False
+                newWorking.save()
+            print(actividadesAlumno)
             work=Working.objects.filter(idStudent=idStudent, idActivity__idProject=idProject)
-            info = serializers.serialize('json',work)
+            info = serializers.serialize('json',work,use_natural_foreign_keys=True)
             print info
         return HttpResponse(info)
     else:
