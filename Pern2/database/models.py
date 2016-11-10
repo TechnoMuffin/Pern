@@ -57,7 +57,7 @@ class Course(models.Model):
     )
     courseType = models.CharField(max_length=128, choices=COURSE_OPTIONS)
     courseDivision = models.CharField(max_length=128, choices=DIVISION_OPTIONS)
-    
+
     class Meta:
         verbose_name = 'Curso'
         verbose_name_plural = 'Cursos'
@@ -71,7 +71,7 @@ class Module(models.Model):
     idModule = models.AutoField(primary_key=True)
     nameModule = models.CharField(max_length=128)
     idCourse = models.ForeignKey(Course, blank=True)
-    
+
     def natural_key(self):
         return (self.idModule, self.nameModule)
 
@@ -88,7 +88,7 @@ class Rotation(models.Model):
     idRotation = models.AutoField(primary_key=True)
     idModule = models.ForeignKey(Module)
     idCourse = models.ForeignKey(Course)
-    
+
     class Meta:
         verbose_name = 'Rotacion'
         verbose_name_plural = 'Rotaciones'
@@ -112,10 +112,13 @@ class Student(User):
 ##################################DOCUMENTOS##################################
 class Document(models.Model):
     idDocument = models.AutoField(primary_key=True)
-    nameDocument= models.CharField(max_length=128)
-    visible = models.BooleanField(blank=True)
-    idModule = models.ManyToManyField(Module, blank=True)
-
+    nameDocument= models.CharField(max_length=128,null=True)
+    #visible = models.BooleanField(blank=True, null=True)
+    idModule = models.ForeignKey(Module, null=True)
+    #idTeacher = models.ManyToManyField(Teacher)
+    idCourse = models.ForeignKey(Course, blank=True, null=True)
+    commentDoc = models.TextField(blank=True)
+    archivo = models.FileField(u'Documentos',upload_to="documentos",blank=True)
 
     class Meta:
         verbose_name = 'Documento'
@@ -123,6 +126,7 @@ class Document(models.Model):
     def __str__(self):
         tagName = str(self.nameDocument) + "(" + str(self.idModule) + ")"
         return tagName
+
 
 ##################################PROYECTOS##################################
 class Project(models.Model):
@@ -161,7 +165,7 @@ class StudentFollowing(models.Model):
     idStudent = models.ForeignKey(Student)
     idTeacher = models.ManyToManyField(Teacher)
     commentPF = models.TextField(blank=True)
-        
+
     class Meta:
         verbose_name = 'Seguimiento de Alumno'
         verbose_name_plural = 'Seguimientos de Alumno'
@@ -200,12 +204,12 @@ class Working(models.Model):
     def __str__(self):
         tagName = str(self.idActivity) + " " + str(self.idStudent)
         return tagName
-    
+
 ##################################TRABAJA##################################
 class OnClass(models.Model):
     idActivity = models.ForeignKey(Activity)
     idSF = models.ForeignKey(StudentFollowing)
-    
+
     class Meta:
         verbose_name = 'Trabajo en Clase'
         verbose_name_plural = 'Trabajos en Clase'
