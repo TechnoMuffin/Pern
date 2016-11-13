@@ -19,7 +19,6 @@ def pupilFollowing(request):
                 modulos = Module.objects.filter(idCourse=curso)
                 info = serializers.serialize('json', modulos)
             else:
-
                 info = "ERROR: No existe el modulo pedido"
 
         elif(queryId == "projects"):
@@ -70,16 +69,18 @@ def pupilFollowing(request):
             module = request.GET.get('idModule')
             module = Module.objects.get(idModule=int(module))
             students = Student.objects.filter(idRotation__idModule=module).order_by('surname')
-            for i in students:
-                newSF = StudentFollowing()
-                newSF.presenceSF = True
-                newSF.dateSF = str(date)
-                newSF.idModule = module
-                newSF.idStudent = i
-                newSF.commentPF = ''
-                newSF.save()
-                newSF.idTeacher.add(Teacher.objects.get(idUser=1)) #TODO meter un profesor de verdad
-                newSF.save()
+            sfs = StudentFollowing.objects.filter(dateSF=str(date),idModule=module)
+            if not sfs:
+                for i in students:
+                    newSF = StudentFollowing()
+                    newSF.presenceSF = True
+                    newSF.dateSF = str(date)
+                    newSF.idModule = module
+                    newSF.idStudent = i
+                    newSF.commentPF = ''
+                    newSF.save()
+                    newSF.idTeacher.add(Teacher.objects.get(idUser=1)) #TODO meter un profesor de verdad
+                    newSF.save()
             info= '...'
         elif(queryId == "students"):
         #Devuelve todos los alumnos pertenecientes al curso y al modulo
