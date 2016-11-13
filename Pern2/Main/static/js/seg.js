@@ -64,6 +64,7 @@ tableHistory.css('max-height', $( window ).height());
 
 //Asignacion de Funciones a elementos HTML
 cbxProjectFW.on('change', function(){projectWFChanged()});
+date.on('change', function(){projectWFChanged()});
 cbxCourse.on('change', function(){courseChanged()});
 cbxModule.on('change', function(){moduleChanged()});
 cbxModuleHistory.on('change', function(){moduleHistoryChanged()});
