@@ -69,11 +69,12 @@ def pupilFollowing(request):
         #Devuelve todos los alumnos pertenecientes al curso y al modulo
             idC = request.GET.get('idCourse')
             idPFW = request.GET.get('idProjectFW')
+            module = request.GET.get('idModule')
             curso = Course.objects.get(idCourse=int(idC))
-            module = Module.objects.filter(idCourse=curso)
-            rotation = Rotation.objects.filter(idModule=module)
-            students = Student.objects.filter(idRotation=rotation).order_by('surname')
+            module = Module.objects.filter(idModule=int(module))
+            students = Student.objects.filter(idCourse=int(idC),idRotation__idModule=module).order_by('surname')
             #Si no me mandan idPFW...
+            #try:
             if(idPFW is not None):
                 project = Project.objects.filter(idProject=int(idPFW))
                 activity = Activity.objects.filter(idProject=project).order_by('idActivity')

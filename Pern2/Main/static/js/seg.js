@@ -55,6 +55,7 @@ var actualModule = $('#actualModule');
 
 //Variables de /historial
 var tableHistory = $('#historyTable'); //Table History
+var cbxModuleHistory = $('#cbxModuleHistory'); //Table History
 var tbHistory = $('#tbHistory'); //Body Table History
 
 
@@ -65,6 +66,7 @@ tableHistory.css('max-height', $( window ).height());
 cbxProjectFW.on('change', function(){projectWFChanged()});
 cbxCourse.on('change', function(){courseChanged()});
 cbxModule.on('change', function(){moduleChanged()});
+cbxModuleHistory.on('change', function(){moduleHistoryChanged()});
 cbxProject.on('change', function(){projectChanged()});
 cbxActivity.on('change', function(){activityChanged()});
 cbxStudent.on('change', function(){studentChanged()});
@@ -147,8 +149,10 @@ function courseChanged(){
                     var text = info[i].fields.nameModule;
                     var value = info[i].pk;
                     cbxModule.append(new Option(text, value));
+                    cbxModuleHistory.append(new Option(text, value));
                 }
                 cbxModule.selectpicker('refresh');
+                cbxModuleHistory.selectpicker('refresh');
             }
         });
     }
@@ -156,7 +160,7 @@ function courseChanged(){
 
 function projectWFChanged(){
     resetTable(tbStudent);
-    resetCbx(cbxProjectField,'Proyectos');
+    resetCbx(cbxProject,'Proyectos');
     resetPersonalFollow();
     resetTable(tbHistory);
     if(this.val!=''){
@@ -164,30 +168,16 @@ function projectWFChanged(){
         $.ajax({
             url: url,
             type: 'GET',
-            data: {idModule: cbxModule.val(), queryId: "rotationsByModule"},
+            data: {idCourse: cbxCourse.val(), idModule: cbxModule.val(), idProjectFW: cbxProjectFW.val(), queryId: "students"},
             dataType: 'json',
-            success: function(rotationInfo){
-                for (u=0;u<rotationInfo.length;u++){
-                    $.ajax({
-                        url: url,
-                        type: 'GET',
-                        data: {idRotation: rotationInfo[u].pk, queryId: "studentsByRotation"},
-                        dataType: 'json',
-                        success: function(info){
-                            for(var i=0;i<info.length;i++){
-                                var texto = info[i].fields.name + " " + info[i].fields.surname;
-                                var value = info[i].pk;
-                                var elemento = '<tr claMóduloss="clickable-row" onclick="selectStudent(event,'+value+')"><td><input type="checkbox"></td><td>'+texto+'</td><td style="text-align:center;"><select><option value="">---</option></select></td></tr>';
-                                tbStudent.append(elemento);
-                                try{
-                                    cbxStudent.append(new Option(texto,value));
-                                }catch(err){console.log(err)}
-                            }
-                            try{
-                                cbxStudent.selectpicker('refresh');
-                            }catch(e){console.log(err)}
-                        }
-                    });
+            success: function(info){
+                for(var i=0;i<info.length;i++){
+                    if(info[i].model=='database.student'){   
+                        var texto = info[i].fields.name + " " + info[i].fields.surname;
+                        var value = info[i].pk;
+                        var elemento = '<tr class="clickable-row" onclick="selectStudent(event,'+value+')"><td><input type="checkbox"></td><td>'+texto+'</td><td style="text-align:center;"><select><option value="">---</option></select></td></tr>';
+                        tbStudent.append(elemento);
+                    }
                 }
             }
         });
@@ -212,58 +202,49 @@ function projectWFChanged(){
 
 //Cambia CBX MODULO
 function moduleChanged(){
-    resetCbx(cbxStudent,'Alumno');resetTable(tbHistory);;
+    resetCbx(cbxStudent,'Alumno');
+    resetTable(tbHistory);
     resetTable(tbStudent);
     resetCbx(cbxProject,'Proyectos');
+    resetCbx(cbxProjectFW,'Proyectos');
     resetPersonalFollow();
     //Carga de Alumnos
-    $.ajax({
-        url: url,
-        type: 'GET',
-        data: {idModule: cbxModule.val(), queryId: "rotationsByModule"},
-        dataType: 'json',
-        success: function(rotationInfo){
-            for (u=0;u<rotationInfo.length;u++){
-                $.ajax({
-                    url: url,
-                    type: 'GET',
-                    data: {idRotation: rotationInfo[u].pk, queryId: "studentsByRotation"},
-                    dataType: 'json',
-                    success: function(info){
-                        for(var i=0;i<info.length;i++){
-                            var texto = info[i].fields.name + " " + info[i].fields.surname;
-                            var value = info[i].pk;
-                            try{
-                                cbxStudent.append(new Option(texto,value));
-                            }catch(err){console.log(err)}
-                        }
-                        try{
-                            cbxStudent.selectpicker('refresh');
-                        }catch(e){console.log(err)}
+    if(this.val!=''){
+        if(cbxStudent.length){
+            $.ajax({
+                url: url,
+                type: 'GET',
+                data: {idCourse: cbxCourse.val(),idModule:cbxModule.val(), idProjectFW: cbxProjectFW.val(), queryId: "students"},
+                dataType: 'json',
+                success: function(info){
+                    for (i=0;i<info.length;i++){
+                        var texto = info[i].fields.name + " " + info[i].fields.surname;
+                        var value = info[i].pk;
+                        cbxStudent.append(new Option(texto,value));
                     }
-                });
-            }
+                    cbxStudent.selectpicker('refresh');
+                }
+            });
         }
-    });
-
-    //Carga de Projectos
-    $.ajax({
-        url: url,
-        type: 'GET',
-        data: {module: cbxModule.val(), queryId: "projects"},
-        dataType: 'json',
-        success: function(info){
-            for(var i=0;i<info.length;i++){
-                //El valor de las opciones de los select es el ID de los proyectos
-                var nameProject = info[i].fields.nameProject;
-                var value = info[i].pk;
-                cbxProject.append(new Option(nameProject, value));
-                cbxProjectFW.append(new Option(nameProject, value));
+        //Carga de Projectos
+        $.ajax({
+            url: url,
+            type: 'GET',
+            data: {module: cbxModule.val(), queryId: "projects"},
+            dataType: 'json',
+            success: function(info){
+                for(var i=0;i<info.length;i++){
+                    //El valor de las opciones de los select es el ID de los proyectos
+                    var nameProject = info[i].fields.nameProject;
+                    var value = info[i].pk;
+                    cbxProject.append(new Option(nameProject, value));
+                    cbxProjectFW.append(new Option(nameProject, value));
+                }
+                cbxProject.selectpicker('refresh');
+                cbxProjectFW.selectpicker('refresh');
             }
-            cbxProject.selectpicker('refresh');
-            cbxProjectFW.selectpicker('refresh');
-        }
-    });
+        });
+    }
 }
 
 
@@ -646,6 +627,29 @@ function updateRotation(){
     });
     actualModule.text('');
     rotationGChanged();
+}
+
+////////////Template 'historial'
+function moduleHistoryChanged(){
+    resetCbx(cbxStudent,'Alumno');
+    resetTable(tbHistory);
+    //Carga de Alumnos
+    if(this.val!=''){
+        $.ajax({
+            url: url,
+            type: 'GET',
+            data: {idCourse: cbxCourse.val(),idModule:cbxModuleHistory.val(), queryId: "students"},
+            dataType: 'json',
+            success: function(info){
+                for (i=0;i<info.length;i++){
+                    var texto = info[i].fields.name + " " + info[i].fields.surname;
+                    var value = info[i].pk;
+                    cbxStudent.append(new Option(texto,value));
+                }
+                cbxStudent.selectpicker('refresh');
+            }
+        });
+    }
 }
 
 //////////////////////////////

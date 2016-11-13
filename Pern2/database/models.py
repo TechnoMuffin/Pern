@@ -152,6 +152,7 @@ class Fulfillment(models.Model):
     def __str__(self):
         tagName = str(self.nameFF) + "(" + str(self.idProject) + ")"
         return tagName
+    
 ##################################SEGUIMIENTO DE ALUMNO##################################
 class StudentFollowing(models.Model):
     idSF = models.AutoField(primary_key=True)
@@ -167,6 +168,19 @@ class StudentFollowing(models.Model):
         verbose_name_plural = 'Seguimientos de Alumno'
     def __str__(self):
         tagName = '['+str(self.dateSF)+"]"+str(self.idStudent) + "(" + str(self.idModule) + ")"
+        return tagName
+##################################SEGUIMIENTO DE ALUMNO##################################
+class dailyFulfillment(models.Model):
+    idSF = models.ForeignKey(StudentFollowing)
+    idFF = models.ForeignKey(Fulfillment)
+    idDF = models.AutoField(primary_key=True)
+    done = models.BooleanField(blank=True)
+        
+    class Meta:
+        verbose_name = 'Cumplimiento diario'
+        verbose_name_plural = 'Cumplimientos diarios'
+    def __str__(self):
+        tagName = str(self.idFF.nameFF)+'['+str(self.idSF.idStudent.nameUser)+']'+"("+str(self.idSF.dateSF)+") - "+str(self.done)
         return tagName
 
 ##################################ACTIVIDADES##################################
