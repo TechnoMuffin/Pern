@@ -196,6 +196,26 @@ function projectWFChanged(){
                 }
             }
         });
+        /*$.ajax({
+            url: url,
+            type: 'GET',
+            data: {idModule:cbxModule.val(), date:date, queryId: "checkSFExists"},
+            dataType: 'json',
+            success: function(info){
+
+                }
+            }
+        });*/
+        
+        $.ajax({
+            url: url,
+            type: 'GET',
+            data: {idModule:cbxModule.val(), date:date.val(), queryId: "createSF"},
+            dataType: 'json',
+            success: function(){
+                console.log('holi');
+            }
+        });
     }
 }
 

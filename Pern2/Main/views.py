@@ -65,6 +65,22 @@ def pupilFollowing(request):
             else:
                 info= 'ERROR: No hay trabajo para esa actividad'
 
+        elif(queryId == "createSF"):
+            date = request.GET.get('date')
+            module = request.GET.get('idModule')
+            module = Module.objects.get(idModule=int(module))
+            students = Student.objects.filter(idRotation__idModule=module).order_by('surname')
+            for i in students:
+                newSF = StudentFollowing()
+                newSF.presenceSF = True
+                newSF.dateSF = str(date)
+                newSF.idModule = module
+                newSF.idStudent = i
+                newSF.commentPF = ''
+                newSF.save()
+                newSF.idTeacher.add(Teacher.objects.get(idUser=1)) #TODO meter un profesor de verdad
+                newSF.save()
+            info= '...'
         elif(queryId == "students"):
         #Devuelve todos los alumnos pertenecientes al curso y al modulo
             idC = request.GET.get('idCourse')
@@ -74,7 +90,6 @@ def pupilFollowing(request):
             module = Module.objects.filter(idModule=int(module))
             students = Student.objects.filter(idCourse=int(idC),idRotation__idModule=module).order_by('surname')
             #Si no me mandan idPFW...
-            #try:
             if(idPFW is not None):
                 project = Project.objects.filter(idProject=int(idPFW))
                 activity = Activity.objects.filter(idProject=project).order_by('idActivity')
