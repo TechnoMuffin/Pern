@@ -158,6 +158,15 @@ def projectFollowing(request):
             )
             proj.save()
             info = "Se ha modificado correctamente"
+        elif(queryId == "newActivity"):
+            idProject= request.GET.get('idProject')
+            idProject=Project.objects.get(idProject=int(idProject))
+            nameActivity= request.GET.get('nameActivity')
+            newActivity=Activity()
+            newActivity.nameActivity= nameActivity
+            newActivity.idProject=idProject
+            newActivity.save()
+            info = "Se ha creado correctamente"
         elif(queryId == "getActivities"):
             idProject= request.GET.get('idProject')
             idStudent= request.GET.get('idStudent')

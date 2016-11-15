@@ -117,6 +117,7 @@ function resetPersonalFollow(){
 
 //Esta funcion hace algo
 function courseChanged(){
+    $('#addActivity').addClass('disabledDIV');
     cleanTableActivities();
     resetModuleField();
     resetProjectFWField();
@@ -192,6 +193,8 @@ function projectWFChanged(){
         });
         $('#buttonDeleteProject').removeClass('disabledDIV');
         $('#buttonEditProject').removeClass('disabledDIV');
+        $('#addActivity').removeClass('disabledDIV');
+
     }
     else{
     // $('#cbxProjectFW').val('');
@@ -202,6 +205,7 @@ function projectWFChanged(){
 
 //Cambia CBX MODULO
 function moduleChanged(){
+    $('#addActivity').addClass('disabledDIV');
     cleanTableActivities();
     resetStudentField();
     resetStudentTable();
@@ -408,6 +412,22 @@ function selectStudent(evt,valor) {
     resetActivityData();
 }
 //Proyecto.html
+$("#activitySender").click(
+    function(){
+        if($('#nameActivity').val()!=""){
+            $.ajax({
+                url: url2,
+                type: 'GET',
+                data: {nameActivity: $('#nameActivity').val(),idProject: $('#cbxProjectFW').val(), queryId: "newActivity"},
+                success: function(){
+                    tableCreation();
+                    $('#nameActivity').val("");
+                }
+            });
+        }
+    }
+);
+
 $("#projectSender").click(
     function(){
         if($('#projectName').val()!=""){
@@ -455,23 +475,28 @@ $("#projectModificator").click(
 });
 function selectStudentWorking(evt,valor) {
     currentStudentSelected=valor;
+  tableCreation();
     console.log(currentStudentSelected);
-    $.ajax({
-        url: url2,
-        type: 'GET',
-        data: {idStudent: currentStudentSelected, idProject: cbxProjectFW.val(),queryId: "getActivities"},
-        dataType: 'json',
-        success: function(info){
-            cleanTableActivities();
-            for(var i=0;i<info.length;i++){
-                var texto = info[i].fields.idActivity[1];
-                var value = info[i].pk;
-                var table = '<tr><td>'+texto+'</td><td>5</td><td>2</td></tr>';
-                $('#tableActivities').append(table);
-            }
 
-        }
-    });
+}
+
+function tableCreation(){
+  $.ajax({
+      url: url2,
+      type: 'GET',
+      data: {idStudent: currentStudentSelected, idProject: cbxProjectFW.val(),queryId: "getActivities"},
+      dataType: 'json',
+      success: function(info){
+          cleanTableActivities();
+          for(var i=0;i<info.length;i++){
+              var texto = info[i].fields.idActivity[1];
+              var value = info[i].pk;
+              var table = '<tr><td>'+texto+'</td><td>5</td><td>2</td></tr>';
+              $('#tableActivities').append(table);
+          }
+
+      }
+  });
 }
 function cleanTableActivities(){
     $('#tableActivities').empty();
