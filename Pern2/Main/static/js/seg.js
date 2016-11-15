@@ -17,12 +17,12 @@ var tableStudents = $('#myTable'); //Table PupilFollowing
 var tbStudent = $("#tbAlumnos"); //Body table PupilFollowing
 var date = $('#datepicker');
 var nameStudentHTML = $('.nameStudent')
-//Activity fields
-var actName=$('#actName');
-var actCode=$('#actCode');
-var actStatus=$('#actStatus');
-var actClasses=$('#actClasses');
-var actCalification=$('#actCalification');
+    //Activity fields
+var actName = $('#actName');
+var actCode = $('#actCode');
+var actStatus = $('#actStatus');
+var actClasses = $('#actClasses');
+var actCalification = $('#actCalification');
 var tbFF = $('#tbFulfillments'); //Tabla de cumplimientos
 
 //Variables de /rotacionAlumno
@@ -59,60 +59,112 @@ var cbxModuleHistory = $('#cbxModuleHistory'); //Table History
 var tbHistory = $('#tbHistory'); //Body Table History
 
 
-tableHistory.css('max-height', $( window ).height());
+tableHistory.css('max-height', $(window).height());
 
 
 //Asignacion de Funciones a elementos HTML
-cbxProjectFW.on('change', function(){projectWFChanged()});
-date.on('change', function(){projectWFChanged()});
-cbxCourse.on('change', function(){courseChanged()});
-cbxModule.on('change', function(){moduleChanged()});
-cbxModuleHistory.on('change', function(){moduleHistoryChanged()});
-cbxProject.on('change', function(){projectChanged()});
-cbxActivity.on('change', function(){activityChanged()});
-cbxStudent.on('change', function(){studentChanged()});
-cbxCourseRotation.on('change', function(){courseRotationChanged()});
-tableStudents.on('click', '.clickable-row', function(event) {$(this).addClass('active').siblings().removeClass('active');});
+cbxProjectFW.on('change', function() {
+    projectWFChanged()
+});
+date.on('change', function() {
+    projectWFChanged()
+});
+cbxCourse.on('change', function() {
+    courseChanged()
+});
+cbxModule.on('change', function() {
+    moduleChanged()
+});
+cbxModuleHistory.on('change', function() {
+    moduleHistoryChanged()
+});
+cbxProject.on('change', function() {
+    projectChanged()
+});
+cbxActivity.on('change', function() {
+    activityChanged()
+});
+cbxStudent.on('change', function() {
+    studentChanged()
+});
+cbxCourseRotation.on('change', function() {
+    courseRotationChanged()
+});
+tableStudents.on('click', '.clickable-row', function(event) {
+    $(this).addClass('active').siblings().removeClass('active');
+});
 
 ///Template rotacionAlumno
-cbxRotationA.on('change', function(){cbxRotationAchanged()});
-cbxRotationB.on('change', function(){cbxRotationBchanged()});
-toSelectB.on('click', function(){toSelectMulB()});
-toSelectB1.on('click', function(){toSelectMulB()});
-toSelectA.on('click', function(){toSelectMulA()});
-toSelectA1.on('click', function(){toSelectMulA()});
-allToSelectB.on('click', function(){allToSelectMulB()});
-allToSelectB1.on('click', function(){allToSelectMulB()});
-allToSelectA.on('click', function(){allToSelectMulA()});
-allToSelectA1.on('click', function(){allToSelectMulA()});
-btnCreateRotation.on('click', function(){createRotation()});
-deleteSelectA.on('click', function(){deleteRotation(cbxRotationA)});
-deleteSelectB.on('click', function(){deleteRotation(cbxRotationB)});
-cbxCourseG.on('change', function(){courseGChanged()});
-cbxRotationG.on('change', function(){rotationGChanged()});
-btnUpdateRotation.on('click', function(){updateRotation()});
+cbxRotationA.on('change', function() {
+    cbxRotationAchanged()
+});
+cbxRotationB.on('change', function() {
+    cbxRotationBchanged()
+});
+toSelectB.on('click', function() {
+    toSelectMulB()
+});
+toSelectB1.on('click', function() {
+    toSelectMulB()
+});
+toSelectA.on('click', function() {
+    toSelectMulA()
+});
+toSelectA1.on('click', function() {
+    toSelectMulA()
+});
+allToSelectB.on('click', function() {
+    allToSelectMulB()
+});
+allToSelectB1.on('click', function() {
+    allToSelectMulB()
+});
+allToSelectA.on('click', function() {
+    allToSelectMulA()
+});
+allToSelectA1.on('click', function() {
+    allToSelectMulA()
+});
+btnCreateRotation.on('click', function() {
+    createRotation()
+});
+deleteSelectA.on('click', function() {
+    deleteRotation(cbxRotationA)
+});
+deleteSelectB.on('click', function() {
+    deleteRotation(cbxRotationB)
+});
+cbxCourseG.on('change', function() {
+    courseGChanged()
+});
+cbxRotationG.on('change', function() {
+    rotationGChanged()
+});
+btnUpdateRotation.on('click', function() {
+    updateRotation()
+});
 
 
 /////////////////////////////////
 //Funciones para limpiar campos//
 /////////////////////////////////
 
-function resetTable(tabla){
+function resetTable(tabla) {
     tabla.empty();
 }
 
-function resetCbx(cbx,defoul, value=''){
+function resetCbx(cbx, defoul, value = '') {
     cbx.empty();
     cbx.append(new Option(defoul, value));
     cbx.selectpicker('refresh');
 }
 
-function resetMultiSelect(slct){
+function resetMultiSelect(slct) {
     slct.empty();
     slct.change();
 }
 
-function resetActivityData(){
+function resetActivityData() {
     actName.text('---');
     actCode.text('---');
     actStatus.text('---');
@@ -120,9 +172,10 @@ function resetActivityData(){
     actCalification.text('---');
 }
 
-function resetPersonalFollow(){
-    resetCbx(cbxProject,'Proyectos');
-    resetCbx(cbxActivity,'Actividad');resetActivityData();;
+function resetPersonalFollow() {
+    resetCbx(cbxProject, 'Proyectos');
+    resetCbx(cbxActivity, 'Actividad');
+    resetActivityData();;
     personalFollowHTML.addClass('disabledDIV');
 }
 
@@ -131,21 +184,25 @@ function resetPersonalFollow(){
 ///////////////////////
 
 //Esta funcion hace algo
-function courseChanged(){
-    resetCbx(cbxModule,'Módulo');
+function courseChanged() {
+    resetCbx(cbxModule, 'Módulo');
     resetTable(tbStudent);
     resetPersonalFollow();
     resetTable(tbHistory);
-    resetCbx(cbxStudent,'Alumno');resetTable(tbHistory);;
-    if(this.val!=''){
+    resetCbx(cbxStudent, 'Alumno');
+    resetTable(tbHistory);
+    if (this.val != '') {
         $.ajax({
             url: url,
             type: 'GET',
-            data: {idCourse: cbxCourse.val(), queryId: "subjects"},
+            data: {
+                idCourse: cbxCourse.val(),
+                queryId: "subjects"
+            },
             dataType: 'json',
-            success: function(info){
-                resetCbx(cbxModule,'Módulo');
-                for(var i=0;i<info.length;i++){
+            success: function(info) {
+                resetCbx(cbxModule, 'Módulo');
+                for (var i = 0; i < info.length; i++) {
                     //El valor de las opciones de los select es el ID de los modulos
                     var text = info[i].fields.nameModule;
                     var value = info[i].pk;
@@ -159,24 +216,29 @@ function courseChanged(){
     }
 }
 
-function projectWFChanged(){
+function projectWFChanged() {
     resetTable(tbStudent);
-    resetCbx(cbxProject,'Proyectos');
+    resetCbx(cbxProject, 'Proyectos');
     resetPersonalFollow();
     resetTable(tbHistory);
-    if(this.val!=''){
+    if (this.val != '') {
         //CARGA ALUMNOS
         $.ajax({
             url: url,
             type: 'GET',
-            data: {idCourse: cbxCourse.val(), idModule: cbxModule.val(), idProjectFW: cbxProjectFW.val(), queryId: "students"},
+            data: {
+                idCourse: cbxCourse.val(),
+                idModule: cbxModule.val(),
+                idProjectFW: cbxProjectFW.val(),
+                queryId: "students"
+            },
             dataType: 'json',
-            success: function(info){
-                for(var i=0;i<info.length;i++){
-                    if(info[i].model=='database.student'){   
+            success: function(info) {
+                for (var i = 0; i < info.length; i++) {
+                    if (info[i].model == 'database.student') {
                         var texto = info[i].fields.name + " " + info[i].fields.surname;
                         var value = info[i].pk;
-                        var elemento = '<tr class="clickable-row" onclick="selectStudent(event,'+value+')"><td><input type="checkbox"></td><td>'+texto+'</td><td style="text-align:center;"><select><option value="">---</option></select></td></tr>';
+                        var elemento = '<tr class="clickable-row" onclick="selectStudent(event,' + value + ')"><td><input type="checkbox"></td><td>' + texto + '</td><td style="text-align:center;"><select><option value="">---</option></select></td></tr>';
                         tbStudent.append(elemento);
                     }
                 }
@@ -185,35 +247,13 @@ function projectWFChanged(){
         $.ajax({
             url: url,
             type: 'GET',
-            data: {idProject: cbxProjectFW.val(), queryId: "fulfillments"},
+            data: {
+                idModule: cbxModule.val(),
+                date: date.val(),
+                queryId: "createSF"
+            },
             dataType: 'json',
-            success: function(info){
-                resetTable(tbFF);
-                for(var x=0;x<info.length;x++){
-                    nameFF = info[x]['fields']['nameFF'];
-                    idFF = info[x]['pk'];
-                    var elemento = '<tr><td><input type="checkbox"></td><td value =' + idFF +'>' + nameFF +'</td><td>%</td></tr>';
-                    tbFF.append(elemento);
-                }
-            }
-        });
-        /*$.ajax({
-            url: url,
-            type: 'GET',
-            data: {idModule:cbxModule.val(), date:date, queryId: "checkSFExists"},
-            dataType: 'json',
-            success: function(info){
-
-                }
-            }
-        });*/
-        
-        $.ajax({
-            url: url,
-            type: 'GET',
-            data: {idModule:cbxModule.val(), date:date.val(), queryId: "createSF"},
-            dataType: 'json',
-            success: function(){
+            success: function() {
                 console.log('holi');
             }
         });
@@ -222,26 +262,31 @@ function projectWFChanged(){
 
 
 //Cambia CBX MODULO
-function moduleChanged(){
-    resetCbx(cbxStudent,'Alumno');
+function moduleChanged() {
+    resetCbx(cbxStudent, 'Alumno');
     resetTable(tbHistory);
     resetTable(tbStudent);
-    resetCbx(cbxProject,'Proyectos');
-    resetCbx(cbxProjectFW,'Proyectos');
+    resetCbx(cbxProject, 'Proyectos');
+    resetCbx(cbxProjectFW, 'Proyectos');
     resetPersonalFollow();
     //Carga de Alumnos
-    if(this.val!=''){
-        if(cbxStudent.length){
+    if (this.val != '') {
+        if (cbxStudent.length) {
             $.ajax({
                 url: url,
                 type: 'GET',
-                data: {idCourse: cbxCourse.val(),idModule:cbxModule.val(), idProjectFW: cbxProjectFW.val(), queryId: "students"},
+                data: {
+                    idCourse: cbxCourse.val(),
+                    idModule: cbxModule.val(),
+                    idProjectFW: cbxProjectFW.val(),
+                    queryId: "students"
+                },
                 dataType: 'json',
-                success: function(info){
-                    for (i=0;i<info.length;i++){
+                success: function(info) {
+                    for (i = 0; i < info.length; i++) {
                         var texto = info[i].fields.name + " " + info[i].fields.surname;
                         var value = info[i].pk;
-                        cbxStudent.append(new Option(texto,value));
+                        cbxStudent.append(new Option(texto, value));
                     }
                     cbxStudent.selectpicker('refresh');
                 }
@@ -251,10 +296,13 @@ function moduleChanged(){
         $.ajax({
             url: url,
             type: 'GET',
-            data: {module: cbxModule.val(), queryId: "projects"},
+            data: {
+                module: cbxModule.val(),
+                queryId: "projects"
+            },
             dataType: 'json',
-            success: function(info){
-                for(var i=0;i<info.length;i++){
+            success: function(info) {
+                for (var i = 0; i < info.length; i++) {
                     //El valor de las opciones de los select es el ID de los proyectos
                     var nameProject = info[i].fields.nameProject;
                     var value = info[i].pk;
@@ -269,17 +317,20 @@ function moduleChanged(){
 }
 
 
-function projectChanged(){
-    resetCbx(cbxActivity,'Actividad');resetActivityData();;
+function projectChanged() {
+    resetCbx(cbxActivity, 'Actividad');
+    resetActivityData();;
     $.ajax({
         url: url,
         type: 'GET',
-        data: {idCourse: cbxCourse.val(),
-               idProject: cbxProject.val(),
-               queryId: "activities"},
+        data: {
+            idCourse: cbxCourse.val(),
+            idProject: cbxProject.val(),
+            queryId: "activities"
+        },
         dataType: 'json',
-        success: function(info){
-            for(var i=0;i<info.length;i++){
+        success: function(info) {
+            for (var i = 0; i < info.length; i++) {
                 //El valor de las opciones de los select es el ID de las Activities
                 var nameActivity = info[i].fields.nameActivity;
                 var value = info[i].pk;
@@ -291,53 +342,61 @@ function projectChanged(){
 }
 
 
-function studentChanged(){
+function studentChanged() {
     //Cuando el select cbxStudent cambia de valor carga los datos correspondientes del alumno
     resetTable(tbHistory);
     console.log(cbxStudent.val());
-    if(this.val!=''){
+    if (this.val != '') {
         $.ajax({
             url: url,
             type: 'GET',
-            data: {idStudent: cbxStudent.val(), queryId: "history"},
+            data: {
+                idStudent: cbxStudent.val(),
+                queryId: "history"
+            },
             dataType: 'json',
-            success: function(info){
-                for(var i=0;i<info.length;i++){
-                    var idSF=info[i].pk;
-                    for(var v=0;v<info.length;v++){
-                        if(info[v].model=='database.onclass'){
-                            if(info[v].fields.idSF==idSF){
+            success: function(info) {
+                for (var i = 0; i < info.length; i++) {
+                    var idSF = info[i].pk;
+                    for (var v = 0; v < info.length; v++) {
+                        if (info[v].model == 'database.onclass') {
+                            if (info[v].fields.idSF == idSF) {
                                 var activity = info[v].fields.idActivity[1];
                                 var project = info[v].fields.idActivity[2];
-                                v=info.length;
+                                v = info.length;
                             }
                         }
                     }
                     var presencia = info[i].fields.presenceSF;
                     var fecha = info[i].fields.dateSF;
                     var obs = info[i].fields.commentPF;
-                    sinObs='<td><button type="button" class="btn btn-warning pull-right disabledDIV">'+
-                        '<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>'+
+                    sinObs = '<td><button type="button" class="btn btn-warning pull-right disabledDIV">' +
+                        '<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>' +
                         '</button></td>';
-                    if(info[i].model=="database.studentfollowing"){
-                        if(presencia){
-                            presencia='<span class="glyphicon glyphicon-ok verde" aria-hidden="true"></span>';
-                            var elemento = '<tr class="clickable-row">'+
-                                '<th scope="row">'+presencia+'</th>'+
-                                '<td>'+fecha+'</td>'+
-                                '<td>'+activity+' de '+project+'</td>';
-                            if(obs!=''){
-                                elemento=elemento+'<td>'+createModalObs('modal'+idSF,obs)+'</td></tr>';
-                            }else{
-                                elemento=elemento+sinObs;
+                    if (activity == undefined) {
+                        activity = 'No hizo nada'
+                    } else {
+                        activity = activity + ' de ' + project
+                    }
+                    if (info[i].model == "database.studentfollowing") {
+                        if (presencia) {
+                            presencia = '<span class="glyphicon glyphicon-ok verde" aria-hidden="true"></span>';
+                            var elemento = '<tr class="clickable-row">' +
+                                '<th scope="row">' + presencia + '</th>' +
+                                '<td>' + fecha + '</td>' +
+                                '<td>' + activity + '</td>';
+                            if (obs != '') {
+                                elemento = elemento + '<td>' + createModalObs('modal' + idSF, obs) + '</td></tr>';
+                            } else {
+                                elemento = elemento + sinObs;
                             }
-                        }else{
-                            presencia='<span class="glyphicon glyphicon-remove rojo" aria-hidden="true"></span>';
-                            var elemento = '<tr class="clickable-row">'+
-                                '<th scope="row">'+presencia+'</th>'+
-                                '<td>'+fecha+'</td>'+
+                        } else {
+                            presencia = '<span class="glyphicon glyphicon-remove rojo" aria-hidden="true"></span>';
+                            var elemento = '<tr class="clickable-row">' +
+                                '<th scope="row">' + presencia + '</th>' +
+                                '<td>' + fecha + '</td>' +
                                 '<td>Alumno Ausente</td>';
-                            elemento=elemento+sinObs;
+                            elemento = elemento + sinObs;
                         }
                         tbHistory.append(elemento);
                     }
@@ -348,25 +407,27 @@ function studentChanged(){
 }
 
 
-function activityChanged(){
+function activityChanged() {
     resetActivityData();
     $.ajax({
         url: url,
         type: 'GET',
-        data: {idActivity: cbxActivity.val(),
-               idStudent: currentStudentSelected,
-               queryId: "working"},
+        data: {
+            idActivity: cbxActivity.val(),
+            idStudent: currentStudentSelected,
+            queryId: "working"
+        },
         dataType: 'json',
-        success: function(info){
-            i=info[0].fields;
-            i2=info[1].fields;
+        success: function(info) {
+            i = info[0].fields;
+            i2 = info[1].fields;
             actName.text(i2.nameActivity);
             actCode.text(info[1].pk);
-            if(i.hasFinish){
-                actStatus.css('color','green');
+            if (i.hasFinish) {
+                actStatus.css('color', 'green');
                 actStatus.text('Terminado');
-            }else{
-                actStatus.css('color','yellow');
+            } else {
+                actStatus.css('color', 'yellow');
                 actStatus.text('Pendiente');
             }
             actClasses.text(i.numberOfClasses);
@@ -376,17 +437,40 @@ function activityChanged(){
 }
 
 //ACA PASA LA MAGIA DE LA SELECCION DE ESTUDIANTE
-function selectStudent(evt,valor) {
+function selectStudent(evt, valor) {
     console.log(valor);
-    currentStudentSelected=valor;
+    currentStudentSelected = valor;
     $.ajax({
         url: url,
         type: 'GET',
-        data: {idStudent: currentStudentSelected,
-               queryId: "onlyStudent"},
+        data: {
+            idStudent: currentStudentSelected,
+            queryId: "onlyStudent"
+        },
         dataType: 'json',
-        success: function(info){
-            nameStudentHTML.text(info[0].fields.name+' '+info[0].fields.surname);
+        success: function(info) {
+            nameStudentHTML.text(info[0].fields.name + ' ' + info[0].fields.surname);
+        }
+    });
+    $.ajax({
+        url: url,
+        type: 'GET',
+        data: {
+            date: date.val(),
+            idModule: cbxModule.val(),
+            idStudent: currentStudentSelected,
+            idProject: cbxProjectFW.val(),
+            queryId: "dailyFulfillments"
+        },
+        dataType: 'json',
+        success: function(info) {
+            resetTable(tbFF);
+            for (var x = 0; x < info.length; x++) {
+                nameFF = info[x].fields.idFF[1];
+                idFF = info[x]['pk'];
+                var elemento = '<tr><td><input type="checkbox" checked></td><td value =' + idFF + '>' + nameFF + '</td><td>%</td></tr>';
+                tbFF.append(elemento);
+            }
         }
     });
     personalFollowHTML.removeClass('disabledDIV');
@@ -396,20 +480,23 @@ function selectStudent(evt,valor) {
 
 ///////Template 'rotacionAlumno'////////
 
-function courseRotationChanged(){
-    resetCbx(cbxRotationA,'Alumnos sin Rotación','0');
-    resetCbx(cbxRotationB,'Alumnos sin Rotación','0');
+function courseRotationChanged() {
+    resetCbx(cbxRotationA, 'Alumnos sin Rotación', '0');
+    resetCbx(cbxRotationB, 'Alumnos sin Rotación', '0');
     resetMultiSelect(studentSelectA);
     resetMultiSelect(studentSelectB);
-    if($(this).val!=''){
+    if ($(this).val != '') {
         selecterDiv.removeClass('disabledDIV');
         $.ajax({
             url: url,
             type: 'GET',
-            data: {idCourse: cbxCourseRotation.val(), queryId: "rotations"},
+            data: {
+                idCourse: cbxCourseRotation.val(),
+                queryId: "rotations"
+            },
             dataType: 'json',
-            success: function(info){
-                for(var i=0;i<info.length;i++){
+            success: function(info) {
+                for (var i = 0; i < info.length; i++) {
                     var text = info[i].fields.nameRotation;
                     var value = info[i].pk;
                     cbxRotationA.append(new Option(text, value));
@@ -424,19 +511,22 @@ function courseRotationChanged(){
                 ajaxForGetStudentRotation(cbxRotationB, studentSelectB);
             }
         });
-    }else{
+    } else {
         selecterDiv.addClass('disabledDIV');
     }
 }
 
-function ajaxForGetStudentRotation(fromCbx, elemento){
+function ajaxForGetStudentRotation(fromCbx, elemento) {
     $.ajax({
         url: url,
         type: 'GET',
-        data: {idRotation: fromCbx.val(), queryId: "studentsByRotation"},
+        data: {
+            idRotation: fromCbx.val(),
+            queryId: "studentsByRotation"
+        },
         dataType: 'json',
-        success: function(info){
-            for(var i=0;i<info.length;i++){
+        success: function(info) {
+            for (var i = 0; i < info.length; i++) {
                 var texto = info[i].fields.surname + ", " + info[i].fields.name;
                 var value = info[i].pk;
                 elemento.append(new Option(texto, value));
@@ -446,14 +536,14 @@ function ajaxForGetStudentRotation(fromCbx, elemento){
     });
 }
 
-function cbxRotationAchanged(){
+function cbxRotationAchanged() {
     resetMultiSelect(studentSelectA);
-    $('#cbxRotationB option').each(function(){
+    $('#cbxRotationB option').each(function() {
         $(this).removeClass('disabledDIV');
     });
-    $('#cbxRotationB option').each(function(){
+    $('#cbxRotationB option').each(function() {
         $(this).removeClass('disabledDIV');
-        if($(this).val()==cbxRotationA.val()){
+        if ($(this).val() == cbxRotationA.val()) {
             console.log(cbxRotationA.val());
             $(this).addClass('disabledDIV');
         }
@@ -462,14 +552,14 @@ function cbxRotationAchanged(){
     ajaxForGetStudentRotation(cbxRotationA, studentSelectA);
 }
 
-function cbxRotationBchanged(){
+function cbxRotationBchanged() {
     resetMultiSelect(studentSelectB);
-    $('#cbxRotationA option').each(function(){
+    $('#cbxRotationA option').each(function() {
         $(this).removeClass('disabledDIV');
     });
-    $('#cbxRotationA option').each(function(){
+    $('#cbxRotationA option').each(function() {
         $(this).removeClass('disabledDIV');
-        if($(this).val()==cbxRotationB.val()){
+        if ($(this).val() == cbxRotationB.val()) {
             console.log(cbxRotationA.val());
             $(this).addClass('disabledDIV');
         }
@@ -478,74 +568,82 @@ function cbxRotationBchanged(){
     ajaxForGetStudentRotation(cbxRotationB, studentSelectB);
 }
 
-function ajaxForSetStudentsRotations(newRotation,StudentsIDS){
+function ajaxForSetStudentsRotations(newRotation, StudentsIDS) {
     $.ajax({
         url: url,
         type: 'GET',
-        data: {'studentsIds[]':StudentsIDS, newIdRotation: newRotation.val(), queryId: "changeStudentsRotation"},
+        data: {
+            'studentsIds[]': StudentsIDS,
+            newIdRotation: newRotation.val(),
+            queryId: "changeStudentsRotation"
+        },
         dataType: 'json',
-        success: function(info){
+        success: function(info) {
             console.log('Saved');
         }
     });
 }
 
-function toSelectMulB(){
+function toSelectMulB() {
     var items = [];
-    $('#studentSelectA option:selected').each(function(){
+    $('#studentSelectA option:selected').each(function() {
         items.push($(this).val());
         var element = $(this).detach();
         studentSelectB.append(element);
     });
-    ajaxForSetStudentsRotations(cbxRotationB,items);
+    ajaxForSetStudentsRotations(cbxRotationB, items);
 }
 
 
-function toSelectMulA(){
+function toSelectMulA() {
     var items = [];
-    $('#studentSelectB option:selected').each(function(){
+    $('#studentSelectB option:selected').each(function() {
         items.push($(this).val());
         var element = $(this).detach();
         studentSelectA.append(element);
     });
-    ajaxForSetStudentsRotations(cbxRotationA,items);
+    ajaxForSetStudentsRotations(cbxRotationA, items);
 }
 
-function allToSelectMulB(){
+function allToSelectMulB() {
     var items = [];
-    $('#studentSelectA option').each(function(){
+    $('#studentSelectA option').each(function() {
         items.push($(this).val());
         var element = $(this).detach();
         studentSelectB.append(element);
     });
-    ajaxForSetStudentsRotations(cbxRotationB,items);
+    ajaxForSetStudentsRotations(cbxRotationB, items);
 }
 
-function allToSelectMulA(){
+function allToSelectMulA() {
     var items = [];
-    $('#studentSelectB option').each(function(){
+    $('#studentSelectB option').each(function() {
         items.push($(this).val());
         var element = $(this).detach();
         studentSelectA.append(element);
     });
-    ajaxForSetStudentsRotations(cbxRotationA,items);
+    ajaxForSetStudentsRotations(cbxRotationA, items);
 }
 
-function createRotation(){
-    if(txtRotationName.val()=='' || cbxCourse.val()=='' || cbxModule.val()==''){
+function createRotation() {
+    if (txtRotationName.val() == '' || cbxCourse.val() == '' || cbxModule.val() == '') {
         modalTitle.text('Error');
         modalText.text('Por favor, rellene los campos correctamente.');
         $('#modal').modal('toggle');
-    }else{   
+    } else {
         $.ajax({
             url: url,
             type: 'GET',
-            data: {nameRotation: txtRotationName.val(), idCourse: cbxCourse.val(), idModule: cbxModule.val(), queryId: "createRotation"},
+            data: {
+                nameRotation: txtRotationName.val(),
+                idCourse: cbxCourse.val(),
+                idModule: cbxModule.val(),
+                queryId: "createRotation"
+            },
             dataType: 'json',
-            success: function(){
-            }
+            success: function() {}
         });
-        modalText.text('Se ha creado la rotación '+txtRotationName.val()+' correctamente.');
+        modalText.text('Se ha creado la rotación ' + txtRotationName.val() + ' correctamente.');
         modalTitle.text('Éxito!');
         $('#modal').modal('toggle');
         txtRotationName.val('');
@@ -554,40 +652,46 @@ function createRotation(){
         cbxCourseRotation.val('');
         cbxCourseRotation.selectpicker('refresh');
         selecterDiv.addClass('disabledDIV');
-        resetCbx(cbxModule,'Módulo');
-        resetCbx(cbxRotationA,'Alumnos sin Rotación','0');
-        resetCbx(cbxRotationB,'Alumnos sin Rotación','0');
+        resetCbx(cbxModule, 'Módulo');
+        resetCbx(cbxRotationA, 'Alumnos sin Rotación', '0');
+        resetCbx(cbxRotationB, 'Alumnos sin Rotación', '0');
         resetMultiSelect(studentSelectA);
         resetMultiSelect(studentSelectB);
         courseGChanged();
     }
 }
 
-function deleteRotation(idRotacion){
-    if(idRotacion!=''){
+function deleteRotation(idRotacion) {
+    if (idRotacion != '') {
         $.ajax({
             url: url,
             type: 'GET',
-            data: {idRotation: idRotacion.val(), queryId: "deleteRotation"},
+            data: {
+                idRotation: idRotacion.val(),
+                queryId: "deleteRotation"
+            },
             dataType: 'json'
         });
         courseRotationChanged();
     }
 }
 
-function courseGChanged(){
+function courseGChanged() {
     actualModule.text('');
-    resetCbx(cbxRotationG,'Rotación');
-    resetCbx(cbxNewModuleG,'Nuevo Módulo');
-    if(this.val!=''){
+    resetCbx(cbxRotationG, 'Rotación');
+    resetCbx(cbxNewModuleG, 'Nuevo Módulo');
+    if (this.val != '') {
         $.ajax({
             url: url,
             type: 'GET',
-            data: {idCourse: cbxCourseG.val(), queryId: "subjects"},
+            data: {
+                idCourse: cbxCourseG.val(),
+                queryId: "subjects"
+            },
             dataType: 'json',
-            success: function(info){
-                resetCbx(cbxModule,'Módulo');
-                for(var i=0;i<info.length;i++){
+            success: function(info) {
+                resetCbx(cbxModule, 'Módulo');
+                for (var i = 0; i < info.length; i++) {
                     //El valor de las opciones de los select es el ID de los modulos
                     var text = info[i].fields.nameModule;
                     var value = info[i].pk;
@@ -599,10 +703,13 @@ function courseGChanged(){
         $.ajax({
             url: url,
             type: 'GET',
-            data: {idCourse: cbxCourseG.val(), queryId: "rotations"},
+            data: {
+                idCourse: cbxCourseG.val(),
+                queryId: "rotations"
+            },
             dataType: 'json',
-            success: function(info){
-                for(var i=0;i<info.length;i++){
+            success: function(info) {
+                for (var i = 0; i < info.length; i++) {
                     var text = info[i].fields.nameRotation;
                     var value = info[i].pk;
                     cbxRotationG.append(new Option(text, value));
@@ -613,36 +720,43 @@ function courseGChanged(){
     }
 }
 
-function rotationGChanged(){
-    var esto=cbxRotationG.val();
-    if(esto!=''){
+function rotationGChanged() {
+    var esto = cbxRotationG.val();
+    if (esto != '') {
         $.ajax({
             url: url,
             type: 'GET',
-            data: {idCourse: cbxCourseG.val(), queryId: "rotations"},
+            data: {
+                idCourse: cbxCourseG.val(),
+                queryId: "rotations"
+            },
             dataType: 'json',
-            success: function(info){
-                for(var i=0;i<info.length;i++){
+            success: function(info) {
+                for (var i = 0; i < info.length; i++) {
                     var value = info[i].pk;
-                    if(esto==value){
+                    if (esto == value) {
                         actualModule.text(info[i].fields.idModule[1]);
-                        i=info.length;
+                        i = info.length;
                     }
                 }
             }
         });
-    }else{
+    } else {
         actualModule.text('');
     }
 }
 
-function updateRotation(){
+function updateRotation() {
     $.ajax({
         url: url,
         type: 'GET',
-        data: {idRotation: cbxRotationG.val(), idModule: cbxNewModuleG.val(), queryId: "updateRotation"},
+        data: {
+            idRotation: cbxRotationG.val(),
+            idModule: cbxNewModuleG.val(),
+            queryId: "updateRotation"
+        },
         dataType: 'json',
-        success: function(){
+        success: function() {
             console.log('pinpanpummm');
         }
     });
@@ -651,21 +765,25 @@ function updateRotation(){
 }
 
 ////////////Template 'historial'
-function moduleHistoryChanged(){
-    resetCbx(cbxStudent,'Alumno');
+function moduleHistoryChanged() {
+    resetCbx(cbxStudent, 'Alumno');
     resetTable(tbHistory);
     //Carga de Alumnos
-    if(this.val!=''){
+    if (this.val != '') {
         $.ajax({
             url: url,
             type: 'GET',
-            data: {idCourse: cbxCourse.val(),idModule:cbxModuleHistory.val(), queryId: "students"},
+            data: {
+                idCourse: cbxCourse.val(),
+                idModule: cbxModuleHistory.val(),
+                queryId: "students"
+            },
             dataType: 'json',
-            success: function(info){
-                for (i=0;i<info.length;i++){
+            success: function(info) {
+                for (i = 0; i < info.length; i++) {
                     var texto = info[i].fields.name + " " + info[i].fields.surname;
                     var value = info[i].pk;
-                    cbxStudent.append(new Option(texto,value));
+                    cbxStudent.append(new Option(texto, value));
                 }
                 cbxStudent.selectpicker('refresh');
             }
@@ -676,33 +794,15 @@ function moduleHistoryChanged(){
 //////////////////////////////
 //Funcion de Modal Bootstrap//
 //////////////////////////////
-function createModalObs(idCoso,content){
-    var someHTML = '<button type="button" class="btn btn-warning pull-right" data-toggle="modal" data-target="#'+idCoso+'">'+
-        '<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span></button>'+
-        '<div id="'+idCoso+'" class="modal fade" role="dialog">'+
-        '<div class="modal-dialog"><div class="modal-content"><div class="modal-header">'+
-        '<button type="button" class="close" data-dismiss="modal">&times;</button>'+
-        '<h4 class="modal-title">Observaciones</h4></div><div class="modal-body">'+
-        '<p style="white-space: pre-wrap">'+content+'</p></div><div class="modal-footer">'+
-        '<button type="button" class="btn btn-default" data-dismiss="modal">Ok</button>'+
+function createModalObs(idCoso, content) {
+    var someHTML = '<button type="button" class="btn btn-warning pull-right" data-toggle="modal" data-target="#' + idCoso + '">' +
+        '<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span></button>' +
+        '<div id="' + idCoso + '" class="modal fade" role="dialog">' +
+        '<div class="modal-dialog"><div class="modal-content"><div class="modal-header">' +
+        '<button type="button" class="close" data-dismiss="modal">&times;</button>' +
+        '<h4 class="modal-title">Observaciones</h4></div><div class="modal-body">' +
+        '<p style="white-space: pre-wrap">' + content + '</p></div><div class="modal-footer">' +
+        '<button type="button" class="btn btn-default" data-dismiss="modal">Ok</button>' +
         '</div></div></div></div>';
     return someHTML;
-}
-
-//ACA PASA LA MAGIA DE LA SELECCION DE ESTUDIANTE
-function selectStudent(evt,valor) {
-    currentStudentSelected=valor;
-    $.ajax({
-        url: url,
-        type: 'GET',
-        data: {idStudent: currentStudentSelected,
-               queryId: "onlyStudent"},
-        dataType: 'json',
-        success: function(info){
-            nameStudentHTML.text(info[0].fields.name+' '+info[0].fields.surname);
-        }
-    });
-    personalFollowHTML.removeClass('disabledDIV');
-    cbxActivity[0].selectedIndex = 0;
-    resetActivityData();
 }
