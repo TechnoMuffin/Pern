@@ -149,6 +149,10 @@ def projectFollowing(request):
             idProject= request.GET.get('idProject')
             proj=Project.objects.get(idProject=int(idProject))
             proj.delete()
+        elif(queryId == "delActivities"):
+            idWork = request.GET.get('currentActivity')
+            working = Working.objects.get(id=int(idWork))
+            working.idActivity.delete()
         elif(queryId == "modProject"):
             idProject= request.GET.get('idProject')
             nameProject= request.GET.get('nameProject')
