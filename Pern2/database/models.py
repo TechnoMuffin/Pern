@@ -159,7 +159,7 @@ class StudentFollowing(models.Model):
     idStudent = models.ForeignKey(Student)
     idTeacher = models.ManyToManyField(Teacher)
     commentPF = models.TextField(blank=True)
-        
+
     class Meta:
         verbose_name = 'Seguimiento de Alumno'
         verbose_name_plural = 'Seguimientos de Alumno'
@@ -198,12 +198,12 @@ class Working(models.Model):
     def __str__(self):
         tagName = str(self.idActivity) + " " + str(self.idStudent)
         return tagName
-    
+
 ##################################TRABAJA##################################
 class OnClass(models.Model):
     idActivity = models.ForeignKey(Activity)
     idSF = models.ForeignKey(StudentFollowing)
-    
+
     class Meta:
         verbose_name = 'Trabajo en Clase'
         verbose_name_plural = 'Trabajos en Clase'

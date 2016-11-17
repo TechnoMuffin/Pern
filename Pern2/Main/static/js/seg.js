@@ -37,6 +37,8 @@ var actStatus=$('#actStatus');
 var actClasses=$('#actClasses');
 var actCalification=$('#actCalification');
 
+var currentActivity = '';
+
 cbxProjectFW.on('change', function(){projectWFChanged()});
 cbxCourse.on('change', function(){courseChanged()});
 cbxModule.on('change', function(){moduleChanged()});
@@ -489,9 +491,16 @@ function tableCreation(){
       success: function(info){
           cleanTableActivities();
           for(var i=0;i<info.length;i++){
-              var texto = info[i].fields.idActivity[1];
+              var textName = info[i].fields.idActivity[1];
+              var textNOC = info[i].fields.numberOfClasses;
+              var textCal = info[i].fields.calification;
               var value = info[i].pk;
-              var table = '<tr><td>'+texto+'</td><td>5</td><td>2</td></tr>';
+              var table = '<tr><td>'+textName+'</td>'+
+                              '<td>'+textNOC+'</td>'+
+                              '<td>'+textCal+'</td>'+
+                              '<td><button data-toggle="modal" onclick="setCurrentActivity('+value+')" data-target="#modalCalificateWork" class="btn btn-default "><span class="glyphicon glyphicon-star"></span></button></td>'+
+                              '<td><button data-toggle="modal" onclick="setCurrentActivity('+value+')" data-target="#modalEditWork" class="btn btn-default "><span class="glyphicon glyphicon-edit"></span></button></td>'+
+                              '<td><button data-toggle="modal" onclick="setCurrentActivity('+value+')" data-target="#modalDeleteWork" class="btn btn-default botonDel"><span class="glyphicon glyphicon-trash"></span></button></td></tr>';
               $('#tableActivities').append(table);
           }
 
@@ -500,4 +509,19 @@ function tableCreation(){
 }
 function cleanTableActivities(){
     $('#tableActivities').empty();
+}
+function setCurrentActivity(valor){
+    currentActivity=valor;
+    console.log(currentActivity);
+}
+function activityDeleter(){
+  $.ajax({
+      url: url2,
+      type: 'GET',
+      data: {currentActivity: currentActivity,queryId: "delActivities"},
+      success: function(){
+          tableCreation();
+          console.log("Puto el que lee(oveja xd)");
+      }
+  });
 }
