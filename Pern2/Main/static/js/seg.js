@@ -525,3 +525,29 @@ function activityDeleter(){
       }
   });
 }
+function activityModify(){
+  console.log("xddddddddddd");
+  $.ajax({
+      url: url2,
+      type: 'GET',
+      data: {newNameWork: $('#inputEditWork').val(),newCantDays: $('#inputClassesWork').val(),currentActivity: currentActivity,queryId: "modActivities"},
+      success: function(){
+          tableCreation();
+          $('#inputEditWork').val("");
+          $('#inputClassesWork').val("");
+          console.log("Puto el que lee(oveja xp)");
+      }
+  });
+}
+function calActivities(){
+  $.ajax({
+      url: url2,
+      type: 'GET',
+      data: {newCal: $('#inputCal').val(),currentActivity: currentActivity,queryId: "calActivities"},
+      success: function(){
+          tableCreation();
+          $('#inputCal').val("");
+          console.log("Puto el que lee(oveja xp)");
+      }
+  });
+}

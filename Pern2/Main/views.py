@@ -153,6 +153,22 @@ def projectFollowing(request):
             idWork = request.GET.get('currentActivity')
             working = Working.objects.get(id=int(idWork))
             working.idActivity.delete()
+        elif(queryId == "modActivities"):
+            idWork = request.GET.get('currentActivity')
+            newName = request.GET.get('newNameWork')
+            newCantDays = request.GET.get('newCantDays')
+            working = Working.objects.get(id=int(idWork))
+            working.numberOfClasses=newCantDays
+            working.idActivity.nameActivity=newName
+            working.idActivity.save()
+            working.save()
+            info = "Se ha modificado correctamente"
+        elif(queryId == "calActivities"):
+            idWork = request.GET.get('currentActivity')
+            newCal = request.GET.get('newCal')
+            working = Working.objects.get(id=int(idWork))
+            working.calification = newCal
+            working.save()
         elif(queryId == "modProject"):
             idProject= request.GET.get('idProject')
             nameProject= request.GET.get('nameProject')
