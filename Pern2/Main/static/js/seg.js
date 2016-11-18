@@ -39,7 +39,7 @@ var actCalification=$('#actCalification');
 
 var currentActivity = '';
 
-cbxProjectFW.on('change', function(){projectWFChanged()});
+cbxProjectFW.on('change', function(){projectWorkingChanged()});
 cbxCourse.on('change', function(){courseChanged()});
 cbxModule.on('change', function(){moduleChanged()});
 cbxProject.on('change', function(){projectChanged()});
@@ -193,9 +193,6 @@ function projectWFChanged(){
                 }
             }
         });
-        $('#buttonDeleteProject').removeClass('disabledDIV');
-        $('#buttonEditProject').removeClass('disabledDIV');
-        $('#addActivity').removeClass('disabledDIV');
 
     }
     else{
@@ -550,4 +547,40 @@ function calActivities(){
           console.log("Puto el que lee(oveja xp)");
       }
   });
+}
+function projectWorkingChanged(){
+    cleanTableActivities();
+    resetStudentTable();
+    resetProjectField();
+    resetPersonalFollow();
+    resetHistoryTable();
+    if(this.val!=''){
+        //Carga de Alumnos
+        $.ajax({
+            url: url2,
+            type: 'GET',
+            data: {idModule: cbxModule.val(),idProject: cbxProjectFW.val(), queryId: "studentsWorking"},
+            dataType: 'json',
+            success: function(info){
+                for(var i=0;i<info.length;i++){
+                    console.log("211");
+                    var texto = info[i].fields.idStudent[1] + " " + info[i].fields.idStudent[2];
+                    var value = info[i].fields.idStudent[0];
+                    var hasFinish = info[i].fields.hasFinish;
+                    if (hasFinish == true){
+                        terminado = "termino"
+                    }
+                    else{
+                        terminado = "no termino"
+                    }
+                    var elemento = '<tr class="clickable-row" onclick="selectStudentWorking(event,'+value+')"><td>'+texto+'</td><td>'+terminado+'</td></tr>';
+                    tbProjectStudent.append(elemento);
+                }
+            }
+        });
+    }
+    $('#buttonDeleteProject').removeClass('disabledDIV');
+    $('#buttonEditProject').removeClass('disabledDIV');
+    $('#addActivity').removeClass('disabledDIV');
+
 }

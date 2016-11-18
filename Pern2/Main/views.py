@@ -187,6 +187,21 @@ def projectFollowing(request):
             newActivity.idProject=idProject
             newActivity.save()
             info = "Se ha creado correctamente"
+        elif(queryId == "studentsWorking"):
+            idProject= request.GET.get('idProject')
+            idModule= request.GET.get('idModule')
+            students= Student.objects.filter(idRotation__idModule=int(idModule))
+            onWorking= OnWorking.objects.filter(idProject=int(idProject))
+            if not onWorking:
+                print "xd"
+                for i in students:
+                    newOnWorking = OnWorking()
+                    newOnWorking.idStudent = i
+                    newOnWorking.idProject = Project.objects.get(idProject=idProject)
+                    newOnWorking.hasFinish = False
+                    newOnWorking.save()
+            onWorking= OnWorking.objects.filter(idProject=int(idProject))
+            info = serializers.serialize('json',onWorking,use_natural_foreign_keys=True)
         elif(queryId == "getActivities"):
             idProject= request.GET.get('idProject')
             idStudent= request.GET.get('idStudent')
