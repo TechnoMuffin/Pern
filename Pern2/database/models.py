@@ -227,5 +227,5 @@ class OnWorking(models.Model):
         verbose_name = 'Estado'
         verbose_name_plural = 'Estados'
     def __str__(self):
-        tagName = str(self.idProject.nameProject) + " - " + str(self.idStudent.surname) +'['+ str(hasFinish)+']'
+        tagName = str(self.idProject.nameProject) + " - " + str(self.idStudent.surname) +'['+ str(self.hasFinish)+']'
         return tagName

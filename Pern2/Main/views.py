@@ -163,6 +163,19 @@ def projectFollowing(request):
             working.idActivity.save()
             working.save()
             info = "Se ha modificado correctamente"
+        elif(queryId == "finishWorking"):
+            idProject = request.GET.get('idProject')
+            idStudent = request.GET.get('idStudent')
+            onWorking = OnWorking.objects.get(idStudent=int(idStudent), idProject=int(idProject))
+            onWorking.hasFinish = True
+            onWorking.save()
+            info = "Se ha modificado correctamente"
+        elif(queryId == "notFinishWorking"):
+            idProject = request.GET.get('idProject')
+            idStudent = request.GET.get('idStudent')
+            onWorking = OnWorking.objects.get(idStudent=int(idStudent), idProject=int(idProject))
+            onWorking.hasFinish = False
+            onWorking.save()
         elif(queryId == "calActivities"):
             idWork = request.GET.get('currentActivity')
             newCal = request.GET.get('newCal')
@@ -192,8 +205,9 @@ def projectFollowing(request):
             idModule= request.GET.get('idModule')
             students= Student.objects.filter(idRotation__idModule=int(idModule))
             onWorking= OnWorking.objects.filter(idProject=int(idProject))
+            print "asddddddddddddddddddddddddddddddddddddddddddddddddd"
             if not onWorking:
-                print "xd"
+                print "xdxddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
                 for i in students:
                     newOnWorking = OnWorking()
                     newOnWorking.idStudent = i
