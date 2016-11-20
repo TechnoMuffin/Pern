@@ -123,6 +123,7 @@ function resetPersonalFollow(){
 //Esta funcion hace algo
   function courseChanged(){
     $('#buttonCreateProject').addClass('disabledDIV');
+    $('#promActivity').addClass('disabledDIV');
     $('#finishWork').addClass('disabledDIV');
     $('#buttonDeleteProject').addClass('disabledDIV');
     $('#buttonEditProject').addClass('disabledDIV');
@@ -212,6 +213,7 @@ function projectWFChanged(){
 //Cambia CBX MODULO
 function moduleChanged(){
     $('#buttonCreateProject').addClass('disabledDIV');
+    $('#promActivity').addClass('disabledDIV');
     $('#finishWork').addClass('disabledDIV');
     $('#addActivity').addClass('disabledDIV');
     $('#buttonDeleteProject').addClass('disabledDIV');
@@ -508,11 +510,12 @@ function tableCreation(){
               var value = info[i].pk;
               var table = '<tr><td>'+textName+'</td>'+
                               '<td>'+textNOC+'</td>'+
-                              '<td>'+textCal+'</td>'+
+                              '<td class="tdNota">'+textCal+'</td>'+
                               '<td><button data-toggle="modal" onclick="setCurrentActivity('+value+')" data-target="#modalCalificateWork" class="btn btn-default "><span class="glyphicon glyphicon-star"></span></button></td>'+
                               '<td><button data-toggle="modal" onclick="setCurrentActivity('+value+')" data-target="#modalEditWork" class="btn btn-default "><span class="glyphicon glyphicon-edit"></span></button></td>'+
                               '<td><button data-toggle="modal" onclick="setCurrentActivity('+value+')" data-target="#modalDeleteWork" class="btn btn-default botonDel"><span class="glyphicon glyphicon-trash"></span></button></td></tr>';
               $('#tableActivities').append(table);
+              $('#promActivity').removeClass('disabledDIV');
               $('#finishWork').removeClass('disabledDIV');
 
           }
@@ -565,6 +568,7 @@ function calActivities(){
   });
 }
 function projectWorkingChanged(){
+    $('#promActivity').addClass('disabledDIV');
     $('#finishWork').addClass('disabledDIV');
     cleanTableActivities();
     resetStudentTable();
@@ -642,3 +646,34 @@ function projectNotFinisher (){
       });
   }
 }
+$("#promActivity").click(
+  function promedioNotas(){
+      $("#spanStar").empty();
+      var avg = 0;
+      var amount = 0;
+      $(".tdNota").each(
+          function(){
+              avg += +($(this).text());
+              amount++;
+          }
+      );
+      avg /= amount;
+      avgNotFloat = Math.trunc(avg);
+      for(var i=0;i<avgNotFloat;i++){
+          $("#spanStar").append('<span class="glyphicon glyphicon-star"></span>');
+      }
+      var avgOnlyFloat = avg - avgNotFloat;
+      if (avgOnlyFloat >= 0.1 && avgOnlyFloat <= 0.9){
+          $("#spanStar").append('<span class="fa fa-star-half-o fa-5x"></span>');
+      }
+      var emptyStar = 5 - avg;
+      emptyStar = Math.trunc(emptyStar);
+      for (var i=0;i<emptyStar;i++){
+          $("#spanStar").append('<span class="glyphicon glyphicon-star-empty"></span>');
+      }
+      var avgFinal = parseFloat(avg);
+      avgFinal = avgFinal.toFixed(2);
+      $("#showProm").text(avgFinal);
+  }
+
+);
