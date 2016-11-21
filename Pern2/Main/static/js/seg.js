@@ -62,7 +62,7 @@ var actualModule = $('#actualModule');
 //Variables de /historial
 var tableHistory = $('#historyTable'); //Table History
 var tbHistory = $('#tbHistory'); //Body Table History
-
+var currentDocument = '';
 
 tableHistory.css('max-height', $( window ).height());
 
@@ -349,21 +349,47 @@ function moduleChangedB(){
             dataType: 'json',
             success: function(info){
                 resetTable(tbDocument);
+                cleanTableDocuments();
                 for(var x=0;x<info.length;x++){
                     nameDoc = info[x]['fields']['nameDocument'];
                     courDoc = info[x]['fields']['idCourse'];
                     moduDoc = info[x]['fields']['idModule'];
                     comDoc = info[x]['fields']['commentDoc'];
-                    var elemento = '<tr><td><a href="#"><i class="glyphicon glyphicon-file"   ></i></a></td><td>'+ nameDoc+ '</td><td>En proceso</td><td value="+courDoc+">'+ courDoc+'</td><td>'+ moduDoc+'</td><td>'+ comDoc +'</td><td><a href="#"><i class="glyphicon glyphicon-edit" ></i></a><a href="#"><i class="glyphicon glyphicon-trash" style="left: 10px;"></i></a><a href="#"><i class="glyphicon glyphicon-save" style="left: 20px;"</td></tr>';
+                    var value = info[x].pk;
+                    var elemento = '<tr><td><a href="#"><i class="glyphicon glyphicon-file"   ></i></a></td>'+
+                    '<td>'+ nameDoc+ '</td>'+
+                    '<td>En proceso</td>'+
+                    '<td value="+courDoc+">'+ courDoc+'</td>'+
+                    '<td>'+ moduDoc+'</td>'+
+                    '<td>'+ comDoc +'</td>'+
+                    '<td><a href="#" ><i class="glyphicon glyphicon-edit" ></i></a><a href="#" data-toggle="modal" data-target="#modalDeleteD" onclick="setCurrentDocument('+value+')"><i class="glyphicon glyphicon-trash" style="left: 10px;"></i></a><a href="#"><i class="glyphicon glyphicon-save" style="left: 20px;"</td></tr>';
                     tbDocument.append(elemento);
                 }
             }
         });
 
 }
+function cleanTableDocuments(){
+    $('#tbDocument').empty();
+}
+function setCurrentDocument(valor){
+     currentDocument=valor;
+     console.log(currentDocument);
+}
+function docDeleter(){
+   $.ajax({
+        url: url,
+        type: 'GET',
+        data: {currentDocument: currentDocument,queryId: "deldocuments"},
+        success: function(){
+            cleanTableDocuments();
+            console.log("Santiga");
+        }
+  });
+}
 
 function moduleChangedD(){
-    
+
     resetPersonalFollow();
 
     //Carga de Projectos

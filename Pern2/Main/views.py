@@ -203,6 +203,11 @@ def pupilFollowing(request):
                 info = serializers.serialize('json', student)
             else:
                 info="ERROR: ID de Estudiante no encontrado"
+
+        elif(queryId == "deldocuments"):
+            idDoc = request.GET.get('currentDocument')
+            document = Document.objects.get(idDocument=int(idDoc))
+            document.delete()
         elif(queryId == "fulfillments"):
         #Devuelve los cumplimientos del proyecto indicado
             idP = request.GET.get('idProject')
