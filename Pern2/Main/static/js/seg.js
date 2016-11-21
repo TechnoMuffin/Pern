@@ -39,7 +39,7 @@ var actCalification=$('#actCalification');
 
 var currentActivity = '';
 
-cbxProjectFW.on('change', function(){projectWFChanged()});
+cbxProjectFW.on('change', function(){projectWorkingChanged()});
 cbxCourse.on('change', function(){courseChanged()});
 cbxModule.on('change', function(){moduleChanged()});
 cbxProject.on('change', function(){projectChanged()});
@@ -53,6 +53,9 @@ tbProjectStudent.on('click', '.clickable-row', function(event) {$(this).addClass
 /////////////////////////////////
 
 //Vaciar la tabla de alumnos
+function resetStudentWorkingTable(){
+    tbProjectStudent.empty();
+}
 function resetStudentTable(){
     tbStudent.empty();
     console.log('xd');
@@ -118,7 +121,12 @@ function resetPersonalFollow(){
 ///////////////////////
 
 //Esta funcion hace algo
-function courseChanged(){
+  function courseChanged(){
+    $('#buttonCreateProject').addClass('disabledDIV');
+    $('#promActivity').addClass('disabledDIV');
+    $('#finishWork').addClass('disabledDIV');
+    $('#buttonDeleteProject').addClass('disabledDIV');
+    $('#buttonEditProject').addClass('disabledDIV');
     $('#addActivity').addClass('disabledDIV');
     cleanTableActivities();
     resetModuleField();
@@ -193,9 +201,6 @@ function projectWFChanged(){
                 }
             }
         });
-        $('#buttonDeleteProject').removeClass('disabledDIV');
-        $('#buttonEditProject').removeClass('disabledDIV');
-        $('#addActivity').removeClass('disabledDIV');
 
     }
     else{
@@ -207,7 +212,12 @@ function projectWFChanged(){
 
 //Cambia CBX MODULO
 function moduleChanged(){
+    $('#buttonCreateProject').addClass('disabledDIV');
+    $('#promActivity').addClass('disabledDIV');
+    $('#finishWork').addClass('disabledDIV');
     $('#addActivity').addClass('disabledDIV');
+    $('#buttonDeleteProject').addClass('disabledDIV');
+    $('#buttonEditProject').addClass('disabledDIV');
     cleanTableActivities();
     resetStudentField();
     resetStudentTable();
@@ -252,7 +262,10 @@ function moduleChanged(){
             cbxProjectFW.selectpicker('refresh');
         }
     });
-    $('#buttonCreateProject').removeClass('disabledDIV');
+    if (cbxModule.val()!=""){
+      $('#buttonCreateProject').removeClass('disabledDIV');
+    }
+
 
 }
 
@@ -477,7 +490,7 @@ $("#projectModificator").click(
 });
 function selectStudentWorking(evt,valor) {
     currentStudentSelected=valor;
-  tableCreation();
+    tableCreation();
     console.log(currentStudentSelected);
 
 }
@@ -497,11 +510,14 @@ function tableCreation(){
               var value = info[i].pk;
               var table = '<tr><td>'+textName+'</td>'+
                               '<td>'+textNOC+'</td>'+
-                              '<td>'+textCal+'</td>'+
+                              '<td class="tdNota">'+textCal+'</td>'+
                               '<td><button data-toggle="modal" onclick="setCurrentActivity('+value+')" data-target="#modalCalificateWork" class="btn btn-default "><span class="glyphicon glyphicon-star"></span></button></td>'+
                               '<td><button data-toggle="modal" onclick="setCurrentActivity('+value+')" data-target="#modalEditWork" class="btn btn-default "><span class="glyphicon glyphicon-edit"></span></button></td>'+
                               '<td><button data-toggle="modal" onclick="setCurrentActivity('+value+')" data-target="#modalDeleteWork" class="btn btn-default botonDel"><span class="glyphicon glyphicon-trash"></span></button></td></tr>';
               $('#tableActivities').append(table);
+              $('#promActivity').removeClass('disabledDIV');
+              $('#finishWork').removeClass('disabledDIV');
+
           }
 
       }
@@ -525,3 +541,139 @@ function activityDeleter(){
       }
   });
 }
+function activityModify(){
+  console.log("xddddddddddd");
+  $.ajax({
+      url: url2,
+      type: 'GET',
+      data: {newNameWork: $('#inputEditWork').val(),newCantDays: $('#inputClassesWork').val(),currentActivity: currentActivity,queryId: "modActivities"},
+      success: function(){
+          tableCreation();
+          $('#inputEditWork').val("");
+          $('#inputClassesWork').val("");
+          console.log("Puto el que lee(oveja xp)");
+      }
+  });
+}
+function calActivities(){
+  $.ajax({
+      url: url2,
+      type: 'GET',
+      data: {newCal: $('#inputCal').val(),currentActivity: currentActivity,queryId: "calActivities"},
+      success: function(){
+          tableCreation();
+          $('#inputCal').val("");
+          console.log("Puto el que lee(oveja xp)");
+      }
+  });
+}
+function projectWorkingChanged(){
+    $('#promActivity').addClass('disabledDIV');
+    $('#finishWork').addClass('disabledDIV');
+    cleanTableActivities();
+    resetStudentTable();
+    resetProjectField();
+    resetPersonalFollow();
+    resetHistoryTable();
+    StudentTableCreation();
+    $('#buttonDeleteProject').removeClass('disabledDIV');
+    $('#buttonEditProject').removeClass('disabledDIV');
+    $('#addActivity').removeClass('disabledDIV');
+
+
+}
+
+function StudentTableCreation (){
+  if(this.val!=''){
+      //Carga de Alumnos
+      $.ajax({
+          url: url2,
+          type: 'GET',
+          data: {idModule: cbxModule.val(),idProject: cbxProjectFW.val(), queryId: "studentsWorking"},
+          dataType: 'json',
+          success: function(info){
+              for(var i=0;i<info.length;i++){
+                  console.log("211");
+                  var texto = info[i].fields.idStudent[1] + " " + info[i].fields.idStudent[2];
+                  var value = info[i].fields.idStudent[0];
+                  var hasFinish = info[i].fields.hasFinish;
+                  if (hasFinish == true){
+                      terminado = "termino"
+                  }
+                  else{
+                      terminado = "no termino"
+                  }
+                  var elemento = '<tr class="clickable-row" onclick="selectStudentWorking(event,'+value+')"><td>'+texto+'</td><td>'+terminado+'</td></tr>';
+                  tbProjectStudent.append(elemento);
+              }
+          }
+      });
+  }
+
+}
+
+function projectFinisher (){
+  console.log("cacaaa");
+
+  if(this.val!=''){
+      //Carga de Alumnos
+      $.ajax({
+          url: url2,
+          type: 'GET',
+          data: {idStudent: currentStudentSelected,idProject: cbxProjectFW.val(), queryId: "finishWorking"},
+          success: function(){
+            console.log("hola");
+            resetStudentWorkingTable();
+            StudentTableCreation();
+          }
+      });
+  }
+}
+function projectNotFinisher (){
+  console.log("mierdaaa");
+
+  if(this.val!=''){
+      //Carga de Alumnos
+      $.ajax({
+          url: url2,
+          type: 'GET',
+          data: {idStudent: currentStudentSelected,idProject: cbxProjectFW.val(), queryId: "notFinishWorking"},
+          success: function(){
+            console.log("chau");
+            resetStudentWorkingTable();
+            StudentTableCreation();
+          }
+      });
+  }
+}
+$("#promActivity").click(
+  function promedioNotas(){
+      $("#spanStar").empty();
+      var avg = 0;
+      var amount = 0;
+      $(".tdNota").each(
+          function(){
+              avg += +($(this).text());
+              amount++;
+          }
+      );
+      avg /= amount;
+      avgNotFloat = Math.trunc(avg);
+      for(var i=0;i<avgNotFloat;i++){
+          $("#spanStar").append('<span class="glyphicon glyphicon-star"></span>');
+      }
+      var avgOnlyFloat = avg - avgNotFloat;
+      if (avgOnlyFloat >= 0.1 && avgOnlyFloat <= 0.9){
+          $("#spanStar").append('<span class="fa fa-star-half-o fa-5x"></span>');
+      }
+      var emptyStar = 5 - avg;
+      emptyStar = Math.trunc(emptyStar);
+      for (var i=0;i<emptyStar;i++){
+          $("#spanStar").append('<span class="glyphicon glyphicon-star-empty"></span>');
+      }
+      var avgFinal = parseFloat(avg);
+      avgFinal = avgFinal.toFixed(2);
+      $("#showProm").text(avgFinal);
+  }
+
+);

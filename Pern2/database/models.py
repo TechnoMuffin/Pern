@@ -100,9 +100,13 @@ class Student(User):
     idRotation = models.ForeignKey(Rotation, blank=True)
     numberOfRegistration = models.IntegerField()
 
+    def natural_key(self):
+        return (self.idUser, self.name, self.surname)
+
     class Meta:
         verbose_name = 'Alumno'
         verbose_name_plural = 'Alumnos'
+
     def __str__(self):
         tagName = str(self.name)+" "+str(self.surname)+ " [" + str(self.idRotation) + "]"
         return tagName
@@ -204,9 +208,24 @@ class OnClass(models.Model):
     idActivity = models.ForeignKey(Activity)
     idSF = models.ForeignKey(StudentFollowing)
 
+
     class Meta:
         verbose_name = 'Trabajo en Clase'
         verbose_name_plural = 'Trabajos en Clase'
     def __str__(self):
         tagName = str(self.idActivity.nameActivity) + " - " + str(self.idSF.idStudent.surname) +'['+ str(self.idSF.dateSF)+']'
+        return tagName
+
+##################################TERMINO EL TRABAJO##################################
+class OnWorking(models.Model):
+    idStudent = models.ForeignKey(Student)
+    idProject = models.ForeignKey(Project)
+    hasFinish = models.BooleanField(blank=True)
+
+
+    class Meta:
+        verbose_name = 'Estado'
+        verbose_name_plural = 'Estados'
+    def __str__(self):
+        tagName = str(self.idProject.nameProject) + " - " + str(self.idStudent.surname) +'['+ str(self.hasFinish)+']'
         return tagName

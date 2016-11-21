@@ -75,8 +75,8 @@
             <div class="btn-group pull-right" role="group">
                 <!-- <div class="col-xs-12 col-md-5" style="width:54%; margin-left:886px;"><button style="width:36%;" type="button" class="btn btn-default">Terminado <span class="glyphicon glyphicon-ok" aria-hidden="true"></button></div> -->
                 <button id="addActivity" type="button" data-target="#addActivityModal" data-toggle="modal" class="btn btn-default right disabledDIV"><span class="glyphicon glyphicon-plus"></span> Agregar Actividad </button>
-                <button type="button" class="btn btn-default right"><span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span>  Nota Recomendada</button>
-                <button type="button" class="btn btn-default right"><span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span> Terminado</button>
+                <button id="promActivity" type="button" data-target="#mostrarPromedio" data-toggle="modal" class="btn btn-default right disabledDIV"><span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> Nota Recomendada </button>
+                <button id="finishWork" type="button" data-target="#modalFinishWork" data-toggle="modal" class="btn btn-default right disabledDIV"><span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span> Trabajo Terminado </button>
             </div>
         </div>
     </div>
@@ -188,6 +188,9 @@
                     <h4 class="modal-title">Calificar</h4>
                 </div>
                 <div class="modal-body">
+                  <div class="modal-body">
+                      <input class="form-control" id="inputCal" maxlength="5"  placeholder="Nota por ahora" type="int"><br>
+                  </div>
                     <div class="star_rating">
                         {% for j in '12345' %}
                         <span class="fa fa-star-o fa-2x" data-rating="{{j}}"></span>
@@ -196,7 +199,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <div class="col-lg-6"style="padding-right: 0px;margin-left: 30%;"><button id="calSave" onclick="StageDeleter()" type="button" class="btn btn-default" data-dismiss="modal">Guardar</button>
+                    <div class="col-lg-6"style="padding-right: 0px;margin-left: 30%;"><button id="calSave" onclick="calActivities()" type="button" class="btn btn-default" data-dismiss="modal">Guardar</button>
                         <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button></div>
                 </div>
             </div>
@@ -209,30 +212,21 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Editar Etapa</h4>
+                    <h4 class="modal-title">Editar Actividad</h4>
                 </div>
                 <div class="modal-body">
-                    <input class="form-control" id="inputEditStage" maxlength="128" name="editProjectName" placeholder="Nombre de la Etapa" type="text">
-                        <div class="checkbox checkbox-primary checkbox-circle">
-                            <input type="checkbox" id="bxEditStage" onchange="bxEditChckBx(this)">
-                            <label style="position:absolute">
-                                Editar el nombre de esta etapa para todos los alumnos
-                            </label>
-                        </div>
-                    <br><p id="paragraph1" >Nota:</p>
-                    <input class="form-control" id="inputNewCalificationStage" maxlength="1" name="editProjectName" placeholder="Nota" type="text"><p id="paragraph2" >Cant. de dias:</p>
-                    <input class="form-control" id="inputClassesStage" maxlength="5" name="editProjectName" placeholder="Cantidad de Clases" type="text">
+                    <input class="form-control" id="inputEditWork" maxlength="128"  placeholder="Nombre de la Actividad" type="text"><br>
+                    <input class="form-control" id="inputClassesWork" maxlength="5"  placeholder="Cantidad de Clases" type="text">
                     <span id="idEditStage" style="display:none"></span>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" onclick="saveStageModal()" class="btn btn-default" data-dismiss="modal">Guardar</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                    <button type="button" onclick="activityModify()" class="btn btn-default" data-dismiss="modal">Guardar</button>
                 </div>
             </div>
 
         </div>
     </div>
-  </div>
   <!-- Modal Delete Work-->
   <div id="modalDeleteWork" class="modal fade" role="dialog">
       <div class="modal-dialog">
@@ -240,18 +234,63 @@
           <div class="modal-content">
               <div class="modal-header">
                   <button type="button" class="close" data-dismiss="modal">&times;</button>
-                  <h4 class="modal-title">Borrar Etapa</h4>
+                  <h4 class="modal-title">Borrar Actividad</h4>
               </div>
               <div class="modal-body">
                   <p>¿Seguro que desea borrar esta Actividad?</p>
                   <span id="idDelStage" style="display:none"></span>
               </div>
               <div class="modal-footer">
-                  <div class="col-lg-6"style="padding-right: 0px;margin-left: 30%;"><button id="stageDeleter" onclick="activityDeleter()" type="button" class="btn btn-default" data-dismiss="modal">Borrar</button>
-                      <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button></div>
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                  <button id="stageDeleter" onclick="activityDeleter()" type="button" class="btn btn-default" data-dismiss="modal">Borrar</button>
               </div>
+
           </div>
       </div>
+  </div>
+  <!-- Modal Finish Work-->
+  <div id="modalFinishWork" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+          <!-- Modal content-->
+          <div class="modal-content">
+              <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title">Termino El Trabajo</h4>
+              </div>
+              <div class="modal-body">
+              </div>
+              <div class="modal-footer">
+                  <button type="button" onclick="projectNotFinisher()" class="btn btn-defaul" data-dismiss="modal">No</button>
+                  <button type="button" onclick="projectFinisher()" class="btn btn-default" data-dismiss="modal">Si</button>
+              </div>
+          </div>
+
+      </div>
+  </div>
+  <!-- Modal Calcular Promedio de Actividades-->
+  <div id="mostrarPromedio" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+          <!-- Modal content-->
+          <div class="modal-content">
+              <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title">El promedio es de:</h4>
+              </div>
+              <div class="modal-body" style="margin-top: 9.5%;">
+                  <div class="col-lg-8" align="left" style="margin-top: -10.5%;">
+                      <p id="spanStar"></p>
+                  </div>
+                  <div class="col-lg-4" align="center" style="margin-top: -11.5%;">
+                      <p id="showProm" style="font-size: 55px;"></p>
+                  </div>
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Continuar</button>
+              </div>
+          </div>
+
+      </div>
+  </div>
     {% endblock %} {% block scripts %}
     <script>
         var url = '{% url "app_main:seg-al" %}';
