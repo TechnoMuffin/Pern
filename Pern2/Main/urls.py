@@ -7,4 +7,5 @@ urlpatterns = [
     url(r'^rotacionAlumno$', views.rotation, name='rot-al'),
     url(r'^proyectos$', views.projectFollowing, name='projects'),
     url(r'^documents$', views.document, name='doc'),
+    url(r'^modulos$', views.modules, name='modules')
 ]

@@ -332,3 +332,8 @@ def document(request):
     }
 
     return render_to_response('documents.html', data, context )
+
+def modules(request):
+    context = RequestContext(request)
+    courses = Course.objects.all()
+    return render_to_response('modulos.html', {'courses':courses}, context)
