@@ -6,7 +6,11 @@ Y usamos variables universalessss, mas info aqueeh: http://librosweb.es/libro/ja
 
 //Variables de /pupilFollowing
 var cbxCourse = $("#cbxCourse");
+var cbxCourseB = $("#cbxCourseB");
+var cbxCourseD = $("#cbxCourseD");
 var cbxModule = $("#cbxModule");
+var cbxModuleB = $("#cbxModuleB");
+var cbxModuleD = $("#cbxModuleD");
 var cbxProject = $("#cbxProject");
 var cbxActivity = $("#cbxActivity");
 var cbxStudent = $("#cbxStudent");
@@ -15,6 +19,8 @@ var cbxProjectFW = $("#cbxProjectFW");
 var personalFollowHTML = $("#personalFollow")
 var tableStudents = $('#myTable'); //Table PupilFollowing
 var tbStudent = $("#tbAlumnos"); //Body table PupilFollowing
+var docStudents = $('#docTable'); //Table Document
+var tbDocument = $("#tbDocument"); //Body Table de Document
 var date = $('#datepicker');
 var nameStudentHTML = $('.nameStudent')
     //Activity fields
@@ -57,7 +63,7 @@ var actualModule = $('#actualModule');
 var tableHistory = $('#historyTable'); //Table History
 var cbxModuleHistory = $('#cbxModuleHistory'); //Table History
 var tbHistory = $('#tbHistory'); //Body Table History
-
+var currentDocument = '';
 
 tableHistory.css('max-height', $(window).height());
 
@@ -91,6 +97,25 @@ cbxCourseRotation.on('change', function() {
     courseRotationChanged()
 });
 tableStudents.on('click', '.clickable-row', function(event) {
+    $(this).addClass('active').siblings().removeClass('active');
+});
+
+cbxProjectFW.on('change', function() {
+    projectWFChanged()
+});
+cbxCourseD.on('change', function() {
+    courseChangedD()
+});
+cbxCourseB.on('change', function() {
+    courseChangedB()
+});
+cbxModule.on('change', function() {
+    moduleChanged()
+});
+cbxModuleB.on('change', function() {
+    moduleChangedB()
+});
+docStudents.on('click', '.clickable-row', function(event) {
     $(this).addClass('active').siblings().removeClass('active');
 });
 
@@ -216,6 +241,59 @@ function courseChanged() {
     }
 }
 
+function courseChangedB() {
+    resetCbx(cbxModuleB, 'Módulo');
+
+    resetPersonalFollow();
+    if (this.val != '') {
+        $.ajax({
+            url: url,
+            type: 'GET',
+            data: {
+                idCourse: cbxCourseB.val(),
+                queryId: "subjects"
+            },
+            dataType: 'json',
+            success: function(info) {
+                resetCbx(cbxModuleB, 'Módulo');
+                for (var i = 0; i < info.length; i++) {
+                    //El valor de las opciones de los select es el ID de los modulos
+                    var text = info[i].fields.nameModule;
+                    var value = info[i].pk;
+                    cbxModuleB.append(new Option(text, value));
+                }
+                cbxModuleB.selectpicker('refresh');
+            }
+        });
+    }
+}
+
+function courseChangedD() {
+    resetCbx(cbxModuleD, 'Módulo');
+    resetPersonalFollow();
+    if (this.val != '') {
+        $.ajax({
+            url: url,
+            type: 'GET',
+            data: {
+                idCourse: cbxCourseD.val(),
+                queryId: "subjects"
+            },
+            dataType: 'json',
+            success: function(info) {
+                resetCbx(cbxModuleD, 'Módulo');
+                for (var i = 0; i < info.length; i++) {
+                    //El valor de las opciones de los select es el ID de los modulos
+                    var text = info[i].fields.nameModule;
+                    var value = info[i].pk;
+                    cbxModuleD.append(new Option(text, value));
+                }
+                cbxModuleD.selectpicker('refresh');
+            }
+        });
+    }
+}
+
 function projectWFChanged() {
     resetTable(tbStudent);
     resetCbx(cbxProject, 'Proyectos');
@@ -315,6 +393,113 @@ function moduleChanged() {
         });
     }
 }
+
+function moduleChangedB() {
+    resetTable(tbDocument);
+    resetPersonalFollow();
+    //Carga de Projectos
+    $.ajax({
+        url: url,
+        type: 'GET',
+        data: {
+            module: cbxModuleB.val(),
+            queryId: "projects"
+        },
+        dataType: 'json',
+        success: function(info) {
+            for (var i = 0; i < info.length; i++) {
+                //El valor de las opciones de los select es el ID de los proyectos
+                var nameProject = info[i].fields.nameProject;
+                var value = info[i].pk;
+                cbxProject.append(new Option(nameProject, value));
+                cbxProjectFW.append(new Option(nameProject, value));
+            }
+            cbxProject.selectpicker('refresh');
+            cbxProjectFW.selectpicker('refresh');
+        }
+    });
+    $.ajax({
+        url: url,
+        type: 'GET',
+        data: {
+            idCourse: cbxCourseB.val(),
+            queryId: "documents"
+        },
+        dataType: 'json',
+        success: function(info) {
+            resetTable(tbDocument);
+            cleanTableDocuments();
+            for (var x = 0; x < info.length; x++) {
+                nameDoc = info[x]['fields']['nameDocument'];
+                courDoc = info[x]['fields']['idCourse'];
+                moduDoc = info[x]['fields']['idModule'];
+                comDoc = info[x]['fields']['commentDoc'];
+                var value = info[x].pk;
+                var elemento = '<tr><td><a href="#"><i class="glyphicon glyphicon-file"   ></i></a></td>' +
+                    '<td>' + nameDoc + '</td>' +
+                    '<td>En proceso</td>' +
+                    '<td value="+courDoc+">' + courDoc + '</td>' +
+                    '<td>' + moduDoc + '</td>' +
+                    '<td>' + comDoc + '</td>' +
+                    '<td><a href="#" ><i class="glyphicon glyphicon-edit" ></i></a><a href="#" data-toggle="modal" data-target="#modalDeleteD" onclick="setCurrentDocument(' + value + ')"><i class="glyphicon glyphicon-trash" style="left: 10px;"></i></a><a href="#"><i class="glyphicon glyphicon-save" style="left: 20px;"</td></tr>';
+                tbDocument.append(elemento);
+            }
+        }
+    });
+
+}
+
+function cleanTableDocuments() {
+    $('#tbDocument').empty();
+}
+
+function setCurrentDocument(valor) {
+    currentDocument = valor;
+    console.log(currentDocument);
+}
+
+function docDeleter() {
+    $.ajax({
+        url: url,
+        type: 'GET',
+        data: {
+            currentDocument: currentDocument,
+            queryId: "deldocuments"
+        },
+        success: function() {
+            cleanTableDocuments();
+            console.log("Santiga");
+        }
+    });
+}
+
+function moduleChangedD() {
+
+    resetPersonalFollow();
+
+    //Carga de Projectos
+    $.ajax({
+        url: url,
+        type: 'GET',
+        data: {
+            module: cbxModuleD.val(),
+            queryId: "projects"
+        },
+        dataType: 'json',
+        success: function(info) {
+            for (var i = 0; i < info.length; i++) {
+                //El valor de las opciones de los select es el ID de los proyectos
+                var nameModule = info[i].fields.nameModule;
+                var value = info[i].pk;
+                cbxModuleD.append(new Option(nameModule, value));
+
+            }
+            cbxModuleD.selectpicker('refresh');
+
+        }
+    });
+}
+
 
 
 function projectChanged() {

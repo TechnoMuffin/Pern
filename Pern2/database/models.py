@@ -132,9 +132,13 @@ class Student(User):
 
 class Document(models.Model):
     idDocument = models.AutoField(primary_key=True)
-    nameDocument = models.CharField(max_length=128)
-    visible = models.BooleanField(blank=True)
-    idModule = models.ManyToManyField(Module, blank=True)
+    nameDocument= models.CharField(max_length=128,null=True)
+    #visible = models.BooleanField(blank=True, null=True)
+    idModule = models.ForeignKey(Module, null=True)
+    #idTeacher = models.ManyToManyField(Teacher)
+    idCourse = models.ForeignKey(Course, blank=True, null=True)
+    commentDoc = models.TextField(blank=True)
+    archivo = models.FileField(u'Documentos',upload_to="documentos",blank=True)
 
     class Meta:
         verbose_name = 'Documento'
@@ -143,6 +147,7 @@ class Document(models.Model):
     def __str__(self):
         tagName = str(self.nameDocument) + "(" + str(self.idModule) + ")"
         return tagName
+
 
 ##################################PROYECTOS##################################
 

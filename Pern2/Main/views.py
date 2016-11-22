@@ -6,6 +6,7 @@ from database.models import *
 import json
 from django.core.exceptions import ObjectDoesNotExist
 from itertools import chain
+from forms import FormEntrada
 
 
 def pupilFollowing(request):
@@ -151,8 +152,7 @@ def pupilFollowing(request):
                     idRotation=rotation).order_by('surname')
                 info = serializers.serialize('json', students)
             else:
-                students = Student.objects.filter(
-                    idRotation=None).order_by('surname')
+                students = Student.objects.filter(idRotation=None).order_by('surname')
                 info = serializers.serialize('json', students)
 
         elif(queryId == "onlyStudent"):
@@ -167,8 +167,7 @@ def pupilFollowing(request):
             if(course != ''):
                 course = Course.objects.get(idCourse=course)
                 rotations = Rotation.objects.filter(idCourse=course)
-                info = serializers.serialize(
-                    'json', rotations, use_natural_foreign_keys=True)
+                info = serializers.serialize('json', rotations, use_natural_foreign_keys=True)
             else:
                 info = "Curso Invalido"
 
@@ -259,13 +258,26 @@ def pupilFollowing(request):
                 info = serializers.serialize('json', student)
             else:
                 info = "ERROR: ID de Estudiante no encontrado"
+
+        elif(queryId == "deldocuments"):
+            idDoc = request.GET.get('currentDocument')
+            document = Document.objects.get(idDocument=int(idDoc))
+            document.delete()
         elif(queryId == "fulfillments"):
             # Devuelve los cumplimientos del proyecto indicado
             idP = request.GET.get('idProject')
             project = Project.objects.get(idProject=idP)
             fulfillments = Fulfillment.objects.filter(idProject=project)
             info = serializers.serialize('json', fulfillments)
-        print "\n" + queryId + ": \n \t" + info
+        elif(queryId == "documents"):
+        #Devuelve los documentos del curso indicado
+            idCo = request.GET.get('idCourse')
+            doc = Course.objects.get(idCourse=int(idCo))
+            documentos = Document.objects.filter(idCourse=doc)
+            print documentos
+            info = serializers.serialize('json', documentos)
+        print "\n" + queryId + ": \n \t" +info
+
         return HttpResponse(info)
     else:
         context = RequestContext(request)
@@ -274,20 +286,49 @@ def pupilFollowing(request):
         subjects = Module.objects.all()
         return render_to_response('pupilFollowing.html', {'courses': courses, 'subjects': subjects, 'pupils': pupils}, context)
 
-
 def history(request):
     context = RequestContext(request)
     courses = Course.objects.all()
     return render_to_response('history.html', {'courses': courses}, context)
-
 
 def rotation(request):
     context = RequestContext(request)
     courses = Course.objects.all()
     return render_to_response('rotacionAlumno.html', {'courses': courses}, context)
 
-
 def projectFollowing(request):
     context = RequestContext(request)
     courses = Course.objects.all()
     return render_to_response('proyectos.html', {'courses': courses}, context)
+
+def document(request):
+    queryId = request.GET.get('queryId')
+    form = FormEntrada(request.POST, request.FILES)
+    if request.method == 'POST':
+        nameDocument = request.POST.get('nameDocument')
+        commentDoc = request.POST.get('commentDoc')
+        idCo = request.POST['idCourse']
+        idM = request.POST['idModule']
+        print idM
+        #idT = request.POST['idTeacher']
+        archivo = request.FILES['archivo']
+        if(idCo!=''):
+            curso = Course.objects.get(idCourse=int(idCo))
+            modulos = Module.objects.filter(idCourse=curso)
+            modulo = Module.objects.get(idModule=int(idM))
+            docs = Document(nameDocument=nameDocument,commentDoc=commentDoc,archivo=archivo,idCourse=curso,idModule=modulo)
+            docs.save()
+        else:
+            info = "ERROR: No existe el modulo pedido"
+    else:
+        print ("no entro")
+    context = RequestContext(request)
+    courses = Course.objects.all()
+    subjects = Module.objects.all()
+    data= {
+        'form': form,
+        'courses':courses,
+        'subjects':subjects
+    }
+
+    return render_to_response('documents.html', data, context )
