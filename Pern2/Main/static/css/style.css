@@ -14,3 +14,11 @@
 textarea {
     max-width: 100%; 
 }
+
+.col-centered{
+    float: none;
+    margin: 0 auto;
+}
+html{
+    padding: 0px;
+}

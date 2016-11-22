@@ -5,194 +5,244 @@ class='active'
 {% endblock %}
 {% block content %}
 
-<div align="center" class="container">
-    <div>
-        <select id="seleccionar-curso" style="width: 50%; margin-bottom: 14px;">
-            <option>Seleccionar Curso</option>
-            <option>1A</option>
-            <option>1B</option>
-            <option>1C</option>
-            <option>2A</option>
-        </select>
-    </div>
-
-
-    <div class="col-xs-12 col-md-5">
-        <div>
-            <select id="seleccion-especialidad-1" style="width: 70%; margin-bottom: 14px;">
-                <option>Ajuste</option>
-                <option>Carpinteria</option>
-                <option>Electricidad</option>
-                <option>Libres</option>
-            </select>
-            <button type="button" class="btn btn-default" id="vaciar-select-1"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
-        </div>
-        <div>
+<div class="container">
+    <div class="col-xs-12 col-md-12">
+        <div class="panel-group" id="accordion">
             <div class="panel panel-default">
-                <div class="panel-body">
-                    <table class="table table-responsive">
-                        <thead>
-                            <tr>
-                                <th>Seleccionar</th>
-                                <th>Alumno</th>
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">Crear nuevas Rotaciones</a>
+                    </h4>
+                </div>
+                <div id="collapse2" class="panel-collapse collapse in">
+                    <div class="panel-body">
+                        <div class="form-group col-xs-12 col-md-3">
+                            <input id='txtRotationName' type="text" class="form-control" placeholder="Nombre" aria-describedby="basic-addon1">
+                        </div>
+                        <div class="form-group col-xs-12 col-md-3">
+                            <select id="cbxCourse" class="selectpicker" data-width="100%">
+                                <option value=''>Curso</option>
+                                {% for x in courses %}
+                                <option value={{x.idCourse}}>{{x.courseType}}º año "{{x.courseDivision}}"</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group col-xs-12 col-md-3">
+                            <select id="cbxModule" class="selectpicker" data-width="100%">
+                                <option value=''>Módulo</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-xs-12 col-md-3">
+                            <button id="createRotation" type="button" class="btn btn-warning col-xs-12">Crear Rotación</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Modal -->
+                <div id="modal" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 id='modal-title' class="modal-title">Error</h4>
+                            </div>
+                            <div class="modal-body">
+                                <p id='modal-text'>Por favor, rellene los campos correctamente</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Ok</button>
+                            </div>
+                        </div>
 
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><input type="checkbox"></td>
-                                <td>Franco Heredia</td>
-
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox"></td>
-                                <td>Matias Ferreyra</td>
-
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox"></td>
-                                <td>Adriel Chagay</td>
-
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox"></td>
-                                <td>Santiago Garcia</td>
-
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox"></td>
-                                <td>Fabrizio Cuassolo</td>
-
-                            </tr><tr>
-                            <td><input type="checkbox"></td>
-                            <td>Fabrizio Cuassolo</td>
-
-                            </tr><tr>
-                            <td><input type="checkbox"></td>
-                            <td>Fabrizio Cuassolo</td>
-
-                            </tr><tr>
-                            <td><input type="checkbox"></td>
-                            <td>Fabrizio Cuassolo</td>
-
-                            </tr><tr>
-                            <td><input type="checkbox"></td>
-                            <td>Fabrizio Cuassolo</td>
-
-                            </tr><tr>
-                            <td><input type="checkbox"></td>
-                            <td>Fabrizio Cuassolo</td>
-
-                            </tr>
-                        </tbody>
-                    </table>
-
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
-
-    <!--Botones para ordenadores y dispositvos medianos-->
-    <div class="col-xs-12 col-md-1 hidden-xs" style="margin-top:255px;">
-        <div class="btn-group-vertical" role="group" aria-label="...">
-            <button type="button" class="btn btn-default" id="pasar-derecha"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></button>
-            <button type="button" class="btn btn-default" id="pasar-izquierda"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></button>
-            <button type="button" class="btn btn-default" id="pasar-todo-derecha"><span class="glyphicon glyphicon-forward" aria-hidden="true"></span></button>
-            <button type="button" class="btn btn-default" id="pasar-todo-izquierda"><span class="glyphicon glyphicon-backward" aria-hidden="true"></span></button>
-        </div>
-    </div>
-    <!--Botones para smartphones y dispositivos pequeños-->
-    <div class="col-xs-12 col-md-1 visible-xs" style="margin-bottom:19px;">
-        <div class="btn-group btn-group-lgl" role="group" aria-label="...">
-            <button type="button" class="btn btn-default" id="pasar-arriba"><span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span></button>
-            <button type="button" class="btn btn-default" id="pasar-abajo"><span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span></button>
-            <button type="button" class="btn btn-default" id="pasar-todo-arriba"><span class="glyphicon glyphicon-triangle-top" aria-hidden="true"></span></button>
-            <button type="button" class="btn btn-default" id="pasar-todo-abajo"><span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span></button>
-        </div>
-    </div>
-
-    <div class="col-xs-12 col-md-5">
-        <div >
-            <select id="seleccion-especialidad-2" style="width: 70%; margin-bottom: 14px;">
-                <option>Ajuste</option>
-                <option>Carpinteria</option>
-                <option>Electricidad</option>
-                <option>Libres</option>
-            </select>
-            <button type="button" class="btn btn-default" id="vaciar-select-2"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
-        </div>
-        <div >
             <div class="panel panel-default">
-                <div class="panel-body">
-                    <table class="table table-responsive">
-                        <thead>
-                            <tr>
-                                <th>Seleccionar</th>
-                                <th>Alumno</th>
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse3">Gestionar Rotaciones</a>
+                    </h4>
+                </div>
+                <div id="collapse3" class="panel-collapse collapse in">
+                    <div class="panel-body">
+                        <div class="form-group col-xs-12 col-md-6">
+                            <select id="cbxCourseG" class="selectpicker" data-width="100%">
+                                <option value=''>Curso</option>
+                                {% for y in courses %}
+                                <option value={{y.idCourse}}>{{y.courseType}}º año "{{y.courseDivision}}"</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group col-xs-12 col-md-6">
+                            <select id="cbxRotationG" class="selectpicker" data-width="100%">
+                                <option value=''>Rotación</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group col-xs-12 col-md-6">
+                            <span style="color:orange">Módulo actual: </span><span id="actualModule"></span>
+                        </div>
+                        <div class="form-group col-xs-12 col-md-6">
+                            <div class="input-group">
+                                <span class="input-group-addon" id="basic-addon1"><span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span></span>
+                                <select id="cbxNewModuleG" class="selectpicker" data-width="100%">
+                                    <option value=''>Nuevo Módulo</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group col-xs-12 col-md-12">
+                            <button id="btnUpdateRotation" type="button" class="btn btn-warning col-xs-12">Cambiar a Nuevo Módulo</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Modal -->
+                <div id="modal" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 id='modal-title' class="modal-title">Error</h4>
+                            </div>
+                            <div class="modal-body">
+                                <p id='modal-text'>Por favor, rellene los campos correctamente</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Ok</button>
+                            </div>
+                        </div>
 
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><input type="checkbox"></td>
-                                <td>Franco Heredia</td>
-
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox"></td>
-                                <td>Matias Ferreyra</td>
-
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox"></td>
-                                <td>Adriel Chagay</td>
-
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox"></td>
-                                <td>Santiago Garcia</td>
-
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox"></td>
-                                <td>Fabrizio Cuassolo</td>
-
-                            </tr><tr>
-                            <td><input type="checkbox"></td>
-                            <td>Fabrizio Cuassolo</td>
-
-                            </tr><tr>
-                            <td><input type="checkbox"></td>
-                            <td>Fabrizio Cuassolo</td>
-
-                            </tr><tr>
-                            <td><input type="checkbox"></td>
-                            <td>Fabrizio Cuassolo</td>
-
-                            </tr><tr>
-                            <td><input type="checkbox"></td>
-                            <td>Fabrizio Cuassolo</td>
-
-                            </tr><tr>
-                            <td><input type="checkbox"></td>
-                            <td>Fabrizio Cuassolo</td>
-
-                            </tr>
-                        </tbody>
-                    </table>
-
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
-    <div>
-        <button type="button" style="width:50%" class="btn btn-default" id="guardar-rotacion"><span class="glyphicon glyphicon-save" aria-hidden="true"></span>Guardar</button>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">Asignación de Alumnos a Rotaciones</a>
+                    </h4>
+                </div>
+                <div id="collapse1" class="panel-collapse collapse  in">
+                    <div class="panel-body">
+                        <select id="cbxCourseRotation" class="selectpicker" data-width="100%"><span class="input-group-btn">
+                            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modalDeleteA"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                            </button>
+                            </span>
+                            <option value=''>Curso</option>
+                            {% for i in courses %}
+                            <option value={{i.idCourse}}>{{i.courseType}}º año "{{i.courseDivision}}"</option>
+                            {% endfor %}
+                        </select>
+                        <hr>
+                        <div id="selectionerDiv" class="disabledDIV">
+                            <!--Comienza coso-->
+                            <div class="col-xs-12 col-md-5">
+                                <div class="panel panel-default">
+                                    <div class="panel-body">
+                                        <div class="col-xs-12" style="padding-bottom:15px">
+                                            <div class="input-group">
+                                                <select id="cbxRotationA" class="selectpicker" data-width="100%">
+                                                    <option value="0">Alumnos sin asignar</option>
+                                                </select>
+                                                <span class="input-group-btn">
+                                                    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modalDeleteA"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                                                    </button>
+                                                </span>
+                                            </div>
+                                            <!-- Modal -->
+                                            <div id="modalDeleteA" class="modal fade" role="dialog">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                            <h4 id='modal-title' class="modal-title">Borrar</h4>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <p id='modal-text'>Esta seguro que desea borrar esta Rotación?</p>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                                                            <button id='deleteSelectA' type="button" class="btn btn-warning" data-dismiss="modal">Si</button>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="panel-body">
+                                            <select id="studentSelectA" multiple="multiple" style="width:100%;min-height:200px">
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!--Botones para ordenadores y dispositvos medianos-->
+                            <div class="col-xs-12 col-md-2 hidden-xs" style="text-align:center">
+                                <div class="btn-group-vertical" style="margin-top:73px;" role="group" aria-label="...">
+                                    <button type="button" class="btn btn-default" id="toSelectB"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></button>
+                                    <button type="button" class="btn btn-default" id="toSelectA"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></button>
+                                    <button type="button" class="btn btn-default" id="allToSelectB"><span class="glyphicon glyphicon-forward" aria-hidden="true"></span></button>
+                                    <button type="button" class="btn btn-default" id="allToSelectA"><span class="glyphicon glyphicon-backward" aria-hidden="true"></span></button>
+                                </div>
+                            </div>
+                            <!--Botones para smartphones y dispositivos pequeños-->
+                            <div class="col-xs-12 col-md-1 visible-xs" style="margin-left: 94px; margin-top: 20px; margin-bottom: 20px;">
+                                <div class="btn-group btn-group-lgl" role="group">
+                                    <button type="button" class="btn btn-default" id="toSelectB1"><span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span></button>
+                                    <button type="button" class="btn btn-default" id="toSelectA1"><span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span></button>
+                                    <button type="button" class="btn btn-default" id="allToSelectB1"><span class="gl-yphicon glyphicon-triangle-top" aria-hidden="true"></span></button>
+                                    <button type="button" class="btn btn-default" id="allToSelectA1"><span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span></button>-
+                                </div>
+                            </div>
+
+                            <div class="col-xs-12 col-md-5">
+                                <div class="panel panel-default">
+                                    <div class="panel-body">
+                                        <div class="col-xs-12" style="padding-bottom:15px">
+                                            <div class="input-group">
+                                                <select id="cbxRotationB" class="selectpicker" data-width="100%">
+                                                    <option value="0">Alumnos sin asignar</option>
+                                                </select>
+                                                <span class="input-group-btn">
+                                                    <button type="button" class="btn btn-default"  data-toggle="modal" data-target="#modalDeleteB"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                                                    </button>
+                                                </span>
+                                            </div>
+                                            <!-- Modal -->
+                                            <div id="modalDeleteB" class="modal fade" role="dialog">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                            <h4 id='modal-title' class="modal-title">Borrar</h4>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <p id='modal-text'>Esta seguro que desea borrar esta Rotación?</p>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                                                            <button id='deleteSelectB' type="button" class="btn btn-warning" data-dismiss="modal">Si</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="panel-body">
+                                            <select id="studentSelectB" multiple="multiple" style="width:100%;min-height:200px">
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>-
     </div>
 </div>
-
+<script src="{% static 'js/jquery-3.1.0.js'%}"></script>
+<script src="{% static 'js/bootstrap-select.js'%}"></script>
+<script> var url = '{% url "app_main:seg-al" %}';</script>
+<script src="{% static 'js/seg.js'%}"></script>
 {% endblock %}
-
-
 {% block scripts %}
-
 {% endblock %}
