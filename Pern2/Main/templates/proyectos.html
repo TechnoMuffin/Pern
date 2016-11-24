@@ -292,13 +292,11 @@
       </div>
   </div>
     {% endblock %} {% block scripts %}
-    <script>
-        var url = '{% url "app_main:seg-al" %}';
-    </script>
+
     <script>
         var url2 = '{% url "app_main:projects" %}';
     </script>
 
-    <script src="{% static 'js/seg.js'%}"></script>
+    <script src="{% static 'js/proj.js'%}"></script>
 
     {% endblock %}

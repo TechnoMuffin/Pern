@@ -145,6 +145,25 @@ def projectFollowing(request):
             newProjecto.idModule = modulo
             newProjecto.save()
             info = "Se ha creado correctamente"
+        if(queryId == "subjects"):
+        #Devuelve todos los modulos correspondientes al curso
+            idC = request.GET.get('idCourse')
+            if(idC!=''):
+                curso = Course.objects.get(idCourse=int(idC))
+                modulos = Module.objects.filter(idCourse=curso)
+                info = serializers.serialize('json', modulos)
+            else:
+
+                info = "ERROR: No existe el modulo pedido"
+        elif(queryId == "projects"):
+        #Devuelve todos los proyectos correspondientes al modulo
+            idModule = request.GET.get('module')
+            if(idModule!=''):
+                module = Module.objects.get(idModule=int(idModule))
+                projects = Project.objects.filter(idModule=module)
+                info = serializers.serialize('json', projects)
+            else:
+                info = "ERROR: No existe el proyecto pedido"
         elif(queryId == "delProject"):
             idProject= request.GET.get('idProject')
             proj=Project.objects.get(idProject=int(idProject))
@@ -216,6 +235,12 @@ def projectFollowing(request):
                     newOnWorking.save()
             onWorking= OnWorking.objects.filter(idProject=int(idProject))
             info = serializers.serialize('json',onWorking,use_natural_foreign_keys=True)
+        elif(queryId == "onlyStudent"):
+        #Devuelve el alumno pedido
+            idUser = request.GET.get('idStudent')
+            student = Student.objects.filter(idUser=int(idUser))
+            info = serializers.serialize('json', student)
+
         elif(queryId == "getActivities"):
             idProject= request.GET.get('idProject')
             idStudent= request.GET.get('idStudent')
