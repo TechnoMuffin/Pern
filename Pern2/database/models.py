@@ -81,6 +81,7 @@ class Module(models.Model):
     idModule = models.AutoField(primary_key=True)
     nameModule = models.CharField(max_length=128)
     idCourse = models.ForeignKey(Course, blank=True)
+    exists = models.BooleanField(blank=True,default=True)
 
     def natural_key(self):
         return (self.idModule, self.nameModule)
@@ -101,6 +102,7 @@ class Rotation(models.Model):
     idRotation = models.AutoField(primary_key=True)
     idModule = models.ForeignKey(Module)
     idCourse = models.ForeignKey(Course)
+    exists = models.BooleanField(blank=True,default=True)
 
     class Meta:
         verbose_name = 'Rotacion'
@@ -117,6 +119,7 @@ class Student(User):
     idCourse = models.ForeignKey(Course)
     idRotation = models.ForeignKey(Rotation, blank=True, null=True)
     numberOfRegistration = models.IntegerField()
+    exists = models.BooleanField(blank=True,default=True)
 
     class Meta:
         verbose_name = 'Alumno'
@@ -139,6 +142,7 @@ class Document(models.Model):
     idCourse = models.ForeignKey(Course, blank=True, null=True)
     commentDoc = models.TextField(blank=True)
     archivo = models.FileField(u'Documentos',upload_to="documentos",blank=True)
+    exists = models.BooleanField(blank=True,default=True)
 
     class Meta:
         verbose_name = 'Documento'
@@ -157,6 +161,7 @@ class Project(models.Model):
     idProject = models.AutoField(primary_key=True)
     idTeacher = models.ManyToManyField(Teacher)
     idModule = models.ForeignKey(Module)
+    exists = models.BooleanField(blank=True,default=True)
 
     class Meta:
         verbose_name = 'Proyecto'
@@ -197,6 +202,7 @@ class StudentFollowing(models.Model):
     idStudent = models.ForeignKey(Student)
     idTeacher = models.ManyToManyField(Teacher)
     commentPF = models.TextField(blank=True)
+    exists = models.BooleanField(blank=True,default=True)
 
     class Meta:
         verbose_name = 'Seguimiento de Alumno'
@@ -231,6 +237,7 @@ class Activity(models.Model):
     nameActivity = models.CharField(max_length=128)
     idActivity = models.AutoField(primary_key=True)
     idProject = models.ForeignKey(Project)
+    exists = models.BooleanField(blank=True,default=True)
 
     def natural_key(self):
         return (self.idActivity, self.nameActivity, self.idProject.nameProject)

@@ -18,7 +18,7 @@ def pupilFollowing(request):
             idC = request.GET.get('idCourse')
             if(idC != ''):
                 curso = Course.objects.get(idCourse=int(idC))
-                modulos = Module.objects.filter(idCourse=curso)
+                modulos = Module.objects.filter(exists=True, idCourse=curso)
                 info = serializers.serialize('json', modulos)
             else:
                 info = "ERROR: No existe el modulo pedido"
@@ -27,8 +27,8 @@ def pupilFollowing(request):
             # Devuelve todos los proyectos correspondientes al modulo
             idModule = request.GET.get('module')
             if(idModule != ''):
-                module = Module.objects.get(idModule=int(idModule))
-                projects = Project.objects.filter(idModule=module)
+                module = Module.objects.get(exists=True, idModule=int(idModule))
+                projects = Project.objects.filter(exists=True,idModule=module)
                 info = serializers.serialize('json', projects)
             else:
                 info = "ERROR: No existe el proyecto pedido"
@@ -41,8 +41,7 @@ def pupilFollowing(request):
             idStudent = request.GET.get('idStudent')
             date = request.GET.get('date')
             if(idModule != '' or idProject != '' or idStudent != '' or idStudent != '' or date != ''):
-                sf = StudentFollowing.objects.get(
-                    idModule__idModule=int(idModule), idStudent__idUser=int(idStudent), dateSF=str(date))
+                sf = StudentFollowing.objects.get(exists=True,idModule__idModule=int(idModule), idStudent__idUser=int(idStudent), dateSF=str(date))
                 dailyFF = dailyFulfillment.objects.filter(idSF=sf)
                 if not dailyFF:
                     modelFF = Fulfillment.objects.filter(idProject__idProject=int(idProject))
@@ -62,7 +61,7 @@ def pupilFollowing(request):
             # Devuelve todos las actividades correspondientes al proyecto
             idProject = request.GET.get('idProject')
             if(idProject != ''):
-                project = Project.objects.get(idProject=int(idProject))
+                project = Project.objects.get(exists=True,idProject=int(idProject))
                 activities = Activity.objects.filter(idProject=project)
                 info = serializers.serialize('json', activities)
             else:
@@ -97,8 +96,7 @@ def pupilFollowing(request):
             date = request.GET.get('date')
             module = request.GET.get('idModule')
             module = Module.objects.get(idModule=int(module))
-            students = Student.objects.filter(
-                idRotation__idModule=module).order_by('surname')
+            students = Student.objects.filter(idRotation__idModule=module).order_by('surname')
             sfs = StudentFollowing.objects.filter(
                 dateSF=str(date), idModule=module)
             if not sfs:
@@ -139,7 +137,7 @@ def pupilFollowing(request):
             # el modulo pedido
             module = request.GET.get('idModule')
             module = Module.objects.get(idModule=module)
-            rotations = Rotation.objects.filter(idModule=module)
+            rotations = Rotation.objects.filter(exists=True,idModule=module)
             info = serializers.serialize('json', rotations)
 
         elif(queryId == "studentsByRotation"):
@@ -166,7 +164,7 @@ def pupilFollowing(request):
             course = request.GET.get('idCourse')
             if(course != ''):
                 course = Course.objects.get(idCourse=course)
-                rotations = Rotation.objects.filter(idCourse=course)
+                rotations = Rotation.objects.filter(exists=True,idCourse=course)
                 info = serializers.serialize('json', rotations, use_natural_foreign_keys=True)
             else:
                 info = "Curso Invalido"
@@ -178,7 +176,7 @@ def pupilFollowing(request):
                 rotation = Rotation.objects.get(idRotation=int(rotation))
                 students = Student.objects.filter(idRotation=rotation)
                 students.update(idRotation=None)
-                rotation.delete()
+                rotation.update(exists=False)
                 info = 'Rotacion eliminada'
             else:
                 info = "Rotacion Invalida"
@@ -243,8 +241,7 @@ def pupilFollowing(request):
             # Devuelve el alumno pedido
             idUser = request.GET.get('idStudent')
             student = Student.objects.filter(idUser=int(idUser))
-            studentFollowings = StudentFollowing.objects.filter(
-                idStudent=student).order_by('-dateSF')
+            studentFollowings = StudentFollowing.objects.filter(exists=True,idStudent=student).order_by('-dateSF')
             workOn = OnClass.objects.all()
             coso = list(chain(studentFollowings, workOn))
             info = serializers.serialize(
