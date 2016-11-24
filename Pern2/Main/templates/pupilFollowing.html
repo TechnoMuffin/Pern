@@ -139,10 +139,8 @@ class='active'
 </div>
 {% endblock %}
 {% block scripts %}
-<script src="{% static 'js/jquery-3.1.0.js'%}"></script>
-<script src="{% static 'js/bootstrap-select.js'%}"></script>
-
 <!-- Siempre antes de importar la libreria de Pern se debe agregar el siguiente elemento SCRIPT -->
+<script src="{% static 'js/bootstrap-select.js'%}"></script>
 <script> var url = '{% url "app_main:seg-al" %}';</script>
 <script src="{% static 'js/seg.js'%}"></script>
 <script>
