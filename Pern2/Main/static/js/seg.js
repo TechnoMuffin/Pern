@@ -660,20 +660,19 @@ $("#promActivity").click(
       avg /= amount;
       avgNotFloat = Math.trunc(avg);
       for(var i=0;i<avgNotFloat;i++){
-          $("#spanStar").append('<span class="glyphicon glyphicon-star"></span>');
+          $("#spanStar").append('<i class="fa fa-star fa-5x"></i>');
       }
       var avgOnlyFloat = avg - avgNotFloat;
       if (avgOnlyFloat >= 0.1 && avgOnlyFloat <= 0.9){
-          $("#spanStar").append('<span class="fa fa-star-half-o fa-5x"></span>');
+          $("#spanStar").append('<i class="fa fa-star-half-o fa-5x"></i>');
       }
       var emptyStar = 5 - avg;
       emptyStar = Math.trunc(emptyStar);
       for (var i=0;i<emptyStar;i++){
-          $("#spanStar").append('<span class="glyphicon glyphicon-star-empty"></span>');
+          $("#spanStar").append('<i class="fa fa-star-o fa-5x"></i>');
       }
       var avgFinal = parseFloat(avg);
       avgFinal = avgFinal.toFixed(2);
       $("#showProm").text(avgFinal);
   }
-
 );
