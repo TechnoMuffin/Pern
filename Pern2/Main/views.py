@@ -138,12 +138,22 @@ def projectFollowing(request):
     if request.is_ajax():
         if(queryId == "newProject"):
             nameProject= request.GET.get('nameProject')
+            FFforCreate= request.GET.getlist('FFforCreate[]')
+            FFAlreadyCreated= request.GET.getlist('FFAlreadyCreated[]')
             idModule = request.GET.get('idModule')
             newProjecto=Project()
             newProjecto.nameProject = nameProject
             modulo = Module.objects.get(idModule=int(idModule))
             newProjecto.idModule = modulo
             newProjecto.save()
+            for x in FFAlreadyCreated:
+                FFexisted = Fulfillment.objects.get(idFF=x)
+                FFexisted.idProject.add(newProjecto)
+            for i in FFforCreate:
+                newFF = Fulfillment();
+                newFF.nameFF =  i
+                newFF.save()
+                newFF.idProject.add(newProjecto)
             info = "Se ha creado correctamente"
         if(queryId == "subjects"):
         #Devuelve todos los modulos correspondientes al curso
@@ -240,6 +250,12 @@ def projectFollowing(request):
             idUser = request.GET.get('idStudent')
             student = Student.objects.filter(idUser=int(idUser))
             info = serializers.serialize('json', student)
+
+        elif(queryId == "AllFulfillments"):
+        #Devuelve todos los Cumplimientos
+            fulfillments = Fulfillment.objects.all()
+            info = serializers.serialize('json', fulfillments)
+            print info
 
         elif(queryId == "getActivities"):
             idProject= request.GET.get('idProject')
