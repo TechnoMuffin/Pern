@@ -65,16 +65,18 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">Actividades</div>
                     <!-- Table -->
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Etapa</th>
-                                <th>Clases</th>
-                                <th>Nota</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tableActivities"></tbody>
-                    </table>
+                    <div class="panel-body">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Etapa</th>
+                                    <th>Clases</th>
+                                    <th>Nota</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tableActivities"></tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -111,6 +113,35 @@
                     </div>
                     <div class="modal-body">
                         <input class="form-control" id="projectName" maxlength="128" name="projectName" placeholder="Nombre del proyecto" type="text">
+                        <br>
+                        <div style="max-height:250px;overflow-y:scroll">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th class="col-xs-2">Añadir</th>
+                                        <th>Cumplimiento</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbFulfillments">
+                                    <tr>
+                                        <th>1</th>
+                                        <td>Mark</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <br>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">Crear Cumplimiento</div>
+                            <div class="panel-body">
+                                <div class="col-xs-12 col-md-8">
+                                    <input class="form-control" id="FFname" maxlength="128" placeholder="Nombre de Cumplimiento" type="text">
+                                </div>
+                                <div class="col-xs-12 col-md-4">
+                                    <button id="createFF" type="button" class="btn btn-alert">Crear</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button id="projectSender" type="button" class="btn btn-default" data-dismiss="modal">Crear</button>
@@ -305,14 +336,15 @@
                     </div>
                 </div>
 
-      </div>
-  </div>
-    {% endblock %} {% block scripts %}
+            </div>
+        </div>
+    {% endblock %}
+    {% block scripts %}
 
-    <script>
-        var url2 = '{% url "app_main:projects" %}';
-    </script>
+        <script>
+            var url2 = '{% url "app_main:projects" %}';
+        </script>
 
-    <script src="{% static 'js/proj.js'%}"></script>
+        <script src="{% static 'js/proj.js'%}"></script>
 
     {% endblock %}
