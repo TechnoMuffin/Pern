@@ -134,7 +134,7 @@ function tableCreation(){
               var value = info[i].pk;
               var table = '<tr><td>'+textName+'</td>'+
                               '<td>'+textNOC+'</td>'+
-                              '<td class="tdNota">'+textCal+'</td>'+
+                              '<td class="tdNota">'+"<span style='display:none'>"+textCal+"</span>"+'</td>'+
                               '<td><button data-toggle="modal" onclick="setCurrentActivity('+value+')" data-target="#modalCalificateWork" class="btn btn-default "><span class="glyphicon glyphicon-star"></span></button></td>'+
                               '<td><button data-toggle="modal" onclick="setCurrentActivity('+value+')" data-target="#modalEditWork" class="btn btn-default "><span class="glyphicon glyphicon-edit"></span></button></td>'+
                               '<td><button data-toggle="modal" onclick="setCurrentActivity('+value+')" data-target="#modalDeleteWork" class="btn btn-default botonDel"><span class="glyphicon glyphicon-trash"></span></button></td></tr>';
@@ -143,7 +143,7 @@ function tableCreation(){
               $('#finishWork').removeClass('disabledDIV');
 
           }
-
+          estrellasEtapa();
       }
   });
 }
@@ -238,10 +238,12 @@ function activityModify(){
   });
 }
 function calActivities(){
+  var cantStars = parseInt(star_rating.siblings('input.rating-value').val());
+  console.log(parseInt(star_rating.siblings('input.rating-value').val()));
   $.ajax({
       url: url2,
       type: 'GET',
-      data: {newCal: $('#inputCal').val(),currentActivity: currentActivity,queryId: "calActivities"},
+      data: {newCal: cantStars,currentActivity: currentActivity,queryId: "calActivities"},
       success: function(){
           tableCreation();
           $('#inputCal').val("");
@@ -260,7 +262,7 @@ function projectFinisher (){
           data: {idStudent: currentStudentSelected,idProject: cbxProjectFW.val(), queryId: "finishWorking"},
           success: function(){
             console.log("hola");
-            resetStudentWorkingTable();
+            resetStudentTable();
             StudentTableCreation();
           }
       });
@@ -277,7 +279,7 @@ function projectNotFinisher (){
           data: {idStudent: currentStudentSelected,idProject: cbxProjectFW.val(), queryId: "notFinishWorking"},
           success: function(){
             console.log("chau");
-            resetStudentWorkingTable();
+            resetStudentTable();
             StudentTableCreation();
           }
       });
@@ -297,7 +299,7 @@ $("#promActivity").click(
       avg /= amount;
       avgNotFloat = Math.trunc(avg);
       for(var i=0;i<avgNotFloat;i++){
-          $("#spanStar").append('<span class="glyphicon glyphicon-star"></span>');
+          $("#spanStar").append('<span class="fa fa-star fa-5x"></span>');
       }
       var avgOnlyFloat = avg - avgNotFloat;
       if (avgOnlyFloat >= 0.1 && avgOnlyFloat <= 0.9){
@@ -306,7 +308,7 @@ $("#promActivity").click(
       var emptyStar = 5 - avg;
       emptyStar = Math.trunc(emptyStar);
       for (var i=0;i<emptyStar;i++){
-          $("#spanStar").append('<span class="glyphicon glyphicon-star-empty"></span>');
+          $("#spanStar").append('<span class="fa fa-star-o fa-5x"></span>');
       }
       var avgFinal = parseFloat(avg);
       avgFinal = avgFinal.toFixed(2);
@@ -315,6 +317,34 @@ $("#promActivity").click(
 
 );
 
+var star_rating = $('.star_rating .fa');
+var SetRatingStar = function() {
+    return star_rating.each(function() {
+        if (parseInt(star_rating.siblings('input.rating-value').val()) >= parseInt($(this).data('rating'))) {
+            return $(this).removeClass('fa-star-o').addClass('fa-star');
+        } else {
+            return $(this).removeClass('fa-star').addClass('fa-star-o');
+        }
+    });
+
+};
+star_rating.on('click', function() {
+    star_rating.siblings('input.rating-value').val($(this).data('rating'));
+    return SetRatingStar();
+});
+function estrellasEtapa(){
+    $(".tdNota").each(
+        function(){
+            for (var i=0; i<($(this).text());i++){
+                $(this).append('<span class="fa fa-star fa-2x"></span>');
+            }
+            var starempty = 5-$(this).text();
+            for (var i=0; i<starempty;i++){
+                $(this).append('<span class="fa fa-star-o fa-2x"></span>');
+            }
+        }
+    );
+}
 //funciones de limpieza
 function cleanTableActivities(){
     $('#tableActivities').empty();
@@ -330,8 +360,5 @@ function resetProjectFWField(){
     cbxProjectFW.selectpicker('refresh');
 }
 function resetStudentTable(){
-    tbProjectStudent.empty();
-}
-function resetStudentWorkingTable(){
     tbProjectStudent.empty();
 }

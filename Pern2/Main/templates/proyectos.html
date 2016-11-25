@@ -206,12 +206,9 @@
                         <h4 class="modal-title">Calificar</h4>
                     </div>
                     <div class="modal-body">
-                        <div class="modal-body">
-                            <input class="form-control" id="inputCal" maxlength="5" placeholder="Nota por ahora" type="int"><br>
-                        </div>
-                        <div class="star_rating">
+                        <div class="star_rating"style="text-align:center">
                             {% for j in '12345' %}
-                                <span class="fa fa-star-o fa-2x" data-rating="{{j}}"></span>
+                                <span class="fa fa-star-o fa-5x" data-rating="{{j}}"></span>
                             {% endfor %}
                             <input type="hidden" name="whatever" id="calStar" class="rating-value" value="0">
                         </div>
