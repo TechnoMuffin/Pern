@@ -183,37 +183,33 @@ function selectStudentWorking(evt, valor) {
 
 }
 
-function tableCreation() {
-    $.ajax({
-        url: url2,
-        type: 'GET',
-        data: {
-            idStudent: currentStudentSelected,
-            idProject: cbxProjectFW.val(),
-            queryId: "getActivities"
-        },
-        dataType: 'json',
-        success: function(info) {
-            cleanTableActivities();
-            for (var i = 0; i < info.length; i++) {
-                var textName = info[i].fields.idActivity[1];
-                var textNOC = info[i].fields.numberOfClasses;
-                var textCal = info[i].fields.calification;
-                var value = info[i].pk;
-                var table = '<tr><td>' + textName + '</td>' +
-                    '<td>' + textNOC + '</td>' +
-                    '<td class="tdNota">' + textCal + '</td>' +
-                    '<td><button data-toggle="modal" onclick="setCurrentActivity(' + value + ')" data-target="#modalCalificateWork" class="btn btn-default "><span class="glyphicon glyphicon-star"></span></button></td>' +
-                    '<td><button data-toggle="modal" onclick="setCurrentActivity(' + value + ')" data-target="#modalEditWork" class="btn btn-default "><span class="glyphicon glyphicon-edit"></span></button></td>' +
-                    '<td><button data-toggle="modal" onclick="setCurrentActivity(' + value + ')" data-target="#modalDeleteWork" class="btn btn-default botonDel"><span class="glyphicon glyphicon-trash"></span></button></td></tr>';
-                $('#tableActivities').append(table);
-                $('#promActivity').removeClass('disabledDIV');
-                $('#finishWork').removeClass('disabledDIV');
+function tableCreation(){
+  $.ajax({
+      url: url2,
+      type: 'GET',
+      data: {idStudent: currentStudentSelected, idProject: cbxProjectFW.val(),queryId: "getActivities"},
+      dataType: 'json',
+      success: function(info){
+          cleanTableActivities();
+          for(var i=0;i<info.length;i++){
+              var textName = info[i].fields.idActivity[1];
+              var textNOC = info[i].fields.numberOfClasses;
+              var textCal = info[i].fields.calification;
+              var value = info[i].pk;
+              var table = '<tr><td>'+textName+'</td>'+
+                              '<td>'+textNOC+'</td>'+
+                              '<td class="tdNota">'+"<span style='display:none'>"+textCal+"</span>"+'</td>'+
+                              '<td><button data-toggle="modal" onclick="setCurrentActivity('+value+')" data-target="#modalCalificateWork" class="btn btn-default "><span class="glyphicon glyphicon-star"></span></button></td>'+
+                              '<td><button data-toggle="modal" onclick="setCurrentActivity('+value+')" data-target="#modalEditWork" class="btn btn-default "><span class="glyphicon glyphicon-edit"></span></button></td>'+
+                              '<td><button data-toggle="modal" onclick="setCurrentActivity('+value+')" data-target="#modalDeleteWork" class="btn btn-default botonDel"><span class="glyphicon glyphicon-trash"></span></button></td></tr>';
+              $('#tableActivities').append(table);
+              $('#promActivity').removeClass('disabledDIV');
+              $('#finishWork').removeClass('disabledDIV');
 
-            }
-
-        }
-    });
+          }
+          estrellasEtapa();
+      }
+  });
 }
 $("#activitySender").click(
     function() {
@@ -348,21 +344,19 @@ function activityModify() {
     });
 }
 
-function calActivities() {
-    $.ajax({
-        url: url2,
-        type: 'GET',
-        data: {
-            newCal: $('#inputCal').val(),
-            currentActivity: currentActivity,
-            queryId: "calActivities"
-        },
-        success: function() {
-            tableCreation();
-            $('#inputCal').val("");
-            console.log("Puto el que lee(oveja xp)");
-        }
-    });
+function calActivities(){
+  var cantStars = parseInt(star_rating.siblings('input.rating-value').val());
+  console.log(parseInt(star_rating.siblings('input.rating-value').val()));
+  $.ajax({
+      url: url2,
+      type: 'GET',
+      data: {newCal: cantStars,currentActivity: currentActivity,queryId: "calActivities"},
+      success: function(){
+          tableCreation();
+          $('#inputCal').val("");
+          console.log("Puto el que lee(oveja xp)");
+      }
+  });
 }
 
 function projectFinisher() {
@@ -386,6 +380,37 @@ function projectFinisher() {
         });
     }
 }
+
+
+$("#promActivity").click(
+  function promedioNotas(){
+      $("#spanStar").empty();
+      var avg = 0;
+      var amount = 0;
+      $(".tdNota").each(
+          function(){
+              avg += +($(this).text());
+              amount++;
+          }
+      );
+      avg /= amount;
+      avgNotFloat = Math.trunc(avg);
+      for(var i=0;i<avgNotFloat;i++){
+          $("#spanStar").append('<span class="fa fa-star fa-5x"></span>');
+      }
+      var avgOnlyFloat = avg - avgNotFloat;
+      if (avgOnlyFloat >= 0.1 && avgOnlyFloat <= 0.9){
+          $("#spanStar").append('<span class="fa fa-star-half-o fa-5x"></span>');
+      }
+      var emptyStar = 5 - avg;
+      emptyStar = Math.trunc(emptyStar);
+      for (var i=0;i<emptyStar;i++){
+          $("#spanStar").append('<span class="fa fa-star-o fa-5x"></span>');
+      }
+      var avgFinal = parseFloat(avg);
+      avgFinal = avgFinal.toFixed(2);
+      $("#showProm").text(avgFinal);
+  });
 
 function projectNotFinisher() {
     console.log("mierdaaa");
@@ -440,6 +465,35 @@ $("#promActivity").click(
 
 );
 
+var star_rating = $('.star_rating .fa');
+var SetRatingStar = function() {
+    return star_rating.each(function() {
+        if (parseInt(star_rating.siblings('input.rating-value').val()) >= parseInt($(this).data('rating'))) {
+            return $(this).removeClass('fa-star-o').addClass('fa-star');
+        } else {
+            return $(this).removeClass('fa-star').addClass('fa-star-o');
+        }
+    });
+
+};
+star_rating.on('click', function() {
+    star_rating.siblings('input.rating-value').val($(this).data('rating'));
+    return SetRatingStar();
+});
+function estrellasEtapa(){
+    $(".tdNota").each(
+        function(){
+            for (var i=0; i<($(this).text());i++){
+                $(this).append('<span class="fa fa-star fa-2x"></span>');
+            }
+            var starempty = 5-$(this).text();
+            for (var i=0; i<starempty;i++){
+                $(this).append('<span class="fa fa-star-o fa-2x"></span>');
+            }
+        }
+    );
+}
+  
 //funciones de limpieza
 function cleanTableActivities() {
     $('#tableActivities').empty();

@@ -258,9 +258,9 @@
                     <h4 class="modal-title">Calificar</h4>
                 </div>
                 <div class="modal-body">
-                    <div class="star_rating"> 
+                    <div class="star_rating">
                         {% for j in '12345' %}
-                        <span class="fa fa-star-o fa-2x" data-rating="{{j}}"></span>        
+                        <span class="fa fa-star-o fa-2x" data-rating="{{j}}"></span>
                         {% endfor %}
                         <input type="hidden" name="whatever" id="calStar" class="rating-value" value="0">
                     </div>
@@ -461,7 +461,7 @@
                 type: 'GET',
                 data: {checked: cosoStatus ,nameFF:nameFF ,date:$('#datepicker').val(),idPupil: $('#cbxPupil').val(),idSubject: $('#cbxSubject').val(), queryId: "saveFF"},
                 success: function(info){
-                    
+
                 }});
 
         }
@@ -493,7 +493,7 @@
                         //"Value" es el nombre del proyecto
                         var value = info[i].fields.nameProject;
                         //"Text" es el id de la materia a la que esta asignada el proyecto (asi es,Chucho)
-                        var text = info[i].pk;  
+                        var text = info[i].pk;
                         //Agrega el proyecto al cbx (si Chucho, podes getear el id del proyecto del value del actual elemento en el cbx)
                         $('#cbxProject').append('<option value='+text+'>'+text+'</option>');
                     }
@@ -779,7 +779,7 @@
                 classesUsed: $('#inputClassesStage').val(),
             }
             $.ajax({
-                url: "{% url 'app_testapp:seg-al' %}", 
+                url: "{% url 'app_testapp:seg-al' %}",
                 type: 'GET',
                 data: data,
                 success:function(){

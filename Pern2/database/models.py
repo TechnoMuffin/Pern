@@ -121,6 +121,9 @@ class Student(User):
     numberOfRegistration = models.IntegerField()
     exists = models.BooleanField(blank=True,default=True)
 
+    def natural_key(self):
+        return (self.idUser, self.name, self.surname)
+
     class Meta:
         verbose_name = 'Alumno'
         verbose_name_plural = 'Alumnos'
@@ -283,4 +286,19 @@ class OnClass(models.Model):
         tagName = str(self.idActivity.nameActivity) + " - " + \
             str(self.idSF.idStudent.surname) + \
             '[' + str(self.idSF.dateSF) + ']'
+        return tagName
+
+##################################TERMINO EL TRABAJO##################################
+
+class OnWorking(models.Model):
+    idStudent = models.ForeignKey(Student)
+    idProject = models.ForeignKey(Project)
+    hasFinish = models.BooleanField(blank=True)
+
+
+    class Meta:
+        verbose_name = 'Estado'
+        verbose_name_plural = 'Estados'
+    def __str__(self):
+        tagName = str(self.idProject.nameProject) + " - " + str(self.idStudent.surname) +'['+ str(self.hasFinish)+']'
         return tagName
