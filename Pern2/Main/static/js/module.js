@@ -10,6 +10,9 @@ var allDeleteBtnModule = $('.deleteModule')
 createModulo.on('click', function() {
     createModule()
 });
+$(document).on('click','.deleteModule',function(){
+  deleteModule($(this))
+});
 
 
 ////Funciones reales
@@ -20,7 +23,7 @@ function deleteModule(element) {
         url: urlModule,
         type: 'GET',
         data: {
-            idModule: element.data('module-id'),
+            idModule: asd,
             queryId: 'deleteModule'
         },
         success: function() {
@@ -74,7 +77,6 @@ function refreshModules() {
                     '<span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button></td></tr>'
                 moduleTable.append(element);
             }
-            allDeleteBtnModule.click(function(){deleteModule($(this));});
         }
     });
 }
