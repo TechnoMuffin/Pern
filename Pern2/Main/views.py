@@ -329,9 +329,55 @@ def document(request):
     return render_to_response('documents.html', data, context )
 
 def modules(request):
-    context = RequestContext(request)
-    courses = Course.objects.all()
-    return render_to_response('modulos.html', {'courses':courses}, context)
+    queryId = request.GET.get('queryId')
+    info='...'
+    if request.is_ajax():
+        if(queryId == "newModule"):
+            nameModule = request.GET.get('nameModule')
+            course = request.GET.get('course')
+            if nameModule!=None and course!=None:
+                newModule = Module()
+                newModule.nameModule =  nameModule
+                newModule.idCourse = Course.objects.get(idCourse=int(course))
+                newModule.save()
+                info="Creado el Modulo: "+ nameModule
+            else:
+                print 'Error: no se pudo crear el modulo'
+
+        elif(queryId == "allModules"):
+            idCourse = request.GET.get('idCourse')
+            if idCourse=='undefined' or idCourse=='':
+                modulos = Module.objects.filter(exists=True)
+            else:
+                modulos = Module.objects.filter(exists=True,idCourse=int(idCourse))
+            info = serializers.serialize('json', modulos,use_natural_foreign_keys=True)
+        elif(queryId == "deleteModule"):
+            idModule = request.GET.get('idModule')
+            module = Module.objects.get(idModule=int(idModule))
+            module.exists = False
+            module.save()
+            info = "Modulo "+module.nameModule+" ya no existe ;D"
+        elif(queryId == "updateModule"):
+            idModule = request.GET.get('idModule')
+            newName = request.GET.get('newName')
+            newCourse = request.GET.get('newCourse')
+            module = Module.objects.get(idModule=int(idModule))
+            print newName
+            print newCourse
+            if(newName!='' and newName!='undefined'):
+                module.nameModule = newName
+            if(newCourse!='' and newCourse!='undefined'):
+                newCourse = Course.objects.get(idCourse=int(newCourse))
+                module.idCourse = newCourse
+            module.save()
+            info = "Modulo "+module.nameModule+" actualizado"
+        return HttpResponse(info)
+    else:
+        context = RequestContext(request)
+        courses = Course.objects.all()
+        modules = Module.objects.filter(exists=True)
+        return render_to_response('modulos.html', {'courses':courses, 'modules': modules}, context)
+
 
 def projectFollowing(request):
     queryId = request.GET.get('queryId')
@@ -378,11 +424,13 @@ def projectFollowing(request):
         elif(queryId == "delProject"):
             idProject= request.GET.get('idProject')
             proj=Project.objects.get(idProject=int(idProject))
-            proj.delete()
+            proj.exists=False
+            proj.save()
         elif(queryId == "delActivities"):
             idWork = request.GET.get('currentActivity')
             working = Working.objects.get(id=int(idWork))
-            working.idActivity.delete()
+            working.idActivity.exists=False
+            working.idActivity.save()
         elif(queryId == "modActivities"):
             idWork = request.GET.get('currentActivity')
             newName = request.GET.get('newNameWork')

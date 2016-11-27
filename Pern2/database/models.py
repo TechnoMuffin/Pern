@@ -65,6 +65,9 @@ class Course(models.Model):
     courseType = models.CharField(max_length=128, choices=COURSE_OPTIONS)
     courseDivision = models.CharField(max_length=128, choices=DIVISION_OPTIONS)
 
+    def natural_key(self):
+        return (self.courseType, self.courseDivision)
+
     class Meta:
         verbose_name = 'Curso'
         verbose_name_plural = 'Cursos'
