@@ -1,0 +1,24 @@
+.disabledDIV {
+    pointer-events: none;
+    opacity: 0.4;
+}
+
+.verde{
+    color:green;
+}
+
+.rojo{
+    color:red;
+}
+
+textarea {
+    max-width: 100%; 
+}
+
+.col-centered{
+    float: none;
+    margin: 0 auto;
+}
+html{
+    padding: 0px;
+}

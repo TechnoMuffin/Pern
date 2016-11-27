@@ -1,0 +1,38 @@
+DESCRIPCIONES DE ARCHIVOS
+./Pern
+-Carpeta raiz del proyecto, donde se encuentran los archivos estrictamente ligados a la funcionalidad.
+-./Pern/pern
+--Carpeta donde se gestiona el proyecto y sus aplicaciones.
+--./Pern/pern/__init__.py
+---Archivo en blanco, se utiliza unicamente para informar que el directorio debe ser conciderado un paquete Python.
+--./Pern/pern/settings.py
+---Archivo donde se importan las distintas aplicaciones, y se configuran parametros como la zona horaria y el idioma.
+--./Pern/pern/url.py
+---Archivo donde importamos las URLs configuradas en las otras aplicaciones.
+--./Pern/pern/wsgi.py
+---Archivo que solo cuenta con codigo autogenerado, indica cuál es el archivo que tiene las configuraciones del servidor (settings.py).
+-./Pern/main
+--Carpeta que gestiona la aplicacion propiamente dicha, incluye los templates y las bases de datos.
+--./Pern/main/migrations
+---Carpeta donde se almacenan datos sobre los cambios estructurales que el sistema debe hacer a la base de datos, como es codigo autogenerado, esta documentacion no abarcará subarchivos.
+--./Pern/main/static
+---Carpeta donde se almacena el contenido estático, como hojas de estilo, codigo Javascript, etc.
+---./Pern/main/static/css
+----Carpeta donde están las hojas de estilo. La mayoria son estilos por default de boostrap, exceptuando que modificamos los colores para nuestro agrado.
+---./Pern/main/static/fonts
+----Carpeta donde se almacenan los archivos de "Font Awesome", al ser archivos que no nos pertenecen no profundizaremos en sus subarchivos.
+---./Pern/main/static/js
+----Carpeta donde se encuentra todo el codigo Javascript. Por cuestiones de organización contamos con un archivo por cada template.
+--./Pern/main/templates
+---Carpeta donde se almacenan los archivos HTMLs con los templates.
+--./Pern/main/admin.py
+---Archivo donde registramos las modificaciones que puede hacer el administrador en la base de datos.
+--./Pern/main/apps.py
+--./Pern/main/__init__.py
+---Archivo en blanco, se utiliza unicamente para informar que el directorio debe ser conciderado un paquete Python.
+--./Pern/main/models.py
+---Archivo donde definimos el modelo de la base de datos, en ella aparece cada objeto y sus respectivos atributos.
+--./Pern/main/tests.py
+---Archivo autogenerado donde se puede escribir codigo de prueba y correrlo con "./manage.py test".
+--./Pern/main/views.py
+---Archivo donde se controlan las respuestas que dará el servidor cada vez que se le solicite con una URL o una peticion AJAX.

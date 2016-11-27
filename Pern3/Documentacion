@@ -1,0 +1,36 @@
+DESCRIPCIONES DE ARCHIVOS
+-./pern
+--Carpeta donde se gestiona el proyecto y sus aplicaciones.
+--./pern/__init__.py
+---Archivo en blanco, se utiliza unicamente para informar que el directorio debe ser conciderado un paquete Python.
+--./pern/settings.py
+---Archivo donde se importan las distintas aplicaciones, y se configuran parametros como la zona horaria y el idioma.
+--./pern/url.py
+---Archivo donde importamos las URLs configuradas en las otras aplicaciones.
+--./pern/wsgi.py
+---Archivo que solo cuenta con codigo autogenerado, indica cuál es el archivo que tiene las configuraciones del servidor (settings.py).
+-./main
+--Carpeta que gestiona la aplicacion propiamente dicha, incluye los templates y las bases de datos.
+--./main/migrations
+---Carpeta donde se almacenan datos sobre los cambios estructurales que el sistema debe hacer a la base de datos, como es codigo autogenerado, esta documentacion no abarcará subarchivos.
+--./main/static
+---Carpeta donde se almacena el contenido estático, como hojas de estilo, codigo Javascript, etc.
+---./main/static/css
+----Carpeta donde están las hojas de estilo. La mayoria son estilos por default de boostrap, exceptuando que modificamos los colores para nuestro agrado.
+---./main/static/fonts
+----Carpeta donde se almacenan los archivos de "Font Awesome", al ser archivos que no nos pertenecen no profundizaremos en sus subarchivos.
+---./main/static/js
+----Carpeta donde se encuentra todo el codigo Javascript. Por cuestiones de organización contamos con un archivo por cada template.
+--./main/templates
+---Carpeta donde se almacenan los archivos HTMLs con los templates.
+--./main/admin.py
+---Archivo donde registramos las modificaciones que puede hacer el administrador en la base de datos.
+--./main/apps.py
+--./main/__init__.py
+---Archivo en blanco, se utiliza unicamente para informar que el directorio debe ser conciderado un paquete Python.
+--./main/models.py
+---Archivo donde definimos el modelo de la base de datos, en ella aparece cada objeto y sus respectivos atributos.
+--./main/tests.py
+---Archivo autogenerado donde se puede escribir codigo de prueba y correrlo con "./manage.py test".
+--./main/views.py
+---Archivo donde se controlan las respuestas que dará el servidor cada vez que se le solicite con una URL o una peticion AJAX.

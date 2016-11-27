@@ -1,0 +1,292 @@
+#LyX 2.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 508
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass article
+\use_default_options true
+\maintain_unincluded_children false
+\language spanish
+\language_package default
+\inputencoding utf8
+\fontencoding global
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize a4paper
+\use_geometry false
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Documentacion Pern
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset toc
+LatexCommand tableofcontents
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pagebreak
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Part
+Descripcion general de archivos
+\end_layout
+
+\begin_layout Section
+Directorio 
+\begin_inset Quotes eld
+\end_inset
+
+pern
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Carpeta donde se gestiona el proyecto y sus aplicaciones.
+\end_layout
+
+\begin_layout Subsection
+pern/__init__.py
+\end_layout
+
+\begin_layout Standard
+Archivo en blanco, se utiliza unicamente para informar que el directorio
+ debe ser conciderado un paquete Python.
+ 
+\end_layout
+
+\begin_layout Subsection
+pern/settings.py
+\end_layout
+
+\begin_layout Standard
+Archivo donde se importan las distintas aplicaciones, y se configuran parametros
+ como la zona horaria y el idioma.
+ 
+\end_layout
+
+\begin_layout Subsection
+pern/url.py
+\end_layout
+
+\begin_layout Standard
+Archivo donde importamos las URLs configuradas en las otras aplicaciones.
+ 
+\end_layout
+
+\begin_layout Subsection
+pern/wsgi.py
+\end_layout
+
+\begin_layout Standard
+Archivo que solo cuenta con codigo autogenerado, indica cuál es el archivo
+ que tiene las configuraciones del servidor (settings.py).
+\end_layout
+
+\begin_layout Section
+Directorio 
+\begin_inset Quotes eld
+\end_inset
+
+main
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Carpeta que gestiona la aplicacion propiamente dicha, incluye los templates,
+ el codigo Javascript, y las bases de datos.
+ 
+\end_layout
+
+\begin_layout Subsection
+main/migrations
+\end_layout
+
+\begin_layout Standard
+Carpeta donde se almacenan datos sobre los cambios estructurales que el
+ sistema debe hacer a la base de datos, como es codigo autogenerado, esta
+ documentacion no abarcará subarchivos.
+\end_layout
+
+\begin_layout Subsection
+main/static
+\end_layout
+
+\begin_layout Standard
+Carpeta donde se almacena el contenido estático, como hojas de estilo, codigo
+ Javascript, etc.
+\end_layout
+
+\begin_layout Subsubsection
+main/static/css
+\end_layout
+
+\begin_layout Standard
+Carpeta donde están las hojas de estilo.
+ La mayoria son estilos por default de boostrap, exceptuando que modificamos
+ los colores para nuestro agrado.
+\end_layout
+
+\begin_layout Subsubsection
+main/static/fonts
+\end_layout
+
+\begin_layout Standard
+Carpeta donde se almacenan los archivos de "Font Awesome", al ser archivos
+ que no nos pertenecen no profundizaremos en sus subarchivos.
+\end_layout
+
+\begin_layout Subsubsection
+main/static/js
+\end_layout
+
+\begin_layout Standard
+Carpeta donde se encuentra todo el codigo Javascript.
+ Por cuestiones de organización contamos con un archivo por cada template.
+\end_layout
+
+\begin_layout Subsection
+main/templates
+\end_layout
+
+\begin_layout Standard
+Carpeta donde se almacenan los archivos HTMLs con los templates.
+\end_layout
+
+\begin_layout Subsection
+main/admin.py
+\end_layout
+
+\begin_layout Standard
+Archivo donde registramos las modificaciones que puede hacer el administrador
+ en la base de datos.
+ 
+\end_layout
+
+\begin_layout Subsection
+main/apps.py
+\end_layout
+
+\begin_layout Standard
+Archivo donde se registran los datos de la aplicación "main".
+\end_layout
+
+\begin_layout Subsection
+main/__init__.py
+\end_layout
+
+\begin_layout Standard
+Archivo en blanco, se utiliza unicamente para informar que el directorio
+ debe ser conciderado un paquete Python.
+ 
+\end_layout
+
+\begin_layout Subsection
+main/models.py
+\end_layout
+
+\begin_layout Standard
+Archivo donde definimos el modelo de la base de datos, en ella aparece cada
+ objeto y sus respectivos atributos.
+ 
+\end_layout
+
+\begin_layout Subsection
+main/tests.py
+\end_layout
+
+\begin_layout Standard
+Archivo autogenerado donde se puede escribir codigo de prueba y correrlo
+ con "manage.py test".
+ 
+\end_layout
+
+\begin_layout Subsection
+main/views.py
+\end_layout
+
+\begin_layout Standard
+Archivo donde se controlan las respuestas que dará el servidor cada vez
+ que se le solicite con una URL o una peticion AJAX.
+\end_layout
+
+\end_body
+\end_document
