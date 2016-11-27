@@ -343,11 +343,15 @@ def modules(request):
                 info="Creado el Modulo: "+ nameModule
             else:
                 print 'Error: no se pudo crear el modulo'
+
+        if(queryId == "allModules"):
+            modulos = Module.objects.filter(exists=True)
+            info = serializers.serialize('json', modulos,use_natural_foreign_keys=True)
         return HttpResponse(info)
     else:
         context = RequestContext(request)
         courses = Course.objects.all()
-        modules = Module.objects.all()
+        modules = Module.objects.filter(exists=True)
         return render_to_response('modulos.html', {'courses':courses, 'modules': modules}, context)
 
 

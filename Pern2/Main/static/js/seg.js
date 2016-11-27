@@ -825,24 +825,24 @@ function createRotation() {
                 idModule: cbxModule.val(),
                 queryId: "createRotation"
             },
-            dataType: 'json',
-            success: function() {}
+            success: function() {
+                modalText.text('Se ha creado la rotación ' + txtRotationName.val() + ' correctamente.');
+                modalTitle.text('Éxito!');
+                $('#modal').modal('toggle');
+                txtRotationName.val('');
+                cbxCourse.val('');
+                cbxCourse.selectpicker('refresh');
+                cbxCourseRotation.val('');
+                cbxCourseRotation.selectpicker('refresh');
+                selecterDiv.addClass('disabledDIV');
+                resetCbx(cbxModule, 'Módulo');
+                resetCbx(cbxRotationA, 'Alumnos sin Rotación', '0');
+                resetCbx(cbxRotationB, 'Alumnos sin Rotación', '0');
+                resetMultiSelect(studentSelectA);
+                resetMultiSelect(studentSelectB);
+                courseGChanged();
+            }
         });
-        modalText.text('Se ha creado la rotación ' + txtRotationName.val() + ' correctamente.');
-        modalTitle.text('Éxito!');
-        $('#modal').modal('toggle');
-        txtRotationName.val('');
-        cbxCourse.val('');
-        cbxCourse.selectpicker('refresh');
-        cbxCourseRotation.val('');
-        cbxCourseRotation.selectpicker('refresh');
-        selecterDiv.addClass('disabledDIV');
-        resetCbx(cbxModule, 'Módulo');
-        resetCbx(cbxRotationA, 'Alumnos sin Rotación', '0');
-        resetCbx(cbxRotationB, 'Alumnos sin Rotación', '0');
-        resetMultiSelect(studentSelectA);
-        resetMultiSelect(studentSelectB);
-        courseGChanged();
     }
 }
 
