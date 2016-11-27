@@ -344,15 +344,33 @@ def modules(request):
             else:
                 print 'Error: no se pudo crear el modulo'
 
-        if(queryId == "allModules"):
-            modulos = Module.objects.filter(exists=True)
+        elif(queryId == "allModules"):
+            idCourse = request.GET.get('idCourse')
+            if idCourse=='undefined' or idCourse=='':
+                modulos = Module.objects.filter(exists=True)
+            else:
+                modulos = Module.objects.filter(exists=True,idCourse=int(idCourse))
             info = serializers.serialize('json', modulos,use_natural_foreign_keys=True)
-        if(queryId == "deleteModule"):
+        elif(queryId == "deleteModule"):
             idModule = request.GET.get('idModule')
             module = Module.objects.get(idModule=int(idModule))
             module.exists = False
             module.save()
             info = "Modulo "+module.nameModule+" ya no existe ;D"
+        elif(queryId == "updateModule"):
+            idModule = request.GET.get('idModule')
+            newName = request.GET.get('newName')
+            newCourse = request.GET.get('newCourse')
+            module = Module.objects.get(idModule=int(idModule))
+            print newName
+            print newCourse
+            if(newName!='' and newName!='undefined'):
+                module.nameModule = newName
+            if(newCourse!='' and newCourse!='undefined'):
+                newCourse = Course.objects.get(idCourse=int(newCourse))
+                module.idCourse = newCourse
+            module.save()
+            info = "Modulo "+module.nameModule+" actualizado"
         return HttpResponse(info)
     else:
         context = RequestContext(request)

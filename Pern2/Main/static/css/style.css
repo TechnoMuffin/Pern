@@ -12,7 +12,7 @@
 }
 
 textarea {
-    max-width: 100%; 
+    max-width: 100%;
 }
 
 .col-centered{
@@ -21,4 +21,10 @@ textarea {
 }
 html{
     padding: 0px;
+}
+
+.table td.fit,
+.table th.fit {
+    white-space: nowrap;
+    width: 1%;
 }
