@@ -406,11 +406,13 @@ def projectFollowing(request):
         elif(queryId == "delProject"):
             idProject= request.GET.get('idProject')
             proj=Project.objects.get(idProject=int(idProject))
-            proj.delete()
+            proj.exists=False
+            proj.save()
         elif(queryId == "delActivities"):
             idWork = request.GET.get('currentActivity')
             working = Working.objects.get(id=int(idWork))
-            working.idActivity.delete()
+            working.idActivity.exists=False
+            working.idActivity.save()
         elif(queryId == "modActivities"):
             idWork = request.GET.get('currentActivity')
             newName = request.GET.get('newNameWork')
