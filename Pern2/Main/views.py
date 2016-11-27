@@ -329,9 +329,27 @@ def document(request):
     return render_to_response('documents.html', data, context )
 
 def modules(request):
-    context = RequestContext(request)
-    courses = Course.objects.all()
-    return render_to_response('modulos.html', {'courses':courses}, context)
+    queryId = request.GET.get('queryId')
+    info='...'
+    if request.is_ajax():
+        if(queryId == "newModule"):
+            nameModule = request.GET.get('nameModule')
+            course = request.GET.get('course')
+            if nameModule!=None and course!=None:
+                newModule = Module()
+                newModule.nameModule =  nameModule
+                newModule.idCourse =  Course.objects.get(idCourse=int(course))
+                newModule.save()
+                info="Creado el Modulo: "+ nameModule
+            else:
+                print 'Error: no se pudo crear el modulo'
+        return HttpResponse(info)
+    else:
+        context = RequestContext(request)
+        courses = Course.objects.all()
+        modules = Module.objects.all()
+        return render_to_response('modulos.html', {'courses':courses, 'modules': modules}, context)
+
 
 def projectFollowing(request):
     queryId = request.GET.get('queryId')

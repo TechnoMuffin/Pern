@@ -27,6 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
 '192.168.30.209',
+'192.168.1.10',
 'localhost'
 ]
 
