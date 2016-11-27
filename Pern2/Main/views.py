@@ -338,7 +338,7 @@ def modules(request):
             if nameModule!=None and course!=None:
                 newModule = Module()
                 newModule.nameModule =  nameModule
-                newModule.idCourse =  Course.objects.get(idCourse=int(course))
+                newModule.idCourse = Course.objects.get(idCourse=int(course))
                 newModule.save()
                 info="Creado el Modulo: "+ nameModule
             else:
@@ -347,6 +347,12 @@ def modules(request):
         if(queryId == "allModules"):
             modulos = Module.objects.filter(exists=True)
             info = serializers.serialize('json', modulos,use_natural_foreign_keys=True)
+        if(queryId == "deleteModule"):
+            idModule = request.GET.get('idModule')
+            module = Module.objects.get(idModule=int(idModule))
+            module.exists = False
+            module.save()
+            info = "Modulo "+module.nameModule+" ya no existe ;D"
         return HttpResponse(info)
     else:
         context = RequestContext(request)

@@ -4,13 +4,34 @@ var createModulo = $('#createModulo');
 var cbxCourse = $('#cbxCourse');
 var cbxModule = $('#cbxModule')
 var moduleTable = $('#moduleTable')
+var allDeleteBtnModule = $('.deleteModule')
+
 ////Asignacion de Funciones
 createModulo.on('click', function() {
     createModule()
 });
+
+
 ////Funciones reales
+function deleteModule(element) {
+    var asd = element.data('module-id');
+    console.log(asd);
+    $.ajax({
+        url: urlModule,
+        type: 'GET',
+        data: {
+            idModule: element.data('module-id'),
+            queryId: 'deleteModule'
+        },
+        success: function() {
+            console.log('Modulo Eliminado');
+            refreshModules();
+        }
+    });
+}
+
 function createModule() {
-    if (txtModuleName.val() != '' && cbxCourse.val()!='') {
+    if (txtModuleName.val() != '' && cbxCourse.val() != '') {
         $.ajax({
             url: urlModule,
             type: 'GET',
@@ -20,39 +41,40 @@ function createModule() {
                 queryId: 'newModule'
             },
             success: function() {
-              console.log('Modulo creado');
-              cbxCourse.val('0');
-              txtModuleName.val('');
-              refreshModules()
+                console.log('Modulo creado');
+                cbxCourse.val('0');
+                cbxCourse.selectpicker('refresh');
+                txtModuleName.val('');
+                refreshModules();
             }
         });
-    }else{
-      alert('NOOOOOOOOOOOOOOOOOOOOOOO')
+    } else {
+        alert('Por favor, complete los campos')
     }
 }
 
-function refreshModules(){
-  resetCbx(cbxModule);
-  resetTable(moduleTable);
-  $.ajax({
-      url: urlModule,
-      type: 'GET',
-      data: {
-          queryId: 'allModules'
-      },
-      dataType: 'json',
-      success: function(info) {
-        for(var i = 0; i < info.length; i++){
-          var nameModule = info[i].fields.nameModule;
-          var course = info[i].fields.idCourse[0]+'º '+info[i].fields.idCourse[1];
-          var moduleId = info[i].pk
+function refreshModules() {
+    resetCbx(cbxModule);
+    resetTable(moduleTable);
+    $.ajax({
+        url: urlModule,
+        type: 'GET',
+        data: {
+            queryId: 'allModules'
+        },
+        dataType: 'json',
+        success: function(info) {
+            for (var i = 0; i < info.length; i++) {
+                var nameModule = info[i].fields.nameModule;
+                var course = info[i].fields.idCourse[0] + 'º ' + info[i].fields.idCourse[1];
+                var moduleId = info[i].pk
 
-          var element = '<tr><td>'+nameModule+'</td><td>'+course+
-            '</td><td><button type="button" class="btn btn-default btn-sm deleteModule" data-module-id="'+moduleId+'">'+
-            '<span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button></td></tr>'
-          moduleTable.append(element);
+                var element = '<tr><td>' + nameModule + '</td><td>' + course +
+                    '</td><td><button type="button" class="btn btn-default btn-sm deleteModule" data-module-id="'+moduleId+'">' +
+                    '<span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button></td></tr>'
+                moduleTable.append(element);
+            }
+            allDeleteBtnModule.click(function(){deleteModule($(this));});
         }
-      }
-  });
-
+    });
 }
