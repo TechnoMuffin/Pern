@@ -200,7 +200,7 @@ class Fulfillment(models.Model):
 ##################################SEGUIMIENTO DE ALUMNO###################
 
 
-class StudentFollowing(models.Model):
+class StudentFollowingModel(models.Model):
     idSF = models.AutoField(primary_key=True)
     presenceSF = models.BooleanField(blank=True)
     dateSF = models.DateField()
@@ -220,9 +220,8 @@ class StudentFollowing(models.Model):
         return tagName
 ##################################CUMPLIMIENTO DIARIO#####################
 
-
 class dailyFulfillment(models.Model):
-    idSF = models.ForeignKey(StudentFollowing)
+    idSF = models.ForeignKey(StudentFollowingModel)
     idFF = models.ForeignKey(Fulfillment)
     idDF = models.AutoField(primary_key=True)
     done = models.BooleanField(blank=True)
@@ -263,7 +262,7 @@ class Working(models.Model):
     idStudent = models.ForeignKey(Student)
     idActivity = models.ForeignKey(Activity)
     numberOfClasses = models.IntegerField()
-    calification = models.IntegerField()
+    calification = models.IntegerField(blank=True, null=True)
     hasFinish = models.BooleanField(blank=True)
 
     class Meta:
@@ -278,8 +277,8 @@ class Working(models.Model):
 
 
 class OnClass(models.Model):
-    idActivity = models.ForeignKey(Activity)
-    idSF = models.ForeignKey(StudentFollowing)
+    idActivity = models.ForeignKey(Activity, blank = True, null=True)
+    idSF = models.ForeignKey(StudentFollowingModel)
 
     class Meta:
         verbose_name = 'Trabajo en Clase'
@@ -304,4 +303,17 @@ class OnWorking(models.Model):
         verbose_name_plural = 'Estados'
     def __str__(self):
         tagName = str(self.idProject.nameProject) + " - " + str(self.idStudent.surname) +'['+ str(self.hasFinish)+']'
+        return tagName
+
+##################################CUMPLIMIENTO DIARIO#####################
+class classFulfillment(models.Model):
+    idFF = models.ForeignKey(Fulfillment)
+    idSF = models.ForeignKey(StudentFollowingModel)
+    check = models.BooleanField(blank=True)
+
+    class Meta:
+        verbose_name = 'Cumplimiento en clase'
+        verbose_name_plural = 'Cumplimientos en clase'
+    def __str__(self):
+        tagName = str(self.nameFF) + "(" + str(self.idSF) + ")"
         return tagName

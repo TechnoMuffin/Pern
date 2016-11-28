@@ -27,7 +27,7 @@ class='active'
                         </select>
                     </div>
                     <div class="form-group col-xs-12">
-                        <select id="cbxProjectFW" class="selectpicker" data-width="100%">
+                        <select id="cbxProject" class="selectpicker" data-width="100%">
                             <option value=''>Proyecto</option>
                         </select>
                     </div>
@@ -49,7 +49,7 @@ class='active'
                                 <th>Actividad</th>
                             </tr>
                         </thead>
-                        <tbody id="tbAlumnos">
+                        <tbody id="tbStudents">
                         </tbody>
                     </table>
                 </div>
@@ -141,8 +141,8 @@ class='active'
 {% block scripts %}
 <!-- Siempre antes de importar la libreria de Pern se debe agregar el siguiente elemento SCRIPT -->
 <script src="{% static 'js/bootstrap-select.js'%}"></script>
-<script> var url = '{% url "app_main:seg-al" %}';</script>
-<script src="{% static 'js/seg.js'%}"></script>
+<script> var url = '{% url "app_main:sfAjax" %}';</script>
+<script src="{% static 'js/studentsFollowing.js'%}"></script>
 <script>
 </script>
 {% endblock %}

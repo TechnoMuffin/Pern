@@ -1,0 +1,157 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block link1 %}
+    class='active'
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="col-xs-12 col-md-4">
+            <!-- Panel "Alumnos" -->
+            <div class="col-xs-12 col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Alumnos
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-group col-xs-12 col-md-6">
+                            <select id="cbxCourse" class="selectpicker" data-width="100%">
+                                <option value=''>Curso</option>
+                                {% for i in courses %}
+                                    <option value={{i.idCourse}}>{{i.courseType}}º año "{{i.courseDivision}}"</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group col-xs-12 col-md-6">
+                            <select id="cbxModule" class="selectpicker" data-width="100%">
+                                <option value=''>Módulo</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-xs-12">
+                            <select id="cbxProject" class="selectpicker" data-width="100%">
+                                <option value=''>Proyecto</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-xs-12">
+                            <div class="input-group col-xs-12">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" type="button">
+                                        <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+                                    </button>
+                                </span>
+                                <input type="text" class="form-control" id="datepicker" name="date" placeholder="Fecha" value="2016-10-09">
+                            </div>
+                        </div>
+                        <table class="table table-responsive">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Alumno</th>
+                                    <th>Actividad</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbStudents" class="disabledDIV"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-md-8">
+            <!-- Panel Cumplimientos -->
+            <div class="col-xs-12 col-md-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Cumplimientos de
+                        <span class="nameStudent"></span>
+                    </div>
+                    <div class="panel-body">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Check</th>
+                                    <th>Condicion</th>
+                                    <th>Porcentaje</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbFulfillments"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!-- Panel Seguimiento Personal -->
+            <div class="col-xs-12 col-md-6">
+                <div id="personalFollowing" class="panel panel-default disabledDIV">
+                    <div class="panel-heading">
+                        Seguimiento personal de
+                        <span class="nameStudent"></span>
+                    </div>
+
+                    <div class="panel-body">
+                        <div class="form-group col-xs-12">
+                            <select id="cbxPersonalProject" class="selectpicker" data-width="100%">
+                                <option value=''>Proyectos</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-xs-12">
+                            <select id="cbxPersonalActivity" class="selectpicker" data-width="100%">
+                                <option value=''>Actividades</option>
+                            </select>
+                        </div>
+                        <table class="table table-responsive">
+                            <tbody id="tbPersonalFollowing">
+                                <tr>
+                                    <td>
+                                        <span>Nombre:</span>
+                                    </td>
+                                    <td>
+                                        <span id='actName'>---</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span>Clases:</span>
+                                    </td>
+                                    <td>
+                                        <span id='actClasses'>---</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span>Status:</span>
+                                    </td>
+                                    <td>
+                                        <span id='actStatus'>---</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span>Nota:</span>
+                                    </td>
+                                    <td>
+                                        <span id='actCalification'>---</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Observaciones
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-group col-xs-12">
+                            <textarea class="form-control" id="taObservations" rows="4"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block scripts %}
+    <script> var url = '{% url "app_main:sfAjax" %}';</script>
+    <script src="{% static 'js/bootstrap-select.js'%}"></script>
+    <script src="{% static 'js/studentsFollowing.js'%}"></script>
+{% endblock %}
