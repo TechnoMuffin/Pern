@@ -210,7 +210,7 @@ function resetPersonalFollow() {
 
 //Esta funcion hace algo
 function courseChanged() {
-    resetCbx(cbxModule, 'Módulo');
+    resetCbx(cbxModule, 'Rotación');
     resetTable(tbStudent);
     resetPersonalFollow();
     resetTable(tbHistory);
@@ -226,7 +226,7 @@ function courseChanged() {
             },
             dataType: 'json',
             success: function(info) {
-                resetCbx(cbxModule, 'Módulo');
+                resetCbx(cbxModule, 'Rotación');
                 for (var i = 0; i < info.length; i++) {
                     //El valor de las opciones de los select es el ID de los modulos
                     var text = info[i].fields.nameModule;
@@ -242,7 +242,7 @@ function courseChanged() {
 }
 
 function courseChangedB() {
-    resetCbx(cbxModuleB, 'Módulo');
+    resetCbx(cbxModuleB, 'Rotación');
 
     resetPersonalFollow();
     if (this.val != '') {
@@ -255,7 +255,7 @@ function courseChangedB() {
             },
             dataType: 'json',
             success: function(info) {
-                resetCbx(cbxModuleB, 'Módulo');
+                resetCbx(cbxModuleB, 'Rotación');
                 for (var i = 0; i < info.length; i++) {
                     //El valor de las opciones de los select es el ID de los modulos
                     var text = info[i].fields.nameModule;
@@ -269,7 +269,7 @@ function courseChangedB() {
 }
 
 function courseChangedD() {
-    resetCbx(cbxModuleD, 'Módulo');
+    resetCbx(cbxModuleD, 'Rotación');
     resetPersonalFollow();
     if (this.val != '') {
         $.ajax({
@@ -281,7 +281,7 @@ function courseChangedD() {
             },
             dataType: 'json',
             success: function(info) {
-                resetCbx(cbxModuleD, 'Módulo');
+                resetCbx(cbxModuleD, 'Rotación');
                 for (var i = 0; i < info.length; i++) {
                     //El valor de las opciones de los select es el ID de los modulos
                     var text = info[i].fields.nameModule;
@@ -543,27 +543,32 @@ function studentChanged() {
             success: function(info) {
                 for (var i = 0; i < info.length; i++) {
                     var idSF = info[i].pk;
-                    for (var v = 0; v < info.length; v++) {
-                        if (info[v].model == 'database.onclass') {
-                            if (info[v].fields.idSF == idSF) {
-                                var activity = info[v].fields.idActivity[1];
-                                var project = info[v].fields.idActivity[2];
-                                v = info.length;
-                            }
-                        }
-                    }
                     var presencia = info[i].fields.presenceSF;
                     var fecha = info[i].fields.dateSF;
                     var obs = info[i].fields.commentPF;
-                    sinObs = '<td><button type="button" class="btn btn-warning pull-right disabledDIV">' +
+                    for (var v = 0; v < info.length; v++) {
+                        if (info[v].model == 'database.onclass') {
+                            if (info[v].fields.idSF == idSF) {
+                                if (info[v].fields.idActivity!=null) {
+                                    var activity = info[v].fields.idActivity[1];
+                                    var project = info[v].fields.idActivity[2];
+                                    v = info.length;
+                                } else {
+                                    var activity = 'No hizo nada'
+                                    var project = 'No hizo nada'
+                                    v = info.length;
+                                }
+                            }
+                        }
+                    }
+                    var sinObs = '<td><button type="button" class="btn btn-warning pull-right disabledDIV">' +
                         '<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>' +
                         '</button></td>';
-                    if (activity == undefined) {
-                        activity = 'No hizo nada'
-                    } else {
+                    if (activity != 'No hizo nada') {
                         activity = activity + ' de ' + project
                     }
-                    if (info[i].model == "database.studentfollowing") {
+                    if (info[i].model == "database.studentfollowingmodel") {
+                        console.log('hiola');
                         if (presencia) {
                             presencia = '<span class="glyphicon glyphicon-ok verde" aria-hidden="true"></span>';
                             var elemento = '<tr class="clickable-row">' +
@@ -666,8 +671,8 @@ function selectStudent(evt, valor) {
 ///////Template 'rotacionAlumno'////////
 
 function courseRotationChanged() {
-    resetCbx(cbxRotationA, 'Alumnos sin Rotación', '0');
-    resetCbx(cbxRotationB, 'Alumnos sin Rotación', '0');
+    resetCbx(cbxRotationA, 'Alumnos sin Grupo de Alumnos', '0');
+    resetCbx(cbxRotationB, 'Alumnos sin Grupo de Alumnos', '0');
     resetMultiSelect(studentSelectA);
     resetMultiSelect(studentSelectB);
     if ($(this).val != '') {
@@ -826,7 +831,7 @@ function createRotation() {
                 queryId: "createRotation"
             },
             success: function() {
-                modalText.text('Se ha creado la rotación ' + txtRotationName.val() + ' correctamente.');
+                modalText.text('Se ha creado el Grupo de Alumnos ' + txtRotationName.val() + ' correctamente.');
                 modalTitle.text('Éxito!');
                 $('#modal').modal('toggle');
                 txtRotationName.val('');
@@ -835,9 +840,9 @@ function createRotation() {
                 cbxCourseRotation.val('');
                 cbxCourseRotation.selectpicker('refresh');
                 selecterDiv.addClass('disabledDIV');
-                resetCbx(cbxModule, 'Módulo');
-                resetCbx(cbxRotationA, 'Alumnos sin Rotación', '0');
-                resetCbx(cbxRotationB, 'Alumnos sin Rotación', '0');
+                resetCbx(cbxModule, 'Rotación');
+                resetCbx(cbxRotationA, 'Alumnos sin Grupo de Alumnos', '0');
+                resetCbx(cbxRotationB, 'Alumnos sin Grupo de Alumnos', '0');
                 resetMultiSelect(studentSelectA);
                 resetMultiSelect(studentSelectB);
                 courseGChanged();
@@ -863,8 +868,8 @@ function deleteRotation(idRotacion) {
 
 function courseGChanged() {
     actualModule.text('');
-    resetCbx(cbxRotationG, 'Rotación');
-    resetCbx(cbxNewModuleG, 'Nuevo Módulo');
+    resetCbx(cbxRotationG, 'Grupo de Alumnos');
+    resetCbx(cbxNewModuleG, 'Nueva Rotación');
     if (this.val != '') {
         $.ajax({
             url: url,
@@ -875,7 +880,7 @@ function courseGChanged() {
             },
             dataType: 'json',
             success: function(info) {
-                resetCbx(cbxModule, 'Módulo');
+                resetCbx(cbxModule, 'Rotación');
                 for (var i = 0; i < info.length; i++) {
                     //El valor de las opciones de los select es el ID de los modulos
                     var text = info[i].fields.nameModule;
