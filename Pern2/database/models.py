@@ -285,9 +285,10 @@ class OnClass(models.Model):
         verbose_name_plural = 'Trabajos en Clase'
 
     def __str__(self):
-        tagName = str(self.idActivity.nameActivity) + " - " + \
-            str(self.idSF.idStudent.surname) + \
-            '[' + str(self.idSF.dateSF) + ']'
+        if self.idActivity!=None:
+            tagName = str(self.idActivity.nameActivity) + " - " + str(self.idSF.idStudent.surname) + '[' + str(self.idSF.dateSF) + ']'
+        else:
+            tagName = 'No hizo nada - ' + str(self.idSF.idStudent.surname)+ '[' + str(self.idSF.dateSF) + ']'
         return tagName
 
 ##################################TERMINO EL TRABAJO##################################

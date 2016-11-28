@@ -562,7 +562,7 @@ function studentChanged() {
                         }
                     }
                     var sinObs = '<td><button type="button" class="btn btn-warning pull-right disabledDIV">' +
-                        '<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>' +
+                        '<span class="glyphicon glyphicon-eye-open" style="color:white"></span>' +
                         '</button></td>';
                     if (activity != 'No hizo nada') {
                         activity = activity + ' de ' + project
@@ -986,7 +986,7 @@ function moduleHistoryChanged() {
 //////////////////////////////
 function createModalObs(idCoso, content) {
     var someHTML = '<button type="button" class="btn btn-warning pull-right" data-toggle="modal" data-target="#' + idCoso + '">' +
-        '<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span></button>' +
+        '<span class="glyphicon glyphicon-eye-open" style="color:white"></span></button>' +
         '<div id="' + idCoso + '" class="modal fade" role="dialog">' +
         '<div class="modal-dialog"><div class="modal-content"><div class="modal-header">' +
         '<button type="button" class="close" data-dismiss="modal">&times;</button>' +
