@@ -267,9 +267,11 @@ def pupilFollowing(request):
             info = 'Done'
         elif(queryId == "history"):
             # Devuelve el alumno pedido
+            firstDate = request.GET.get('firstDate')
+            lastDate = request.GET.get('lastDate')
             idUser = request.GET.get('idStudent')
             student = Student.objects.filter(idUser=int(idUser))
-            studentFollowings = StudentFollowingModel.objects.filter(exists=True,idStudent=student).order_by('-dateSF')
+            studentFollowings = StudentFollowingModel.objects.filter(exists=True,idStudent=student,date__range=[firstDate, lastDate]).order_by('-dateSF')
             workOn = OnClass.objects.all()
             coso = list(chain(studentFollowings, workOn))
             info = serializers.serialize(

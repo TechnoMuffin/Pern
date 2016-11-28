@@ -60,8 +60,9 @@ var btnUpdateRotation = $('#btnUpdateRotation');
 var actualModule = $('#actualModule');
 
 //Variables de /historial
+var cbxCourseHistory = $("#cbxCourseHistory");
 var tableHistory = $('#historyTable'); //Table History
-var cbxModuleHistory = $('#cbxModuleHistory'); //Table History
+// var cbxModuleHistory = $('#cbxModuleHistory'); //Table History
 var tbHistory = $('#tbHistory'); //Body Table History
 var currentDocument = '';
 
@@ -78,12 +79,15 @@ date.on('change', function() {
 cbxCourse.on('change', function() {
     courseChanged()
 });
+cbxCourseHistory.on('change', function(){
+    courseHistoryChanged()
+});
 cbxModule.on('change', function() {
     moduleChanged()
 });
-cbxModuleHistory.on('change', function() {
-    moduleHistoryChanged()
-});
+// cbxModuleHistory.on('change', function() {
+//     moduleHistoryChanged()
+// });
 cbxProject.on('change', function() {
     projectChanged()
 });
@@ -209,6 +213,31 @@ function resetPersonalFollow() {
 ///////////////////////
 
 //Esta funcion hace algo
+function courseHistoryChanged(){
+    resetTable(tbHistory);
+    resetCbx(cbxStudent, 'Alumno');
+    if (this.val != '') {
+
+      $.ajax({
+          url: url,
+          type: 'GET',
+          data: {
+              idCourse: cbxCourseHistory.val(),
+              queryId: "studentsByCourse"
+
+          },
+          dataType: 'json',
+          success: function(info) {
+              for (i = 0; i < info.length; i++) {
+                  var texto = info[i].fields.name + " " + info[i].fields.surname;
+                  var value = info[i].pk;
+                  cbxStudent.append(new Option(texto, value));
+              }
+              cbxStudent.selectpicker('refresh');
+          }
+      });
+    }
+}
 function courseChanged() {
     resetCbx(cbxModule, 'Rotación');
     resetTable(tbStudent);
@@ -232,10 +261,10 @@ function courseChanged() {
                     var text = info[i].fields.nameModule;
                     var value = info[i].pk;
                     cbxModule.append(new Option(text, value));
-                    cbxModuleHistory.append(new Option(text, value));
+                    // cbxModuleHistory.append(new Option(text, value));
                 }
                 cbxModule.selectpicker('refresh');
-                cbxModuleHistory.selectpicker('refresh');
+                // cbxModuleHistory.selectpicker('refresh');
             }
         });
     }
@@ -536,6 +565,8 @@ function studentChanged() {
             url: url,
             type: 'GET',
             data: {
+                firstDate: $("#firstDate").val(),
+                lastDate: $("#lastDate").val(),
                 idStudent: cbxStudent.val(),
                 queryId: "history"
             },
@@ -963,31 +994,31 @@ function updateRotation() {
 }
 
 ////////////Template 'historial'
-function moduleHistoryChanged() {
-    resetCbx(cbxStudent, 'Alumno');
-    resetTable(tbHistory);
-    //Carga de Alumnos
-    if (this.val != '') {
-        $.ajax({
-            url: url,
-            type: 'GET',
-            data: {
-                idCourse: cbxCourse.val(),
-                idModule: cbxModuleHistory.val(),
-                queryId: "studentsByCourse"
-            },
-            dataType: 'json',
-            success: function(info) {
-                for (i = 0; i < info.length; i++) {
-                    var texto = info[i].fields.name + " " + info[i].fields.surname;
-                    var value = info[i].pk;
-                    cbxStudent.append(new Option(texto, value));
-                }
-                cbxStudent.selectpicker('refresh');
-            }
-        });
-    }
-}
+// function moduleHistoryChanged() {
+//     resetCbx(cbxStudent, 'Alumno');
+//     resetTable(tbHistory);
+//     //Carga de Alumnos
+//     if (this.val != '') {
+//         $.ajax({
+//             url: url,
+//             type: 'GET',
+//             data: {
+//                 idCourse: cbxCourse.val(),
+//                 idModule: cbxModuleHistory.val(),
+//                 queryId: "studentsByCourse"
+//             },
+//             dataType: 'json',
+//             success: function(info) {
+//                 for (i = 0; i < info.length; i++) {
+//                     var texto = info[i].fields.name + " " + info[i].fields.surname;
+//                     var value = info[i].pk;
+//                     cbxStudent.append(new Option(texto, value));
+//                 }
+//                 cbxStudent.selectpicker('refresh');
+//             }
+//         });
+//     }
+// }
 
 //////////////////////////////
 //Funcion de Modal Bootstrap//
