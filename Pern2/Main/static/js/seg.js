@@ -14,6 +14,8 @@ var cbxModuleD = $("#cbxModuleD");
 var cbxProject = $("#cbxProject");
 var cbxActivity = $("#cbxActivity");
 var cbxStudent = $("#cbxStudent");
+var lastDate = $("#lastDate");
+var firstDate = $("#firstDate");
 var currentStudentSelected; //Necesitaremos guardar en esta variable el alumno seleccionado para algunas funciones
 var cbxProjectFW = $("#cbxProjectFW");
 var personalFollowHTML = $("#personalFollow")
@@ -60,6 +62,7 @@ var btnUpdateRotation = $('#btnUpdateRotation');
 var actualModule = $('#actualModule');
 
 //Variables de /historial
+var btnSearchHistory = $("#btnSearchHistory")
 var cbxCourseHistory = $("#cbxCourseHistory");
 var tableHistory = $('#historyTable'); //Table History
 // var cbxModuleHistory = $('#cbxModuleHistory'); //Table History
@@ -95,7 +98,13 @@ cbxActivity.on('change', function() {
     activityChanged()
 });
 cbxStudent.on('change', function() {
-    studentChanged()
+    resetTable(tbHistory);
+});
+lastDate.on('change',function(){
+  resetTable(tbHistory);
+});
+firstDate.on('change',function(){
+  resetTable(tbHistory);
 });
 cbxCourseRotation.on('change', function() {
     courseRotationChanged()
@@ -565,8 +574,8 @@ function studentChanged() {
             url: url,
             type: 'GET',
             data: {
-                firstDate: $("#firstDate").val(),
-                lastDate: $("#lastDate").val(),
+                firstDate: firstDate.val(),
+                lastDate: lastDate.val(),
                 idStudent: cbxStudent.val(),
                 queryId: "history"
             },
