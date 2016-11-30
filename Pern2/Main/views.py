@@ -7,7 +7,7 @@ import json
 from django.core.exceptions import ObjectDoesNotExist
 from itertools import chain
 from forms import FormEntrada
-
+import datetime
 
 def pupilFollowing(request):
     queryId = request.GET.get('queryId')
@@ -119,8 +119,7 @@ def pupilFollowing(request):
             module = request.GET.get('idModule')
             curso = Course.objects.get(idCourse=int(idC))
             module = Module.objects.filter(idModule=int(module))
-            students = Student.objects.filter(idCourse=int(
-                idC), idRotation__idModule=module).order_by('surname')
+            students = Student.objects.filter(idCourse=int(idC), idRotation__idModule=module).order_by('surname')
             # Si no me mandan idPFW...
             if(idPFW is not None):
                 project = Project.objects.filter(idProject=int(idPFW))
@@ -131,6 +130,13 @@ def pupilFollowing(request):
             else:
                 #...te serializo los estudiantes solos
                 info = serializers.serialize('json', students)
+
+        elif(queryId == "studentsByCourse"):
+            # Devuelve todos los alumnos pertenecientes al curso y al modulo
+            idC = request.GET.get('idCourse')
+            curso = Course.objects.get(idCourse=int(idC))
+            students = Student.objects.filter(idCourse=int(idC)).order_by('surname')
+            info = serializers.serialize('json', students)
 
         elif(queryId == "rotationsByModule"):
             # Devuelve todas las rotaciones que actualmente estan trabajando en
@@ -186,8 +192,7 @@ def pupilFollowing(request):
             rotation = request.GET.get('idRotation')
             if(rotation != ''):
                 module = Module.objects.get(idModule=int(module))
-                Rotation.objects.filter(idRotation=int(
-                    rotation)).update(idModule=module)
+                Rotation.objects.filter(idRotation=int(rotation)).update(idModule=module)
                 info = 'Rotacion cambiada'
             else:
                 info = "Error"
@@ -211,14 +216,39 @@ def pupilFollowing(request):
             newRotation = request.GET.get('newIdRotation')
             if(newRotation != '0'):
                 newRotation = Rotation.objects.get(idRotation=int(newRotation))
+                now = datetime.datetime.now()
+                now=now.strftime("%Y-%m-%d")
+                print now
                 for x in studentsIds:
-                    student = Student.objects.filter(idUser=int(x))
-                    student.update(idRotation=newRotation)
+                    student = Student.objects.get(idUser=int(x))
+                    student.idRotation=newRotation
+                    student.save()
+                    #Guardando en el Historial
+                    try:
+                        sf = StudentFollowingModel.objects.get(dateSF=str(now), idModule=newRotation.idModule, idStudent=student)
+                    except ObjectDoesNotExist:
+                        vino = StudentFollowingModel.objects.filter(dateSF=str(now))
+                        print vino
+                        if vino:
+                            print 'hola'
+                        sf = StudentFollowingModel(presenceSF = False,dateSF = str(now),idModule = newRotation.idModule,commentPF = '',idStudent=student)
+                        sf.save()
+                        sf.idTeacher.add(Teacher.objects.get(idUser=1))
+                        #TODO meter un profe de verdad
+                        sf.save()
+                    try:
+                        trabajoLog = OnClass.objects.get(idSF=sf)
+                    except ObjectDoesNotExist:
+                        trabajoLog=OnClass(idSF=sf)
+                        trabajoLog.save()
+                    trabajoLog.rotationLog='Se ha cambiado a '+newRotation.nameRotation+' de '+newRotation.idModule.nameModule
+                    trabajoLog.save()
                 info = 'Done'
             else:
                 for x in studentsIds:
-                    student = Student.objects.filter(idUser=int(x))
-                    student.update(idRotation=None)
+                    student = Student.objects.get(idUser=int(x))
+                    student.idRotation=None
+                    student.save()
 
         elif(queryId == "createRotation"):
             # Crea una nueva rotacion

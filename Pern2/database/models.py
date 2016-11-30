@@ -278,6 +278,7 @@ class Working(models.Model):
 
 class OnClass(models.Model):
     idActivity = models.ForeignKey(Activity, blank = True, null=True)
+    rotationLog = models.CharField(blank = True, null=True, max_length=128)
     idSF = models.ForeignKey(StudentFollowingModel)
 
     class Meta:
@@ -288,7 +289,7 @@ class OnClass(models.Model):
         if self.idActivity!=None:
             tagName = str(self.idActivity.nameActivity) + " - " + str(self.idSF.idStudent.surname) + '[' + str(self.idSF.dateSF) + ']'
         else:
-            tagName = 'No hizo nada - ' + str(self.idSF.idStudent.surname)+ '[' + str(self.idSF.dateSF) + ']'
+            tagName = 'No hizo nada - ' +str(self.rotationLog) +' - '+ str(self.idSF.idStudent.surname)+ '[' + str(self.idSF.dateSF) + ']'
         return tagName
 
 ##################################TERMINO EL TRABAJO##################################

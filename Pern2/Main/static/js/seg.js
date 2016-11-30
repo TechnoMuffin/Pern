@@ -552,10 +552,11 @@ function studentChanged() {
                                 if (info[v].fields.idActivity!=null) {
                                     var activity = info[v].fields.idActivity[1];
                                     var project = info[v].fields.idActivity[2];
+                                    var rotationlog = info[v].fields.rotationLog;
                                     v = info.length;
                                 } else {
                                     var activity = 'No hizo nada'
-                                    var project = 'No hizo nada'
+                                    var rotationlog = info[v].fields.rotationLog;
                                     v = info.length;
                                 }
                             }
@@ -566,6 +567,13 @@ function studentChanged() {
                         '</button></td>';
                     if (activity != 'No hizo nada') {
                         activity = activity + ' de ' + project
+                        if(rotationlog!=null){
+                          activity = activity + '<br>' + rotationlog
+                        }
+                    }else{
+                      if(rotationlog!=null){
+                        activity = rotationlog
+                      }
                     }
                     if (info[i].model == "database.studentfollowingmodel") {
                         console.log('hiola');
@@ -585,7 +593,7 @@ function studentChanged() {
                             var elemento = '<tr class="clickable-row">' +
                                 '<th scope="row">' + presencia + '</th>' +
                                 '<td>' + fecha + '</td>' +
-                                '<td>Alumno Ausente</td>';
+                                '<td>'+activity+'</td>';
                             elemento = elemento + sinObs;
                         }
                         tbHistory.append(elemento);
@@ -966,7 +974,7 @@ function moduleHistoryChanged() {
             data: {
                 idCourse: cbxCourse.val(),
                 idModule: cbxModuleHistory.val(),
-                queryId: "students"
+                queryId: "studentsByCourse"
             },
             dataType: 'json',
             success: function(info) {
