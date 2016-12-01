@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.forms import ModelForm, ClearableFileInput
 from django import forms
 from database.models import Document

@@ -5,11 +5,13 @@
         <meta name="description" content="Administracion para escuelas tecnicas">
         <meta name="author" content="TechnoMuffin">
         <meta charset="utf-8">
+        <meta http-equiv="Content-type" content="text/html; charset=utf-8" /> 
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <!--<link rel="icon" href="../../favicon.ico">-->
         <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet">
         <link href="{% static 'css/bootstrap-select.css' %}" rel="stylesheet">
+        <link href="{% static 'css/bootstrap-datepicker.css' %}" rel="stylesheet">
         <link href="{% static 'css/font-awesome.css' %}" rel="stylesheet">
         <link href="{% static 'css/style.css' %}" rel="stylesheet">
         <title>Pern</title>
@@ -46,6 +48,7 @@
     </body>
     <script src="{% static 'js/jquery-3.1.0.js' %}"></script>
     <script src="{% static 'js/bootstrap.js' %}"></script>
+    <script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
     {% block scripts %}
     {% endblock %}
 </html>

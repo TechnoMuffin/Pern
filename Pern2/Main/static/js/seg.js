@@ -581,6 +581,7 @@ function studentChanged() {
             },
             dataType: 'json',
             success: function(info) {
+              console.log('entró');
                 for (var i = 0; i < info.length; i++) {
                     var idSF = info[i].pk;
                     var presencia = info[i].fields.presenceSF;
